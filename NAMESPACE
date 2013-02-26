@@ -1,3 +1,4 @@
+export(about_bee)
 export(observations)
 import(RCurl)
 import(RJSONIO)
