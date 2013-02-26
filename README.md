@@ -3,7 +3,7 @@
 ## Providing access to UC Berkeley's Natural History Data
 
 
-This package provides a R wrapper for the newly available ecoinformatics engine from UC Berkeley. The API is very new and currently provides access to two types of data. 
+This package provides a R wrapper for the newly available [ecoinformatics engine from UC Berkeley](http://ecoengine.berkeley.edu/). The API is very new and currently provides access to two types of data. 
 * Georeferenced data from the Wieslander project
 * Data on > 2 million georeferenced Berkley museum specimens.
 
@@ -17,3 +17,7 @@ Install the package with `devtools`
 library(devtools)
 install_github('recoengine', 'karthikram')
 ```
+
+## Resources
+
+* [API documentation](http://ecoengine.berkeley.edu/developers/)
