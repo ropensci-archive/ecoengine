@@ -13,7 +13,7 @@ Package is currently in early development and not fully funcitonal but watch the
 
 Install the package with `devtools`
 
-```
+```r
 library(devtools)
 install_github('recoengine', 'karthikram')
 ```
