@@ -1,0 +1,4 @@
+export(observations)
+import(RCurl)
+import(RJSONIO)
+import(plyr)

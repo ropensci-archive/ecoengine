@@ -1,0 +1,13 @@
+Package: recoengine
+Type: package
+Title: Programmatic interface to the Berkeley ecoengine
+Version: 1.0
+Date: 2013-02-26
+Author: Karthik Ram
+Maintainer: Karthik Ram <karthik.ram@berkeley.edu>
+Description: Currently provides access to over 2 million georeferenced specimen
+    records from the Berkeley Natural History Museums.
+License: CC0
+Collate:
+    'observations.R'
+    'about_bee.R'
