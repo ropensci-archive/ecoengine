@@ -2,6 +2,7 @@
 
 #'About the Berkeley Ecoinformatics Engine
 #'
+#' Function returns the current status of fast-evolving API. Returns endpoints and category. Default return is a \code{list} but one can also request a nicely formatted \code{data.frame} by setting the \code{as.df} argument to \code{TRUE}.
 #' @param as.df = FALSE Returns a list unless this set to \code{TRUE}
 #' @return \code{list}
 #' @export
