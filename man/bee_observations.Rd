@@ -1,8 +1,8 @@
-\name{observations}
-\alias{observations}
+\name{bee_observations}
+\alias{bee_observations}
 \title{Observations List}
 \usage{
-  observations(type = NULL)
+  bee_observations(type = NULL)
 }
 \arguments{
   \item{type}{= NULL filter by type}
