@@ -6,6 +6,9 @@
 #' @param as.df = FALSE Returns a list unless this set to \code{TRUE}
 #' @return \code{list}
 #' @export
+#' @importFrom RCurl getURL 
+#' @importFrom plyr ldply
+#' @importFrom RJSONIO fromJSON
 #' @examples \dontrun{
 #' about_bee()
 #' about_bee(as.df = TRUE)

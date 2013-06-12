@@ -8,10 +8,6 @@ Maintainer: Karthik Ram <karthik.ram@berkeley.edu>
 Description: Currently provides access to over 2 million georeferenced specimen
     records from the Berkeley Natural History Museums.
 License: CC0
-Depends:
-    RCurl,
-    RJSONIO,
-    plyr
 Collate:
     'observations.R'
     'about_bee.R'
