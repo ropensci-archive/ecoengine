@@ -15,10 +15,10 @@
 #'}
 about_bee <- function(as.df = FALSE) {
 base_url <- "http://ecoengine.berkeley.edu/api/"
- url <- paste0(base_url, "?format=json")
- about <- getURL(url)
- about <- as.list(fromJSON(I(about)))
- if(!as.df) {
+url <- paste0(base_url, "?format=json")
+about <- getURL(url)
+about <- as.list(fromJSON(I(about)))
+if(!as.df) {
     return(about)
     } else {
         about_df <- ldply(about, function(f) {

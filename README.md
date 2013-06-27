@@ -11,11 +11,11 @@ Package is currently in early development and not fully funcitonal but watch the
 
 ## Installing
 
-Install the package with `devtools`
+Install the package with `devtools` (package is currently in early development and not fully functional.)
 
-```r
+```coffee
 library(devtools)
-install_github('recoengine', 'karthikram')
+install_github('recoengine', 'ropensci')
 ```
 
 ## Resources

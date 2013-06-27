@@ -4,10 +4,14 @@ Title: Programmatic interface to the Berkeley ecoengine
 Version: 1.0
 Date: 2013-02-26
 Author: Karthik Ram
-Maintainer: Karthik Ram <karthik.ram@berkeley.edu>
+Authors@R: c(person("Karthik", "Ram", role = c("aut", "cre"), email =
+    "karthik.ram@gmail.com"))
+VignetteBuilder: knitr
 Description: Currently provides access to over 2 million georeferenced specimen
     records from the Berkeley Natural History Museums.
 License: CC0
+URL: https://github.com/ropensci/recoengine
+BugReports: https://github.com/ropensci/recoengine/issues
 Collate:
     'observations.R'
     'about_bee.R'
