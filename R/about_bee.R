@@ -11,9 +11,14 @@
 #' @importFrom RJSONIO fromJSON
 #' @examples \dontrun{
 #' about_bee()
-#' about_bee(as.df = TRUE)
+#' # set \code{as.df = FALSE} to return a \code{list} rather than a \code{data.frame}
+#' about_bee(as.df = FALSE)
+#' # You can also filter by methods by data, meta-data, and actions.
+#' about_bee(type = "data")
+#' about_bee(type = "meta-data")
+#' about_bee(type = "actions")
 #'}
-about_bee <- function(as.df = FALSE) {
+about_bee <- function(as.df = TRUE, type = NA) {
 base_url <- "http://ecoengine.berkeley.edu/api/"
 url <- paste0(base_url, "?format=json")
 about <- getURL(url)
@@ -25,6 +30,14 @@ if(!as.df) {
              res <- as.data.frame(f)
             } )
         names(about_df) <- c("type", "endpoint")
+        if(!is.na(type)) {
+        	about_df <- switch(type, 
+        		data = subset(about_df, type == "data"),
+        		actions = subset(about_df, type == "actions"),
+        		"meta-data" = subset(about_df, type == "meta-data"),
+        		)
+        }
         return(about_df)
+
     }
 }
