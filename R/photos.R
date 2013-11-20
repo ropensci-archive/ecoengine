@@ -1,6 +1,6 @@
 
 
-holos_photos <- function(page = NULL, foptions=list()) {
+holos_photos <- function(page = NULL, foptions = list()) {
 	# function isn't ready.	
 	# list of possible arguments
 	# state_province
