@@ -12,6 +12,11 @@ Description: Currently provides access to over 2 million georeferenced specimen
 License: CC0
 URL: https://github.com/ropensci/recoengine
 BugReports: https://github.com/ropensci/recoengine/issues
+Imports:
+    httr,
+    RJSONIO,
+    plyr
 Collate:
     'observations.R'
     'about_bee.R'
+    'sources.R'

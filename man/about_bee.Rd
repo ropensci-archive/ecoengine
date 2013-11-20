@@ -2,7 +2,7 @@
 \alias{about_bee}
 \title{About the Berkeley Ecoinformatics Engine}
 \usage{
-  about_bee(as.df = FALSE)
+  about_bee(as.df = TRUE, type = NA)
 }
 \arguments{
   \item{as.df}{= FALSE Returns a list unless this set to
@@ -21,7 +21,12 @@
 \examples{
 \dontrun{
 about_bee()
-about_bee(as.df = TRUE)
+# set \\code{as.df = FALSE} to return a \\code{list} rather than a \\code{data.frame}
+about_bee(as.df = FALSE)
+# You can also filter by methods by data, meta-data, and actions.
+about_bee(type = "data")
+about_bee(type = "meta-data")
+about_bee(type = "actions")
 }
 }
 
