@@ -10,7 +10,7 @@
 #' @examples \dontrun{
 #' holos_sources()
 #'}
-holos_sources <- function(foptions=list()) {
+holos_sources <- function(foptions = list()) {
 	base_url <- "http://ecoengine.berkeley.edu/api/sources/?format=json"
     data_sources <- GET(base_url, foptions)
     stop_for_status(data_sources)

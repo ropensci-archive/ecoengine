@@ -1,5 +1,5 @@
 
 
-holos_sensors <- function(page = NULL, , foptions = list()) {
+holos_sensors <- function(page = NULL, foptions = list()) {
 	# to be merged
 }

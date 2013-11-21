@@ -1,5 +1,5 @@
 
-
+#'@importFrom httr stop_for_status
 holos_photos <- function(page = NULL, foptions = list()) {
 	# function isn't ready.	
 	# list of possible arguments
