@@ -28,6 +28,7 @@ about_bee()
 about_bee(as.df = FALSE)
 # You can also filter by methods by data, meta-data, and actions.
 *
+about_bee(type = "data")
 about_bee(type = "meta-data")
 about_bee(type = "actions")
 }
