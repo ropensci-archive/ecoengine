@@ -15,4 +15,7 @@ test_that("Metadata is returned as expected", {
 	 expect_is(about_bee(type = "data", as.df = FALSE), "list")
 	 expect_is(about_bee(type = "meta-data", as.df = FALSE), "list")
 	 expect_is(about_bee(type = "actions", as.df = FALSE), "list")
+	 expect_is(holos_sources(), "data.frame")
+	 expect_true(nrow(holos_sources()) == 10)
+	 expect_true(ncol(holos_sources()) == 4)
 })

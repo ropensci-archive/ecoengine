@@ -5,8 +5,11 @@
   about_bee(as.df = TRUE, type = NA)
 }
 \arguments{
-  \item{as.df}{= FALSE Returns a list unless this set to
-  \code{TRUE}}
+  \item{as.df}{\code{FALSE} Returns a list unless this set
+  to \code{TRUE}}
+
+  \item{type}{The type of end point. Options include
+  \code{data}, \code{meta-data}, and \code{actions}}
 }
 \value{
   \code{list}
@@ -21,10 +24,10 @@
 \examples{
 \dontrun{
 about_bee()
-# set \\code{as.df = FALSE} to return a \\code{list} rather than a \\code{data.frame}
+# set \\code{as.df} = \\code{FALSE} to return a \\code{list} rather than a \\code{data.frame}
 about_bee(as.df = FALSE)
 # You can also filter by methods by data, meta-data, and actions.
-about_bee(type = "data")
+*
 about_bee(type = "meta-data")
 about_bee(type = "actions")
 }

@@ -1,5 +1,15 @@
 
-#'@importFrom httr stop_for_status
+
+#' holos_photos
+#'
+#' 
+#' @param page page number
+#' @param  foptions Other options to pass to curl
+#' @export
+#' @importFrom httr stop_for_status content GET
+#' @examples \dontrun{
+#' holos_photos() # examples aren't ready yet.
+#'}
 holos_photos <- function(page = NULL, foptions = list()) {
 	# function isn't ready.	
 	# list of possible arguments

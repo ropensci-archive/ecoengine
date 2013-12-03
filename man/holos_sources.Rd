@@ -20,7 +20,4 @@
 holos_sources()
 }
 }
-\seealso{
-  \link\code{about_bee}
-}
 
