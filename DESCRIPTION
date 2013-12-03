@@ -24,3 +24,5 @@ Collate:
     'photos.R'
     'sensors.R'
     'sensors_aggregation.R'
+    'holos_footprints.R'
+    'holos_search.R'

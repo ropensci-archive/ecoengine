@@ -1,6 +1,7 @@
 export(about_bee)
 export(holos_observations)
 export(holos_photos)
+export(holos_sensors)
 export(holos_sources)
 import(GET)
 import(compact)
