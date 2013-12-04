@@ -20,8 +20,23 @@
 #' @export
 #' @importFrom httr stop_for_status content GET
 #' @importFrom plyr compact
+#' @seealso related: \code{\link{holos_photos_get}}
 #' @examples \dontrun{
+#' # Request all photos. This request will paginate. Don't use holos_photos_get #' on such a large request
 #' holos_photos()
+#' # Search by collection code. See notes above on options
+#' holos_photos(collection_code = "CalAcademy")
+#' holos_photos(collection_code = "VTM")
+#' holos_photos(collection_code = "CalFlora")
+#' holos_photos(collection_code = "CDFA")
+#' # Search by county.
+#' holos_photos(county = "Santa Clara County")
+#' holos_photos(county = "Merced County")
+#' # Or by author
+#' holos_photos(author = "Charles Webber")
+#' # You can also request all pages in a single call by using holos_photos_get()
+#' # In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
+#' all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
 #'}
 holos_photos <- function(page = NULL, 
 						 state_province = NULL, 
@@ -83,25 +98,33 @@ holos_photos <- function(page = NULL,
 
 #'holos_photos_get
 #'
-#'This wrapper around holos photos. Allows a user to retrive all data at once for a query rather than request a page at a time.
+#'This wrapper around holos_photos(). Allows a user to retrive all data at once for a query rather than request a page at a time.
 #' @param page Use \code{all} to request all pages for a particular query.
 #' @param ... All the arguments that go into \code{holos_photos}
 #' @export
+#' @seealso  \code{\link{holos_photos}}
 #' @examples \dontrun{
 #' all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
 #'}
 holos_photos_get <- function(..., page = NULL) {
 	if(page == "all") {
+		# We suppress the messages since we're making multiple calls.
 		x <- holos_photos(..., succinct = TRUE)
+		# Reqest page 1 to get the total record count
 		total_results <- x$results
-		# Then ldply through x
+		# Create an empty list to hold all the outputs
 		result_list <- list()
+		# Use the results from this first call. Why waste another call.
+		result_list[[1]] <- x$data
+		# Calculate total number of pages to request. 
 		all_pages <- ceiling(total_results/10)
+		# Warn users about unusually large requests
 		if(total_results > 1000) {
 		message(sprintf("Retrieving %s (%s requests) results. This may take a while", total_results, ceiling(total_results/10)))
 		}
-		for(i in 1:all_pages) {
+		for(i in 2:all_pages) {
 		result_list[[i]] <- holos_photos(..., page = i)$data
+		# Nice trick (I think) to sleep 2 seconds after every 10 API calls.
 		if(i %% 10 == 0) Sys.sleep(2)
 		}
 		result_data <- as.data.frame(do.call(rbind, result_list))
@@ -109,6 +132,7 @@ holos_photos_get <- function(..., page = NULL) {
 		class(all_photo_results) <- "holos"
 
 	} else { 
+		# In case user forgets to request all pages then it just become a regular query.
 		all_photo_results <- holos_photos(...)
 	}
 
@@ -116,27 +140,19 @@ holos_photos_get <- function(..., page = NULL) {
 	all_photo_results
 }
 
-# -------------------------
-#  A few local tests
-holos_photos()
-holos_photos(collection_code = "CalAcademy")
-holos_photos(county = "Santa Clara County")
-holos_photos(county = "Merced County")
-holos_photos(author = "Charles Webber")
-# Don't have an example for remote_id
-holos_photos(collection_code = "CalAcademy")
-holos_photos(collection_code = "VTM")
-holos_photos(collection_code = "CalFlora")
-holos_photos(collection_code = "CDFA")
-all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
 
-# have no idea what sources are
 
+
+
+# Notes
+
+# Don't have an example for remote_id or for sources
+# Have asked Kevin and Falk about this.
 
 # -------------------
 # To do:
-# Implement search
-# Return nicely formatted tables of data
+# Return nicely formatted tables of data (Whisker)
 # Allow viewing images from within R 
+# Allow holos_photos_get to take a page range.
 
 					

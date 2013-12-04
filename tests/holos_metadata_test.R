@@ -19,3 +19,10 @@ test_that("Metadata is returned as expected", {
 	 expect_true(nrow(holos_sources()) == 10)
 	 expect_true(ncol(holos_sources()) == 4)
 })
+
+
+context("Testing photos function")
+
+test_that("Photos function returns results as expected", {
+	expect_that()
+})
