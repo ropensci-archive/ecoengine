@@ -40,6 +40,10 @@ holos_photos <- function(page = NULL,
 						 # function isn't ready.	
 
 	photos_url <- "http://ecoengine.berkeley.edu/api/photos/?format=json"
+	# Some thoughts. I can check if page is integer
+	# if yes, request page.
+	# If instead it is "all" or a range. e.g. 1-10
+	# Then run a loop/apply that request all those pages and squashes results
 	args <- as.list(compact(c(page = page, 						 
 							state_province = state_province, 
 						 	county = county, 
