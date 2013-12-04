@@ -3,7 +3,7 @@
 #' Search the photos methods in the Holos API. 
 #' @param page page number
 #' @param  state_province Need to describe these parameters
-#' @param  county See \href{http://en.wikipedia.org/wiki/List_of_counties_in_California}{full list of California counties}
+#' @param  county California counties. Package include a full list of counties. To load dataset \code{data(california_counties)}
 #' @param  genus Need to describe these parameters
 #' @param  scientific_name Need to describe these parameters
 #' @param  authors Need to describe these parameters
@@ -15,12 +15,12 @@
 #' @param  related_type Need to describe these parameters
 #' @param  related  Need to describe these parameters
 #' @param  other_catalog_numbers Need to describe these parameters
-#' @param  verbose Default is \code{TRUE}. Set to \code{FALSE} to suppress output.
+#' @param  succinct Default is \code{FALSE}. Set to \code{TRUE} to suppress output.
 #' @param  foptions = list() Other options to pass to curl
 #' @export
 #' @importFrom httr stop_for_status content GET
 #' @importFrom plyr compact
-#' @seealso related: \code{\link{holos_photos_get}}
+#' @seealso related: \code{\link{holos_photos_get}} \code{\link{california_counties}}
 #' @examples \dontrun{
 #' # Request all photos. This request will paginate. Don't use holos_photos_get #' on such a large request
 #' holos_photos()
@@ -32,6 +32,13 @@
 #' # Search by county.
 #' holos_photos(county = "Santa Clara County")
 #' holos_photos(county = "Merced County")
+#' # The package also contains a full list of counties
+#' data(california_counties)
+#' alameda <- holos_photos(county = california_counties[1, 1])
+#' alameda$data
+#' # You can also get all the data for Alameda county with one request
+#' alameda <- holos_photos_get(county = california_counties[1, 1], page = "all")
+#' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
 #' holos_photos(author = "Charles Webber")
 #' # You can also request all pages in a single call by using holos_photos_get()
@@ -79,7 +86,7 @@ holos_photos <- function(page = NULL,
     photos <- content(data_sources)
     page_num <- ifelse(is.null(page), 1, page)
     if(!succinct) {
-    message(sprintf("Search returned %s photos (page %s of %s)", photos[[1]], page_num, ceiling(photos[[1]]/10)))
+    message(sprintf("Search returned %s photos (downloading page %s of %s)", photos[[1]], page_num, ceiling(photos[[1]]/10)))
 	}
     photos_data <- do.call(rbind, photos[[4]])
     photos_results <- list(results = photos[[1]], call = photos[[2]], type = "photos", data = photos_data)
