@@ -7,16 +7,17 @@
     authors = NULL, remote_id = NULL,
     collection_code = NULL, source = NULL, min_date = NULL,
     max_date = NULL, related_type = NULL, related = NULL,
-    other_catalog_numbers = NULL, foptions = list())
+    succinct = FALSE, other_catalog_numbers = NULL,
+    foptions = list())
 }
 \arguments{
   \item{page}{page number}
 
   \item{state_province}{Need to describe these parameters}
 
-  \item{county}{See
-  \href{http://en.wikipedia.org/wiki/List_of_counties_in_California}{full
-  list of California counties}}
+  \item{county}{California counties. Package include a full
+  list of counties. To load dataset
+  \code{data(california_counties)}}
 
   \item{genus}{Need to describe these parameters}
 
@@ -43,6 +44,9 @@
   \item{other_catalog_numbers}{Need to describe these
   parameters}
 
+  \item{succinct}{Default is \code{FALSE}. Set to
+  \code{TRUE} to suppress output.}
+
   \item{foptions}{= list() Other options to pass to curl}
 }
 \description{
@@ -50,7 +54,32 @@
 }
 \examples{
 \dontrun{
+# Request all photos. This request will paginate. Don't use holos_photos_get #' on such a large request
 holos_photos()
+# Search by collection code. See notes above on options
+holos_photos(collection_code = "CalAcademy")
+holos_photos(collection_code = "VTM")
+holos_photos(collection_code = "CalFlora")
+holos_photos(collection_code = "CDFA")
+# Search by county.
+holos_photos(county = "Santa Clara County")
+holos_photos(county = "Merced County")
+# The package also contains a full list of counties
+data(california_counties)
+alameda <- holos_photos(county = california_counties[1, 1])
+alameda$data
+# You can also get all the data for Alameda county with one request
+alameda <- holos_photos_get(county = california_counties[1, 1], page = "all")
+# Spidering through the rest of the counties can easily be automated.
+# Or by author
+holos_photos(author = "Charles Webber")
+# You can also request all pages in a single call by using holos_photos_get()
+# In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
+all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
 }
+}
+\seealso{
+  related: \code{\link{holos_photos_get}}
+  \code{\link{california_counties}}
 }
 
