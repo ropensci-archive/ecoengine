@@ -1,4 +1,7 @@
 
+![](https://travis-ci.org/ropensci/recoengine.png)
+
+
 # R interface to the Berkeley Ecoinformatics Engine
 ## Providing access to UC Berkeley's Natural History Data
 
