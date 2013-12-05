@@ -3,7 +3,7 @@
 #' Returns a full list of data source supported by the ecoengine
 #' @param foptions A list of additional arguments. Currently this function takes none.
 #' @export
-#' @importFrom httr GET  content stop_for_status
+#' @importFrom httr GET content stop_for_status
 #' @return \code{data.frame}
 #' @examples \dontrun{
 #' holos_sources()
@@ -17,6 +17,8 @@ holos_sources <- function(foptions = list()) {
     # Second item is the URL call
     # Item 3 was a NULL
     # Item 4 is the list of sources. Formatting this down into a data.frame
-    source_list <- do.call(rbind, ds[[4]])
+    source_list <- as.data.frame(do.call(rbind, ds[[4]]))
     source_list
 }
+
+

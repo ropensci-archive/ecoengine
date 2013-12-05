@@ -25,7 +25,7 @@
   this function takes none.}
 }
 \description{
-  Returns sensor data
+  Returns UC reserve system sensor data
 }
 \examples{
 \dontrun{

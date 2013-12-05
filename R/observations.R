@@ -21,8 +21,8 @@
 #' @param  foptions description needed.
 #' @export
 #' @return \code{data.frame}
-#' @import httr content GET 
-#' @import plyr compact
+#' @importFrom httr content GET 
+#' @importFrom plyr compact
 #' @examples \dontrun{
 #' holos_observations(country = "United States")
 #'}
