@@ -88,7 +88,7 @@ holos_photos <- function(page = NULL,
     if(!quiet) {
     message(sprintf("Search returned %s photos (downloading page %s of %s)", photos[[1]], page_num, ceiling(photos[[1]]/10)))
 	}
-    photos_data <- do.call(rbind, photos[[4]])
+    photos_data <- as.data.frame(do.call(rbind, photos[[4]]))
     photos_results <- list(results = photos[[1]], call = photos[[2]], type = "photos", data = photos_data)
     class(photos_results) <- "holos"
     return(photos_results)
