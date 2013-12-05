@@ -1,23 +1,22 @@
-#' Browse highlighted fragments in your default browser.
+#' Browse photo queries in your default browser.
 #' 
 #' @import whisker
-#' @param input Input, usually output from a call to \code{\link[ecoengine]{highplos}}
+#' @param input Input, usually output from a call to \code{\link[ecoengine]{holos_photos}}
 #' @param output Path and file name for output file. If NULL, a temp file is used.
 #' @param browse Browse file in your default browse immediately after file creation.
 #'    If FALSE, the file is written, but not opened.
 #' @export
 #' @examples \dontrun{
-#' 
+#' view_photos(holos_photos())
 #' }
 
-high_brow <- function(input = NULL, output = NULL, browse = TRUE)
+view_photos <- function(input = NULL, output = NULL, browse = TRUE)
 {
   if(is.null(input))
     stop("Please supply some input")
   
-  input <- x$data
-  
-  
+
+ outlist <- apply(input$data, 1, function(x) as.list(x))
   template <-
     '<!DOCTYPE html>
       <head>
@@ -37,18 +36,26 @@ high_brow <- function(input = NULL, output = NULL, browse = TRUE)
 
       <div class="container">
 
-      <center><h2>ecoengine - highlights</h2></center>
+      <center><h2>Ecoengine - Photo Viewer</h2></center>
 
       <table class="table table-striped table-hover" align="center">
               <thead>
                       <tr>
-                              <th>DOI</th>
-                              <th>Fragment</th>
+                              <th>Photo</th>
+                              <th>Authors</th>
+                              <th>Locality / County</th>
+                              <th>Notes</th>
+                              <th>Start Date</th>
                       </tr>
               </thead>
               <tbody>
         {{#outlist}}
-          <tr><td><a href="http://dx.doi.org/{{doi}}">{{doi}}</a></td><td>{{content}}</td></tr>
+          <tr><td><a href="{{media_url}}"><img src="{{media_url}}" height = 250></a></td>
+          <td>{{authors}}</td>
+          <td>{{locality}}, {{county}}</td>
+          <td>{{photog_notes}}</td>
+          <td>{{begin_date}}</td>
+          </tr>
         {{/outlist}}
         </tbody>
       </table>

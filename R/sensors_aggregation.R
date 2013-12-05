@@ -3,8 +3,8 @@
 #'
 #' Aggregated sensor data
 #' @param page page number
-#' @param   min_date 
-#' @param  max_date 
+#' @param  min_date stuff
+#' @param  max_date stuff
 #' @param foptions additional arguments for Curl
 #' @export
 #' @examples \dontrun{
