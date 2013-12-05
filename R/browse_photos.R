@@ -16,7 +16,7 @@ view_photos <- function(input = NULL, output = NULL, browse = TRUE)
     stop("Please supply some input")
   
 
- outlist <- apply(input$data, 1, function(x) as.list(x))
+ photo_list <- apply(input$data, 1, function(x) as.list(x))
   template <-
     '<!DOCTYPE html>
       <head>
@@ -49,14 +49,14 @@ view_photos <- function(input = NULL, output = NULL, browse = TRUE)
                       </tr>
               </thead>
               <tbody>
-        {{#outlist}}
+        {{#photo_list}}
           <tr><td><a href="{{media_url}}"><img src="{{media_url}}" height = 250></a></td>
           <td>{{authors}}</td>
           <td>{{locality}}, {{county}}</td>
           <td>{{photog_notes}}</td>
           <td>{{begin_date}}</td>
           </tr>
-        {{/outlist}}
+        {{/photo_list}}
         </tbody>
       </table>
       </div>
