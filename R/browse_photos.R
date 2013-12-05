@@ -8,6 +8,8 @@
 #' @export
 #' @examples \dontrun{
 #' view_photos(holos_photos())
+#' view_photos(holos_photos(scientific_name = "Procyon lotor", quiet = TRUE))
+#' view_photos(holos_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
 #' }
 
 view_photos <- function(input = NULL, output = NULL, browse = TRUE)
