@@ -1,13 +1,13 @@
 \name{holos_photos}
 \alias{holos_photos}
-\title{holos photos}
+\title{holos_photos}
 \usage{
   holos_photos(page = NULL, state_province = NULL,
     county = NULL, genus = NULL, scientific_name = NULL,
     authors = NULL, remote_id = NULL,
     collection_code = NULL, source = NULL, min_date = NULL,
     max_date = NULL, related_type = NULL, related = NULL,
-    succinct = FALSE, other_catalog_numbers = NULL,
+    quiet = FALSE, other_catalog_numbers = NULL,
     foptions = list())
 }
 \arguments{
@@ -44,8 +44,8 @@
   \item{other_catalog_numbers}{Need to describe these
   parameters}
 
-  \item{succinct}{Default is \code{FALSE}. Set to
-  \code{TRUE} to suppress output.}
+  \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
+  to suppress output.}
 
   \item{foptions}{= list() Other options to pass to curl}
 }

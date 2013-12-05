@@ -1,5 +1,3 @@
-
-
 context("Testing Holos' metadata functions")
 
 test_that("Metadata is returned as expected", {
@@ -24,5 +22,8 @@ test_that("Metadata is returned as expected", {
 context("Testing photos function")
 
 test_that("Photos function returns results as expected", {
-	expect_that()
+	expect_is(holos_photos(), "holos")
+	expect_equal(length(holos_photos()), 4)
+	some_cdfa <- holos_photos_get(collection_code = "CDFA", page = 1:2)
+	expect_equal(nrow(some_cdfa$data), 20)
 })

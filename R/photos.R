@@ -1,4 +1,4 @@
-#' holos photos
+#' holos_photos
 #'
 #' Search the photos methods in the Holos API. 
 #' @param page page number
@@ -15,7 +15,7 @@
 #' @param  related_type Need to describe these parameters
 #' @param  related  Need to describe these parameters
 #' @param  other_catalog_numbers Need to describe these parameters
-#' @param  succinct Default is \code{FALSE}. Set to \code{TRUE} to suppress output.
+#' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress output.
 #' @param  foptions = list() Other options to pass to curl
 #' @export
 #' @importFrom httr stop_for_status content GET
@@ -58,7 +58,7 @@ holos_photos <- function(page = NULL,
 						 max_date = NULL, 
 						 related_type = NULL, 
 						 related  = NULL,
-						 succinct = FALSE,
+						 quiet = FALSE,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
 
@@ -85,7 +85,7 @@ holos_photos <- function(page = NULL,
     stop_for_status(data_sources)
     photos <- content(data_sources)
     page_num <- ifelse(is.null(page), 1, page)
-    if(!succinct) {
+    if(!quiet) {
     message(sprintf("Search returned %s photos (downloading page %s of %s)", photos[[1]], page_num, ceiling(photos[[1]]/10)))
 	}
     photos_data <- do.call(rbind, photos[[4]])
@@ -112,28 +112,49 @@ holos_photos <- function(page = NULL,
 #' @seealso  \code{\link{holos_photos}}
 #' @examples \dontrun{
 #' all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
+#' some_cdfa <- holos_photos_get(collection_code = "CDFA", page = 1:2)
+#' some_other_cdfa <- holos_photos_get(collection_code = "CDFA", page = c(1:4,6))
 #'}
 holos_photos_get <- function(..., page = NULL) {
-	if(page == "all") {
-		# We suppress the messages since we're making multiple calls.
-		x <- holos_photos(..., succinct = TRUE)
-		# Reqest page 1 to get the total record count
-		total_results <- x$results
-		# Create an empty list to hold all the outputs
-		result_list <- list()
-		# Use the results from this first call. Why waste another call.
-		result_list[[1]] <- x$data
-		# Calculate total number of pages to request. 
-		all_pages <- ceiling(total_results/10)
-		# Warn users about unusually large requests
+if(!is.null(page)) {
+	total_results <-NULL
+	result_list <- list()
+	x <- holos_photos(..., quiet = TRUE)
+	# Reqest page 1 to get the total record count
+	total_results <- x$results
+	# Calculate total number of pages to request. 
+	all_pages <- ceiling(total_results/10)
+
+
+		if(is.numeric(page)) {
+			if(max(page) > all_pages) {
+				stop("Page range is invalid", call. = FALSE) 
+			} else {
+			all_pages <- page
+			}
+		}
+
+
 		if(total_results > 1000) {
 		message(sprintf("Retrieving %s (%s requests) results. This may take a while", total_results, ceiling(total_results/10)))
 		}
-		for(i in 2:all_pages) {
+
+		if(identical(page,"all")) { 
+		for(i in seq_along(1:all_pages)) {
 		result_list[[i]] <- holos_photos(..., page = i)$data
+		# Nice trick (I think) to sleep 2 seconds after every 10 API calls.
+		if(i %% 10 == 0) Sys.sleep(2)		
+		} 
+	 	} else { 
+		for(i in all_pages) {
+		result_list[[i]] <- holos_photos(..., page = i, quiet = TRUE)$data
 		# Nice trick (I think) to sleep 2 seconds after every 10 API calls.
 		if(i %% 10 == 0) Sys.sleep(2)
 		}
+
+		}
+
+
 		result_data <- as.data.frame(do.call(rbind, result_list))
 		all_photo_results <- list(results = x[[1]], call = x[[2]], type = "photos", data = result_data)
 		class(all_photo_results) <- "holos"
@@ -146,7 +167,7 @@ holos_photos_get <- function(..., page = NULL) {
 # Return all results
 	all_photo_results
 }
-
+# TODO make this take any page range in addition to all
 
 
 
