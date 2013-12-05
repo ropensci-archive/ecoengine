@@ -1,8 +1,8 @@
-Package: recoengine
-Type: package
+Package: ecoengine
+Type: Package
 Title: Programmatic interface to the Berkeley ecoengine
-Version: 1.0
-Date: 2013-02-26
+Version: 0.5
+Date: 2013-12-04
 Author: Karthik Ram
 Authors@R: c(person("Karthik", "Ram", role = c("aut", "cre"), email =
     "karthik.ram@gmail.com"))
@@ -15,6 +15,7 @@ BugReports: https://github.com/ropensci/ecoengine/issues
 Imports:
     httr,
     RJSONIO,
+    RCurl,
     plyr
 Collate:
     'observations.R'
@@ -26,3 +27,5 @@ Collate:
     'sensors_aggregation.R'
     'holos_footprints.R'
     'holos_search.R'
+    'holos_utils.R'
+    'holos_package.R'
