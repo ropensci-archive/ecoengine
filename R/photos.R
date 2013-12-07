@@ -157,9 +157,8 @@ if(!is.null(page)) {
 
 		}
 
-
 		# result_data <- as.data.frame(do.call(rbind, result_list))
-		result_data <- do.call(rbind.fill, lapply(result_list, rbindfillnull))
+		result_data <- do.call(rbind.fill, result_list)
 		all_photo_results <- list(results = x[[1]], call = x[[2]], type = "photos", data = result_data)
 		class(all_photo_results) <- "holos"
 
