@@ -116,7 +116,7 @@ holos_photos <- function(page = NULL,
 #' @examples \dontrun{
 #' all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
 #' some_cdfa <- holos_photos_get(collection_code = "CDFA", page = 1:2)
-#' some_other_cdfa <- holos_photos_get(collection_code = "CDFA", page = c(1:4,6))
+#' some_other_cdfa <- holos_photos_get(collection_code = "CDFA", page = c(1:4,6)) 
 #'}
 holos_photos_get <- function(..., page = NULL) {
 if(!is.null(page)) {
@@ -143,16 +143,20 @@ if(!is.null(page)) {
 		}
 
 		if(identical(page,"all")) { 
-		for(i in seq_along(1:all_pages)) {
+		for(i in seq_along(all_pages)) {
 		result_list[[i]] <- holos_photos(..., page = i)$data
-		# Nice trick (I think) to sleep 2 seconds after every 10 API calls.
-		if(i %% 10 == 0) Sys.sleep(2)		
+		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
+		if(i %% 25 == 0) Sys.sleep(2)		
 		} 
 	 	} else { 
-		for(i in all_pages) {
-		result_list[[i]] <- holos_photos(..., page = i, quiet = TRUE)$data
-		# Nice trick (I think) to sleep 2 seconds after every 10 API calls.
-		if(i %% 10 == 0) Sys.sleep(2)
+		for(i in seq_along(all_pages)) {
+		# There is a problem here when using non sequential pages.
+		j <- all_pages[[i]]
+		# message(sprintf("Current page index is %s", j))
+		# browser()	
+		result_list[[i]] <- holos_photos(..., page = j, quiet = TRUE)$data
+		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
+		if(i %% 25 == 0) Sys.sleep(2)
 		}
 
 		}

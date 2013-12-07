@@ -37,3 +37,4 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
     basic_sensor_data
 }
 holos_sensors()
+holos_sensors(page = 40)

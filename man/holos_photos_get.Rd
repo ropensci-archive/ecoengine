@@ -20,7 +20,7 @@
 \dontrun{
 all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
 some_cdfa <- holos_photos_get(collection_code = "CDFA", page = 1:2)
-some_other_cdfa <- holos_photos_get(collection_code = "CDFA", page = c(1:4,6))
+some_other_cdfa <- holos_photos_get(collection_code = "CDFA", page = c(1:4,6)) # This example does not work.
 }
 }
 \seealso{
