@@ -127,6 +127,7 @@ if(!is.null(page)) {
 	total_results <- x$results
 	# Calculate total number of pages to request. 
 	all_pages <- ceiling(total_results/10)
+	message(sprintf("Retrieving %s pages", all_pages))
 
 
 		if(is.numeric(page)) {
@@ -136,15 +137,16 @@ if(!is.null(page)) {
 			all_pages <- page
 			}
 		}
-
+		pb <- txtProgressBar(min = 0, max = all_pages, style = 3)
 
 		if(total_results > 1000) {
 		message(sprintf("Retrieving %s (%s requests) results. This may take a while", total_results, ceiling(total_results/10)))
 		}
 
 		if(identical(page,"all")) { 
-		for(i in seq_along(all_pages)) {
-		result_list[[i]] <- holos_photos(..., page = i)$data
+		for(i in seq_along(1:all_pages)) {
+		result_list[[i]] <- holos_photos(..., page = i, quiet = TRUE)$data
+		setTxtProgressBar(pb, i)
 		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
 		if(i %% 25 == 0) Sys.sleep(2)		
 		} 
@@ -155,6 +157,7 @@ if(!is.null(page)) {
 		# message(sprintf("Current page index is %s", j))
 		# browser()	
 		result_list[[i]] <- holos_photos(..., page = j, quiet = TRUE)$data
+		setTxtProgressBar(pb, i)
 		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
 		if(i %% 25 == 0) Sys.sleep(2)
 		}
@@ -170,11 +173,10 @@ if(!is.null(page)) {
 		# In case user forgets to request all pages then it just become a regular query.
 		all_photo_results <- holos_photos(...)
 	}
-
-# Return all results
+	close(pb)
 	all_photo_results
+
 }
-# TODO make this take any page range in addition to all
 
 
 
@@ -183,18 +185,9 @@ if(!is.null(page)) {
 rbindfillnull <- function(x) {
   x <- unlist(x)
   x[is.null(x)] <- "none"
-  data.frame(as.list(x), stringsAsFactors=FALSE)
+  data.frame(as.list(x), stringsAsFactors = FALSE)
 }
 
-# Notes
 
-# Don't have an example for remote_id or for sources
-# Have asked Kevin and Falk about this.
-
-# -------------------
-# To do:
-# Return nicely formatted tables of data (Whisker)
-# Allow viewing images from within R 
-# Allow holos_photos_get to take a page range.
 
 					
