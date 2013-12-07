@@ -40,7 +40,7 @@
 #' alameda <- holos_photos_get(county = california_counties[1, 1], page = "all")
 #' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
-#' holos_photos(author = "Charles Webber")
+#' charles_results <- holos_photos(author = "Charles Webber")
 #' # You can also request all pages in a single call by using holos_photos_get()
 #' # In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
 #' all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
@@ -88,7 +88,10 @@ holos_photos <- function(page = NULL,
     if(!quiet) {
     message(sprintf("Search returned %s photos (downloading page %s of %s)", photos[[1]], page_num, ceiling(photos[[1]]/10)))
 	}
-    photos_data <- as.data.frame(do.call(rbind, photos[[4]]))
+
+	 photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
+
+    # photos_data <- as.data.frame(do.call(rbind, photos[[4]]))
     photos_results <- list(results = photos[[1]], call = photos[[2]], type = "photos", data = photos_data)
     class(photos_results) <- "holos"
     return(photos_results)
@@ -155,7 +158,8 @@ if(!is.null(page)) {
 		}
 
 
-		result_data <- as.data.frame(do.call(rbind, result_list))
+		# result_data <- as.data.frame(do.call(rbind, result_list))
+		result_data <- do.call(rbind.fill, lapply(result_list, rbindfillnull))
 		all_photo_results <- list(results = x[[1]], call = x[[2]], type = "photos", data = result_data)
 		class(all_photo_results) <- "holos"
 
@@ -171,6 +175,13 @@ if(!is.null(page)) {
 
 
 
+#' @noRd
+#' Internal function to convert list to data.frame when it contains NULL
+rbindfillnull <- function(x) {
+  x <- unlist(x)
+  x[is.null(x)] <- "none"
+  data.frame(as.list(x), stringsAsFactors=FALSE)
+}
 
 # Notes
 

@@ -72,7 +72,7 @@ alameda$data
 alameda <- holos_photos_get(county = california_counties[1, 1], page = "all")
 # Spidering through the rest of the counties can easily be automated.
 # Or by author
-holos_photos(author = "Charles Webber")
+charles_results <- holos_photos(author = "Charles Webber")
 # You can also request all pages in a single call by using holos_photos_get()
 # In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
 all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
