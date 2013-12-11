@@ -2,9 +2,8 @@
 \alias{holos_sensors}
 \title{holos_sensors}
 \usage{
-  holos_sensors(page = NULL, remote_id = NULL,
-    collection_code = NULL, source = NULL, min_date = NULL,
-    max_date = NULL, foptions = list())
+holos_sensors(page = NULL, remote_id = NULL, collection_code = NULL,
+  source = NULL, min_date = NULL, max_date = NULL, foptions = list())
 }
 \arguments{
   \item{page}{page number}
@@ -25,7 +24,7 @@
   this function takes none.}
 }
 \description{
-  Returns UC reserve system sensor data
+Returns UC reserve system sensor data
 }
 \examples{
 \dontrun{

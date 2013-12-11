@@ -2,8 +2,8 @@
 \alias{holos_sensor_agg}
 \title{sensor aggregation}
 \usage{
-  holos_sensor_agg(page = NULL, min_date = NULL,
-    max_date = NULL, foptions = list())
+holos_sensor_agg(page = NULL, min_date = NULL, max_date = NULL,
+  foptions = list())
 }
 \arguments{
   \item{page}{page number}
@@ -15,7 +15,7 @@
   \item{foptions}{additional arguments for Curl}
 }
 \description{
-  Aggregated sensor data
+Aggregated sensor data
 }
 \examples{
 \dontrun{
