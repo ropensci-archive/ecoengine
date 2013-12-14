@@ -1,7 +1,23 @@
 
 
-holos_checklists <- function(page = NULL, subject = NULL, foptions = list()) {
+#'<brief desc>
+#'
+#'<full description>
+#' @param page Page number
+#' @param  subject Enter one of the following subjects: Mammals, Mosses, Beetles, Spiders, Amphibians, Ants, Fungi, Lichen, Plants.
+#' @param  foptions = list() <what param does>
+#' @export
+#' @keywords
+#' @seealso
+#' @return
+#' @alias
+#' @examples \dontrun{
+#'
+#'}
+holos_checklists <- function(subject = NULL, foptions = list()) {
 	base_url <- "http://ecoengine.berkeley.edu/api/checklists/"
+	assert_that(is.character(subject))
+
 	subk <- switch(subject,
 					"Mammals"    = "bigcb:specieslist:1",
 					"Mosses"     = "bigcb:specieslist:13",
@@ -16,7 +32,8 @@ holos_checklists <- function(page = NULL, subject = NULL, foptions = list()) {
 					)
 	if(is.null(subject)) base_url <- paste0(base_url, "?format=json")
 	if(!is.null(subject)) base_url <- paste0(base_url, subk, "?format=json")	
-	checklist_sources <- GET(base_url, foptions)
+	args <- list(subject = subk)
+	checklist_sources <- GET(base_url, query = args, foptions)
     stop_for_status(checklist_sources)
     checklist_results <- content(checklist_sources)
     # Returns 11 items. Below is the example for mosses
@@ -34,6 +51,11 @@ holos_checklists <- function(page = NULL, subject = NULL, foptions = list()) {
     checklist_results <- as.data.frame(do.call(rbind, checklist_results[[11]]))
     checklist_results
 }
+coyote::clear()
+x1 <- holos_checklists(subject = "Mammals")
+x2 <- holos_checklists(subject = "Plants")
+x3 <- holos_checklists(subject = "Amphibians")
+
 # holos_checklists()
 # holos_checklists(subject = "Mosses")
 
