@@ -3,7 +3,6 @@
 #' @title ecoengine
 #' @name ecoengine
 #' @docType package
-#' @aliases ecoengine package-ecoengine
 NULL
 
 

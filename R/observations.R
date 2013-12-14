@@ -1,4 +1,3 @@
-
 #' Observations List
 #'
 #'API endpoint that represents a list of observations. Prameter options have not been fleshed out yet

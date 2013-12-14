@@ -19,33 +19,33 @@
 #' @param  foptions = list() Other options to pass to curl
 #' @export
 #' @importFrom httr stop_for_status content GET
-#' @importFrom plyr compact
+#' @importFrom plyr compact rbind.fill
 #' @seealso related: \code{\link{holos_photos_get}} \code{\link{california_counties}}
 #' @examples \dontrun{
 #' # Request all photos. This request will paginate. Don't use holos_photos_get #' on such a large request
-#' holos_photos()
+#' holos_photos_get()
 #' # Search by collection code. See notes above on options
-#' holos_photos(collection_code = "CalAcademy")
-#' holos_photos(collection_code = "VTM")
-#' holos_photos(collection_code = "CalFlora")
-#' holos_photos(collection_code = "CDFA")
+#' holos_photos_get(collection_code = "CalAcademy")
+#' holos_photos_get(collection_code = "VTM")
+#' holos_photos_get(collection_code = "CalFlora")
+#' holos_photos_get(collection_code = "CDFA")
 #' # Search by county.
-#' holos_photos(county = "Santa Clara County")
-#' holos_photos(county = "Merced County")
+#' holos_photos_get(county = "Santa Clara County")
+#' holos_photos_get(county = "Merced County")
 #' # The package also contains a full list of counties
 #' data(california_counties)
-#' alameda <- holos_photos(county = california_counties[1, 1])
+#' alameda <- holos_photos_get(county = california_counties[1, 1])
 #' alameda$data
 #' # You can also get all the data for Alameda county with one request
-#' alameda <- holos_photos_get(county = california_counties[1, 1], page = "all")
+#' alameda <- holos_photos_get_get(county = california_counties[1, 1], page = "all")
 #' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
-#' charles_results <- holos_photos(author = "Charles Webber")
+#' charles_results <- holos_photos_get(author = "Charles Webber")
 #' # You can also request all pages in a single call by using holos_photos_get()
 #' # In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
 #' all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
 #'}
-holos_photos <- function(page = NULL, 
+holos_photos_get <- function(page = NULL, 
 						 state_province = NULL, 
 						 county = NULL, 
 						 genus = NULL, 
@@ -95,34 +95,28 @@ holos_photos <- function(page = NULL,
     photos_results <- list(results = photos[[1]], call = photos[[2]], type = "photos", data = photos_data)
     class(photos_results) <- "holos"
     return(photos_results)
-	# possible outputs:
-	# 	author
-	# 	date_range
-	# 	notes
-	# 	media_url
-	# 	url
-	# 	associated_observations
 }
 
 
 
-#'holos_photos_get
+#'holos_photos
 #'
 #'This wrapper around holos_photos(). Allows a user to retrive all data at once for a query rather than request a page at a time.
 #' @param page Use \code{all} to request all pages for a particular query.
 #' @param ... All the arguments that go into \code{holos_photos}
 #' @export
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso  \code{\link{holos_photos}}
 #' @examples \dontrun{
-#' all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
-#' some_cdfa <- holos_photos_get(collection_code = "CDFA", page = 1:2)
-#' some_other_cdfa <- holos_photos_get(collection_code = "CDFA", page = c(1:4,6)) 
+#' all_cdfa <- holos_photos(collection_code = "CDFA", page = "all")
+#' some_cdfa <- holos_photos(collection_code = "CDFA", page = 1:2)
+#' some_other_cdfa <- holos_photos(collection_code = "CDFA", page = c(1:4,6)) 
 #'}
-holos_photos_get <- function(..., page = NULL) {
+holos_photos <- function(..., page = NULL) {
 if(!is.null(page)) {
 	total_results <-NULL
 	result_list <- list()
-	x <- holos_photos(..., quiet = TRUE)
+	x <- holos_photos_get(..., quiet = TRUE)
 	# Reqest page 1 to get the total record count
 	total_results <- x$results
 	# Calculate total number of pages to request. 
@@ -145,7 +139,7 @@ if(!is.null(page)) {
 
 		if(identical(page,"all")) { 
 		for(i in seq_along(1:all_pages)) {
-		result_list[[i]] <- holos_photos(..., page = i, quiet = TRUE)$data
+		result_list[[i]] <- holos_photos_get(..., page = i, quiet = TRUE)$data
 		setTxtProgressBar(pb, i)
 		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
 		if(i %% 25 == 0) Sys.sleep(2)		
@@ -156,7 +150,7 @@ if(!is.null(page)) {
 		j <- all_pages[[i]]
 		# message(sprintf("Current page index is %s", j))
 		# browser()	
-		result_list[[i]] <- holos_photos(..., page = j, quiet = TRUE)$data
+		result_list[[i]] <- holos_photos_get(..., page = j, quiet = TRUE)$data
 		setTxtProgressBar(pb, i)
 		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
 		if(i %% 25 == 0) Sys.sleep(2)
@@ -171,7 +165,7 @@ if(!is.null(page)) {
 
 	} else { 
 		# In case user forgets to request all pages then it just become a regular query.
-		all_photo_results <- holos_photos(...)
+		all_photo_results <- holos_photos_get(...)
 	}
 	close(pb)
 	all_photo_results
@@ -181,7 +175,7 @@ if(!is.null(page)) {
 
 
 #' @noRd
-#' Internal function to convert list to data.frame when it contains NULL
+# Internal function to convert list to data.frame when it contains NULL
 rbindfillnull <- function(x) {
   x <- unlist(x)
   x[is.null(x)] <- "none"

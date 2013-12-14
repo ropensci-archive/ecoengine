@@ -3,16 +3,16 @@
 holos_checklists <- function(page = NULL, subject = NULL, foptions = list()) {
 	base_url <- "http://ecoengine.berkeley.edu/api/checklists/"
 	subk <- switch(subject,
-					"Mammals"   = "bigcb:specieslist:1",
-					"Mosses"    = "bigcb:specieslist:13",
-					"Beetles"   = "bigcb:specieslist:14",
-					"Spiders"   = "bigcb:specieslist:15",
-					"Amphibians"= "bigcb:specieslist:16",
-					"Ants"      = "bigcb:specieslist:17",
-					"Fungi"     = "bigcb:specieslist:18",
-					"Lichen"    = "bigcb:specieslist:19",
-					"Plants"    = "bigcb:specieslist:2",
-					"Spiders" = "bigcb:specieslist:20"
+					"Mammals"    = "bigcb:specieslist:1",
+					"Mosses"     = "bigcb:specieslist:13",
+					"Beetles"    = "bigcb:specieslist:14",
+					"Spiders"    = "bigcb:specieslist:15",
+					"Amphibians" = "bigcb:specieslist:16",
+					"Ants"       = "bigcb:specieslist:17",
+					"Fungi"      = "bigcb:specieslist:18",
+					"Lichen"     = "bigcb:specieslist:19",
+					"Plants"     = "bigcb:specieslist:2",
+					"Spiders"    = "bigcb:specieslist:20"
 					)
 	if(is.null(subject)) base_url <- paste0(base_url, "?format=json")
 	if(!is.null(subject)) base_url <- paste0(base_url, subk, "?format=json")	
