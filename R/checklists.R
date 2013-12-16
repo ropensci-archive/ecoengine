@@ -3,20 +3,18 @@
 #'<brief desc>
 #'
 #'<full description>
-#' @param page Page number
 #' @param  subject Enter one of the following subjects: Mammals, Mosses, Beetles, Spiders, Amphibians, Ants, Fungi, Lichen, Plants.
 #' @param  foptions = list() <what param does>
 #' @export
-#' @keywords
-#' @seealso
-#' @return
-#' @alias
+#' @importFrom assertthat assert_that
+#' @return data.frame
 #' @examples \dontrun{
-#'
+#' mammals_list  <- holos_checklists(subject = "Mammals")
 #'}
 holos_checklists <- function(subject = NULL, foptions = list()) {
 	base_url <- "http://ecoengine.berkeley.edu/api/checklists/"
-	assert_that(is.character(subject))
+	
+	# assert_that(is.character(subject))
 
 	subk <- switch(subject,
 					"Mammals"    = "bigcb:specieslist:1",
@@ -37,24 +35,28 @@ holos_checklists <- function(subject = NULL, foptions = list()) {
     stop_for_status(checklist_sources)
     checklist_results <- content(checklist_sources)
     # Returns 11 items. Below is the example for mosses
-				# [1] "bigcb:specieslist:13"
-				# [1] "Mosses"
-				# [1] "http://ecoengine.berkeley.edu/api/sources/18/"
-				# [1] "http://bigcb.berkeley.edu/cgi/bigcb_speclist_show?ListID=13"
-				# [1] "1975-01-01T00:00:00"
-				# [1] "1975-12-31T00:00:00"
-				# [1] "California"
-				# [1] ""
-				# [1] "http://ecoengine.berkeley.edu/api/footprints/angelo-reserve/"
-				# [1] "Dr. Thomas and S.F. State U. class"
+				# "bigcb:specieslist:13"
+				# "Mosses"
+				# "http://ecoengine.berkeley.edu/api/sources/18/"
+				# "http://bigcb.berkeley.edu/cgi/bigcb_speclist_show?ListID=13"
+				# "1975-01-01T00:00:00"
+				# "1975-12-31T00:00:00"
+				# "California"
+				# ""
+				# "http://ecoengine.berkeley.edu/api/footprints/angelo-reserve/"
+				# "Dr. Thomas and S.F. State U. class"
     # # 
     checklist_results <- as.data.frame(do.call(rbind, checklist_results[[11]]))
-    checklist_results
+	full_checklist_results <- llply(checklist_results[[2]], function(x) {
+    	   full_url <- paste0(x, "?format=json")
+    	   data <- content(GET(full_url))
+    })
+    complete_checklist <- as.data.frame(do.call(rbind, full_checklist_results))
 }
-coyote::clear()
-x1 <- holos_checklists(subject = "Mammals")
-x2 <- holos_checklists(subject = "Plants")
-x3 <- holos_checklists(subject = "Amphibians")
+
+# x1 <- holos_checklists(subject = "Mammals")
+# x2 <- holos_checklists(subject = "Plants")
+# x3 <- holos_checklists(subject = "Amphibians")
 
 # holos_checklists()
 # holos_checklists(subject = "Mosses")
