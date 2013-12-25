@@ -5,9 +5,8 @@
 #' @param type  The type of end point. Options include \code{data}, \code{meta-data}, and \code{actions}
 #' @return \code{list}
 #' @export
-#' @importFrom RCurl getURL 
-#' @importFrom plyr ldply
-#' @importFrom RJSONIO fromJSON
+#' @importFrom httr GET content stop_for_status
+#' @importFrom plyr ldply 
 #' @examples \dontrun{
 #' about_bee()
 #' # set \code{as.df} = \code{FALSE} to return a \code{list} rather than a \code{data.frame}
@@ -19,15 +18,17 @@
 #' about_bee(type = "actions")
 #'}
 about_bee <- function(as.df = TRUE, type = NA) {
-about_url <- "http://ecoengine.berkeley.edu/api/?format=json"
-about <- getURL(about_url)
-about <- as.list(fromJSON(I(about)))
+about_url <- "http://ecoengine.berkeley.edu/api/?format=json" 
+about_call <- GET(about_url)
+stop_for_status(about_call)
+about <- content(about_call)
 if(!as.df) {
     return(about)
     } else {
-        about_df <- ldply(about, function(f) {
-             res <- as.data.frame(f)
+        about_df <- lapply(about, function(f) {
+             res <- data.frame(cbind(f))
             } )
+        about_df <- ldply(about_df)
         names(about_df) <- c("type", "endpoint")
         if(!is.na(type)) {
                 about_df <- switch(type, 
@@ -38,8 +39,11 @@ if(!as.df) {
         }
         return(about_df)
 
-    }
 }
+
+}
+about_bee()
+
 
 # Expected output
 
