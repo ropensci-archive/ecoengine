@@ -40,7 +40,7 @@ view_photos <- function(input = NULL, output = NULL, browse = TRUE)
 
       <div class="container">
 
-      <center><h2>Ecoengine - Photo Viewer</h2></center>
+      <center><h2>Ecoengine Photo Viewer</h2></center>
 
       <table class="table table-striped table-hover" align="center">
               <thead>

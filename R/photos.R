@@ -104,23 +104,44 @@ holos_photos_get <- function(page = NULL,
 #'This wrapper around holos_photos(). Allows a user to retrive all data at once for a query rather than request a page at a time.
 #' @param page Use \code{all} to request all pages for a particular query.
 #' @param ... All the arguments that go into \code{holos_photos}
+#'
+#' \itemize{
+#' \item{"page"                   } {Page Number}                                                        
+#' \item{"state_province"        } {Need to describe these parameters}
+#' \item{"county"                } {Package include a full list of counties. To load dataset (california_counties)}
+#' \item{"genus"                  } {Genus           }                                                                   
+#' \item{"scientific_name"       } {Scientific Name }                                                                   
+#' \item{"authors"                } {List of authors }                                                                   
+#' \item{"remote_id"            } {Description     }                                                                   
+#' \item{"collection_code"      } {Description     }                                                                   
+#' \item{"source"                 } {Description     }                                                                   
+#' \item{"min_date"              } {Lower date bound}                                                                   
+#' \item{"max_date"              } {Upper date bound}                                                                   
+#' \item{"related_type"          } {Description     }                                                                   
+#' \item{"related "               } {Description     }                                                                   
+#' \item{"other_catalog_numbers"} {Description     }                                                                   
+#' }
+#'
 #' @export
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#' @seealso  \code{\link{holos_photos}}
+#' @seealso  \code{\link{holos_photos_get}}
 #' @examples \dontrun{
 #' all_cdfa <- holos_photos(collection_code = "CDFA", page = "all")
 #' some_cdfa <- holos_photos(collection_code = "CDFA", page = 1:2)
 #' some_other_cdfa <- holos_photos(collection_code = "CDFA", page = c(1:4,6)) 
 #'}
 holos_photos <- function(..., page = NULL) {
+x <- holos_photos_get(..., quiet = TRUE)	
+total_results <-NULL
+# Reqest page 1 to get the total record count
+total_results <- x$results
+# Calculate total number of pages to request. 
+all_pages <- ceiling(total_results/10)
 if(!is.null(page)) {
-	total_results <-NULL
+
 	result_list <- list()
-	x <- holos_photos_get(..., quiet = TRUE)
-	# Reqest page 1 to get the total record count
-	total_results <- x$results
-	# Calculate total number of pages to request. 
-	all_pages <- ceiling(total_results/10)
+
+
 	message(sprintf("Retrieving %s pages", all_pages))
 
 
@@ -164,6 +185,8 @@ if(!is.null(page)) {
 		class(all_photo_results) <- "holos"
 
 	} else { 
+		message("entering the else")
+		pb <- txtProgressBar(min = 0, max = all_pages, style = 3)
 		# In case user forgets to request all pages then it just become a regular query.
 		all_photo_results <- holos_photos_get(...)
 	}
