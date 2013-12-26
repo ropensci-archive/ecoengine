@@ -42,8 +42,6 @@ if(!as.df) {
 }
 
 }
-about_bee()
-
 
 # Expected output
 
@@ -65,4 +63,3 @@ about_bee()
 #  about_bee(type = "actions")
 #      type                                  endpoint
 # 8 actions http://ecoengine.berkeley.edu/api/search/
-# > 
