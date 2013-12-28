@@ -131,34 +131,48 @@ holos_photos_get <- function(page = NULL,
 #' some_other_cdfa <- holos_photos(collection_code = "CDFA", page = c(1:4,6)) 
 #'}
 holos_photos <- function(..., page = NULL) {
+
+# First figure out how many pages total for a call regardless of supplied page range
+	x <- holos_photos_get(..., quiet = TRUE)
+	total_results <- NULL
+	total_results <- x$results
+	all_available_pages <- ceiling(total_results/10)	
+
+if(!is.null(page) && page!="all") {
+	max_pages <- length(page)
+	all_pages <- page
+	total_results <- max_pages * 10
+}
+
+if(identical(page, "all")) {
 x <- holos_photos_get(..., quiet = TRUE)	
-total_results <-NULL
+total_results <- NULL
 # Reqest page 1 to get the total record count
 total_results <- x$results
 # Calculate total number of pages to request. 
-all_pages <- ceiling(total_results/10)
+max_pages <- all_pages <- ceiling(total_results/10)	
+}
+
 if(!is.null(page)) {
 
 	result_list <- list()
-
-
-	message(sprintf("Retrieving %s pages", all_pages))
+	message(sprintf("Retrieving %s pages", max_pages))
 
 
 		if(is.numeric(page)) {
-			if(max(page) > all_pages) {
+			if(max(page) > all_available_pages) {
 				stop("Page range is invalid", call. = FALSE) 
 			} else {
 			all_pages <- page
 			}
 		}
-		pb <- txtProgressBar(min = 0, max = all_pages, style = 3)
+		pb <- txtProgressBar(min = 0, max = max_pages, style = 3)
 
 		if(total_results > 1000) {
 		message(sprintf("Retrieving %s (%s requests) results. This may take a while", total_results, ceiling(total_results/10)))
 		}
 
-		if(identical(page,"all")) { 
+		if(identical(page, "all")) { 
 		for(i in seq_along(1:all_pages)) {
 		result_list[[i]] <- holos_photos_get(..., page = i, quiet = TRUE)$data
 		setTxtProgressBar(pb, i)
@@ -181,15 +195,17 @@ if(!is.null(page)) {
 
 		# result_data <- as.data.frame(do.call(rbind, result_list))
 		result_data <- do.call(rbind.fill, result_list)
-		all_photo_results <- list(results = x[[1]], call = x[[2]], type = "photos", data = result_data)
+		all_photo_results <- list(results = nrow(result_data), call = x[[2]], type = "photos", data = result_data)
 		class(all_photo_results) <- "holos"
 
-	} else { 
-		message("entering the else")
-		pb <- txtProgressBar(min = 0, max = all_pages, style = 3)
+	}  
+
+	if(is.null(page)) { 
+		pb <- txtProgressBar(min = 0, max = 1, style = 3)
 		# In case user forgets to request all pages then it just become a regular query.
 		all_photo_results <- holos_photos_get(...)
 	}
+
 	close(pb)
 	all_photo_results
 
