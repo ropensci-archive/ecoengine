@@ -28,4 +28,6 @@ test_that("Photos function returns results as expected", {
 	expect_equal(nrow(all_cdfa$data), 52)
 	some_cdfa <- holos_photos(collection_code = "CDFA", page = 1:2)
 	expect_equal(nrow(some_cdfa$data), 20)
+	some_other_cdfa <- holos_photos(collection_code = "CDFA", page = c(1:4,6)) 
+	expect_equal(nrow(some_other_cdfa$data), 42)
 })
