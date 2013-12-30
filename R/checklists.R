@@ -7,6 +7,7 @@
 #' @param  foptions = list() <what param does>
 #' @export
 #' @importFrom assertthat assert_that
+#' @importFrom plyr llply
 #' @return data.frame
 #' @examples \dontrun{
 #' mammals_list  <- holos_checklists(subject = "Mammals")
