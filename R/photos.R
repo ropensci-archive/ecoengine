@@ -86,13 +86,13 @@ holos_photos_get <- function(page = NULL,
     photos <- content(data_sources)
     page_num <- ifelse(is.null(page), 1, page)
     if(!quiet) {
-    message(sprintf("Search returned %s photos (downloading page %s of %s)", photos[[1]], page_num, ceiling(photos[[1]]/10)))
+    message(sprintf("Search returned %s photos (downloading page %s of %s)", photos$count, page_num, ceiling(photos[[1]]/10)))
 	}
 
 	 photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
 
     # photos_data <- as.data.frame(do.call(rbind, photos[[4]]))
-    photos_results <- list(results = photos[[1]], call = photos[[2]], type = "photos", data = photos_data)
+    photos_results <- list(results = photos$count, call = photos[[2]], type = "photos", data = photos_data)
     class(photos_results) <- "holos"
     return(photos_results)
 }
@@ -156,7 +156,7 @@ max_pages <- all_pages <- ceiling(total_results/10)
 if(!is.null(page)) {
 
 	result_list <- list()
-	message(sprintf("Retrieving %s pages", max_pages))
+	message(sprintf("Retrieving %s pages (total: %s)", max_pages, total_results))
 
 
 		if(is.numeric(page)) {
