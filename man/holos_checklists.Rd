@@ -19,7 +19,9 @@ data.frame
 }
 \examples{
 \dontrun{
+all_lists  <- holos_checklists()
 mammals_list  <- holos_checklists(subject = "Mammals")
+spiders  <- holos_checklists(subject = "Spiders")
 }
 }
 
