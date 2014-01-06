@@ -22,7 +22,7 @@ holos_checklists <- function(subject = NULL, foptions = list()) {
 	stop_for_status(full_checklist)
 	checklist_data <- content(full_checklist)
 	total_records <- checklist_data$count
-	all_data <- GET(paste0(base_url, "&page_size=", total_records))
+	all_data <- GET(paste0(base_url, "&page_size=", total_records), foptions)
 	stop_for_status(all_data)
 	all_checklists <- content(all_data)
 	
@@ -38,6 +38,24 @@ holos_checklists <- function(subject = NULL, foptions = list()) {
 	}
 }
 
+
+#'Checklist details
+#'
+#' Will return details on any checklist 
+#' @param list_name URL of a checklist
+#' @param  ... Additional arguments (currently not implemented)
+#' @export
+#' @seealso \code{\link{holos_checklists}}
+#' @return \code{data.frame}
+#' @examples \dontrun{
+#' spiders  <- holos_checklists(subject = "Spiders")
+#' checklist_details(spiders$url[1])
+#'}
+checklist_details <- function(list_name, ...) {
+details <- GET(paste0(list_name, "?format=json"))
+details_data <- content(details)
+return(ldply(details_data$observations))
+}
 
  #' @nord
 eco_capwords <- function(s, strict = FALSE, onlyfirst = FALSE) {
