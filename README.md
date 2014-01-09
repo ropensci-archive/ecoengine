@@ -1,5 +1,5 @@
 
-![](https://travis-ci.org/ropensci/recoengine.png)
+![](https://travis-ci.org/ropensci/ecoengine.png?branch=master)
 
 
 # R interface to the Berkeley Ecoinformatics Engine
@@ -17,7 +17,7 @@ Package is currently in early development and not fully funcitonal but watch the
 
 ## Installing
 
-Install the package with `devtools` (package is currently in early development.)
+Install the package with `devtools` (
 
 ```coffee
 library(devtools)
