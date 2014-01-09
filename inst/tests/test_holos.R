@@ -31,3 +31,11 @@ test_that("Photos function returns results as expected", {
 	some_other_cdfa <- holos_photos(collection_code = "CDFA", page = c(1:4,6)) 
 	expect_equal(nrow(some_other_cdfa$data), 42)
 })
+
+context("Testing checklists")
+
+test_that("Checklists work correctlt", {
+	expect_is(holos_checklists(), "data.frame")
+	spiders  <- holos_checklists(subject = "Spiders")
+	expect_is(checklist_details(spiders$url[1]), "data.frame")
+})
