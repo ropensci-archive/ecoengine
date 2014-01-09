@@ -19,7 +19,8 @@ Imports:
     httr,
     plyr,
     assertthat,
-    whisker
+    whisker,
+    solr
 Suggests:
     testthat,
     knitr,
