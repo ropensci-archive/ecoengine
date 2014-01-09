@@ -24,16 +24,3 @@ Suggests:
     testthat,
     knitr,
     ggplot2
-Collate:
-    'about_bee.R'
-    'browse_photos.R'
-    'checklists.R'
-    'holos_footprints.R'
-    'holos_package.R'
-    'holos_search.R'
-    'holos_utils.R'
-    'observations.R'
-    'photos.R'
-    'sensors.R'
-    'sensors_aggregation.R'
-    'sources.R'

@@ -2,16 +2,16 @@
 \alias{holos_sensors}
 \title{holos sensors}
 \usage{
-  holos_sensors(...)
+holos_sensors(...)
 }
 \arguments{
   \item{...}{same arguments as \code{\link{holos_sensors}}}
 }
 \value{
-  data.frame
+data.frame
 }
 \description{
-  Returns a full list of sensors with available data
+Returns a full list of sensors with available data
 }
 \examples{
 \dontrun{

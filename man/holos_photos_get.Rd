@@ -2,13 +2,11 @@
 \alias{holos_photos_get}
 \title{holos_photos}
 \usage{
-  holos_photos_get(page = NULL, state_province = NULL,
-    county = NULL, genus = NULL, scientific_name = NULL,
-    authors = NULL, remote_id = NULL,
-    collection_code = NULL, source = NULL, min_date = NULL,
-    max_date = NULL, related_type = NULL, related = NULL,
-    quiet = FALSE, other_catalog_numbers = NULL,
-    foptions = list())
+holos_photos_get(page = NULL, state_province = NULL, county = NULL,
+  genus = NULL, scientific_name = NULL, authors = NULL,
+  remote_id = NULL, collection_code = NULL, source = NULL,
+  min_date = NULL, max_date = NULL, related_type = NULL, related = NULL,
+  quiet = FALSE, other_catalog_numbers = NULL, foptions = list())
 }
 \arguments{
   \item{page}{page number}
@@ -50,7 +48,7 @@
   \item{foptions}{= list() Other options to pass to curl}
 }
 \description{
-  Search the photos methods in the Holos API.
+Search the photos methods in the Holos API.
 }
 \examples{
 \dontrun{
@@ -79,7 +77,7 @@ all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
 }
 }
 \seealso{
-  related: \code{\link{holos_photos_get}}
-  \code{\link{california_counties}}
+related: \code{\link{holos_photos_get}}
+\code{\link{california_counties}}
 }
 

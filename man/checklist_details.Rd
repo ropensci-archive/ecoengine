@@ -2,7 +2,7 @@
 \alias{checklist_details}
 \title{Checklist details}
 \usage{
-  checklist_details(list_name, ...)
+checklist_details(list_name, ...)
 }
 \arguments{
   \item{list_name}{URL of a checklist}
@@ -11,10 +11,10 @@
   implemented)}
 }
 \value{
-  \code{data.frame}
+\code{data.frame}
 }
 \description{
-  Will return details on any checklist
+Will return details on any checklist
 }
 \examples{
 \dontrun{
@@ -24,6 +24,6 @@ spider_details <- ldply(spiders$url, checklist_details)
 }
 }
 \seealso{
-  \code{\link{holos_checklists}}
+\code{\link{holos_checklists}}
 }
 
