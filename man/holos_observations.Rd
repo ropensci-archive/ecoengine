@@ -1,58 +1,30 @@
 \name{holos_observations}
 \alias{holos_observations}
-\title{Observations List}
+\title{Holos observations}
 \usage{
-holos_observations(country = "United States", state_province = NULL,
-  county = NULL, kingdom = NULL, phylum = NULL, order = NULL,
-  clss = NULL, family = NULL, genus = NULL, scientific_name = NULL,
-  remote_id = NULL, collection_code = NULL, source = NULL,
-  min_date = NULL, max_date = NULL, page = NULL, foptions = list())
+holos_observations(..., page_size = NULL, page = NULL)
 }
 \arguments{
-  \item{country}{description needed.}
+  \item{...}{all the arguments that get passed to
+  \code{\link{holos_observations_get}}}
 
-  \item{state_province}{description needed.}
+  \item{page}{Page number or range. Use "all" to retrieve
+  all pages. May time out for extremely large queries}
 
-  \item{county}{description needed.}
-
-  \item{kingdom}{description needed.}
-
-  \item{phylum}{description needed.}
-
-  \item{order}{description needed.}
-
-  \item{clss}{description needed.}
-
-  \item{family}{description needed.}
-
-  \item{genus}{description needed.}
-
-  \item{scientific_name}{description needed.}
-
-  \item{remote_id}{description needed.}
-
-  \item{collection_code}{description needed.}
-
-  \item{source}{description needed.}
-
-  \item{min_date}{description needed.}
-
-  \item{max_date}{description needed.}
-
-  \item{page}{Page numberdescription needed.}
-
-  \item{foptions}{description needed.}
-}
-\value{
-\code{data.frame}
+  \item{page_size}{The number of observations per page.
+  Default is 10. Do not set this too high or the server
+  will time out}
 }
 \description{
-API endpoint that represents a list of observations.
-Prameter options have not been fleshed out yet
+Retrieves observation records from BigCB
 }
 \examples{
 \dontrun{
-holos_observations(country = "United States")
+holos_observations(scientific_name_exact = "Pinus", page = 1)
+holos_observations(scientific_name_exact = "Pinus", page = 1:2)
 }
+}
+\seealso{
+\code{\link{holos_observations_get}}
 }
 
