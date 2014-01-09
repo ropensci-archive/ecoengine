@@ -2,7 +2,7 @@
 \alias{about_bee}
 \title{About the Berkeley Ecoinformatics Engine}
 \usage{
-about_bee(as.df = TRUE, type = NA)
+  about_bee(as.df = TRUE, type = NA)
 }
 \arguments{
   \item{as.df}{\code{FALSE} Returns a list unless this set
@@ -12,14 +12,14 @@ about_bee(as.df = TRUE, type = NA)
   \code{data}, \code{meta-data}, and \code{actions}}
 }
 \value{
-\code{list}
+  \code{list}
 }
 \description{
-Function returns the current status of fast-evolving API.
-Returns endpoints and category. Default return is a
-\code{list} but one can also request a nicely formatted
-\code{data.frame} by setting the \code{as.df} argument to
-\code{TRUE}.
+  Function returns the current status of fast-evolving API.
+  Returns endpoints and category. Default return is a
+  \code{list} but one can also request a nicely formatted
+  \code{data.frame} by setting the \code{as.df} argument to
+  \code{TRUE}.
 }
 \examples{
 \dontrun{

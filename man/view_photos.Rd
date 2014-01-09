@@ -2,7 +2,7 @@
 \alias{view_photos}
 \title{Browse photo queries in your default browser.}
 \usage{
-view_photos(input = NULL, output = NULL, browse = TRUE)
+  view_photos(input = NULL, output = NULL, browse = TRUE)
 }
 \arguments{
   \item{input}{Input, usually output from a call to
@@ -16,7 +16,7 @@ view_photos(input = NULL, output = NULL, browse = TRUE)
   written, but not opened.}
 }
 \description{
-Browse photo queries in your default browser.
+  Browse photo queries in your default browser.
 }
 \examples{
 \dontrun{

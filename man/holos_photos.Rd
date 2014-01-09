@@ -2,7 +2,7 @@
 \alias{holos_photos}
 \title{holos_photos}
 \usage{
-holos_photos(..., page = NULL)
+  holos_photos(..., page = NULL)
 }
 \arguments{
   \item{page}{Use \code{all} to request all pages for a
@@ -26,9 +26,9 @@ holos_photos(..., page = NULL)
   {Description } }}
 }
 \description{
-This wrapper around holos_photos(). Allows a user to
-retrive all data at once for a query rather than request a
-page at a time.
+  This wrapper around holos_photos(). Allows a user to
+  retrive all data at once for a query rather than request
+  a page at a time.
 }
 \examples{
 \dontrun{
@@ -38,6 +38,6 @@ some_other_cdfa <- holos_photos(collection_code = "CDFA", page = c(1:4,6))
 }
 }
 \seealso{
-\code{\link{holos_photos_get}}
+  \code{\link{holos_photos_get}}
 }
 
