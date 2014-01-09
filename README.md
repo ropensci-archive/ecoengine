@@ -17,7 +17,7 @@ Package is currently in early development and not fully funcitonal but watch the
 
 ## Installing
 
-Install the package with `devtools` (
+Install the package with `devtools`
 
 ```coffee
 library(devtools)
