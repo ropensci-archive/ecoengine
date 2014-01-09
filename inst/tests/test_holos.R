@@ -34,8 +34,15 @@ test_that("Photos function returns results as expected", {
 
 context("Testing checklists")
 
-test_that("Checklists work correctlt", {
+test_that("Checklists work correctly", {
 	expect_is(holos_checklists(), "data.frame")
 	spiders  <- holos_checklists(subject = "Spiders")
 	expect_is(checklist_details(spiders$url[1]), "data.frame")
+})
+
+
+context("Testing sensors")
+
+test_that("Sensor data are returned correctly", {
+	expect_is(holos_sensors(), "data.frame")
 })
