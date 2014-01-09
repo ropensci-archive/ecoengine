@@ -49,10 +49,10 @@ test_that("Sensor data are returned correctly", {
 
 context("Testing observations")
 
-expect_that("Observations are correctly retrieved", {
-x <- expect_is(holos_observations(scientific_name_exact = "Pinus")
-expect_error(holos_observations(scientific_name_exact = "Pinus", page = "lol"))
+test_that("Observations are correctly retrieved", {
+x <- holos_observations(scientific_name_exact = "Pinus")
 x1 <- holos_observations(scientific_name_exact = "Pinus", page = 1:5)
+expect_error(holos_observations(scientific_name_exact = "Pinus", page = "lol"))
 expect_is(x, "holos")
 expect_is(x1, "holos")
 expect_is(x$data, "data.frame")
