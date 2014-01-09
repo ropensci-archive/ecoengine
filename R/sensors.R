@@ -12,9 +12,10 @@
 #' @param foptions A list of additional arguments. Currently this function takes none.
 #' @export
 #' @examples \dontrun{
-#' holos_sensors()
+#' holos_sensors_get()
+#' holos_sensors_get(page = 40)
 #'}
-holos_sensors <- function(page = NULL, 
+holos_sensors_get <- function(page = NULL, 
 						remote_id = NULL, 
 						collection_code = NULL, 
 						source = NULL, 
@@ -30,11 +31,30 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
                             min_date = min_date, 
                             max_date = max_date
    							)))
-    sensor_data <- GET(sensor_url, foptions)
+    sensor_data <- GET(sensor_url, query = args, foptions)
     stop_for_status(sensor_data)
     sensor_results <- content(sensor_data)
     basic_sensor_data <- as.data.frame(do.call(rbind, sensor_results[[4]]))
     basic_sensor_data
 }
-holos_sensors()
-holos_sensors(page = 40)
+
+
+#' holos sensors
+#'
+#'Returns a full list of sensors with available data
+#' @param ... same arguments as \code{\link{holos_sensors}}
+#' @export
+#' @return data.frame
+#' @examples \dontrun{
+#' full_sensor_list <- holos_sensors()
+#'}
+holos_sensors <- function(...) {
+    x <- content(GET("http://ecoengine.berkeley.edu/api/sensors/?format=json"))
+    total_results <- x$count
+    all_available_pages <- ceiling(total_results/10) 
+    all_results <- list()       
+    for(i in seq(all_available_pages)) {
+        all_results[[i]] <- holos_sensors_get(page = i)
+    }
+    return(ldply(all_results))
+}
