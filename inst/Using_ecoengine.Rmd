@@ -1,0 +1,41 @@
+
+# The Berkeley Ecoengine
+
+Add a short description to what the ecoengine does.  Describe the value of what these kinds of data provide for museum scientists and other ecologists. The kinds of questions that can be answered with these data.
+
+## Rough guide to the package
+
+### Main functions in the package
+
+#### observations
+
+#### photos
+
+#### browsing these photos
+
+#### checklists
+
+#### sensors
+
+#### aggregated sensor data
+
+
+### Miscellaneous functions
+
+- sources
+
+```{r}
+library(ecoengine)
+holos_sources()
+```
+
+ - about_ee (About the ecoengine)
+To quickly document the various sources from the engine, including new ones as they are added to the repository, simply call `about_ee()`: 
+
+```{r}
+about_ee()
+```
+
+Please send any comments, questions, or ideas for new functionality or improvements to karthik.ram@berkeley.edu. The code lives on GitHub [under the rOpenSci account](https://github.com/ropensci/ecoengine). Pull requests and [bug reports](https://github.com/ropensci/ecoengine/issues?state=open) are most welcome.
+
+ Karthik Ram, January 9th, 2014
