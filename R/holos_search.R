@@ -1,23 +1,36 @@
 
 
-#' Holos search
+#' ee search
 #'
 #' Search the ecoengine
 #' @param query search term
-#' @param facet Field to facet on. Possibilities include: kingdom, genus, family, clss, phylum
 #' @param  foptions = list() Additional (optional) arguments to httr
 #' @export
-#' @importFrom solr solr_facet
+#' @keywords search
 #' @examples \dontrun{
-#' holos_search(query = "Pinus", facet = "Genus")
+#' ee_search(query = "genus:Lynx", facet.field = "Genus")
 #'}
-holos_search <- function(query = NULL, facet = NULL, foptions = list()) {
-search_url <- "http://ecoengine.berkeley.edu/api/search/"
-browser()
-# this fails
-result <- solr_facet(q = query, facet.field = facet, url = search_url)
+ee_search <- function(query = NULL, foptions = list()) {
+
+search_url <- "http://ecoengine.berkeley.edu/api/search/?format=json"
+args <- as.list(compact(c(q = query)))
+result <- GET(search_url, query = args, foptions)
+es_results <- content(result)
+fields <- es_results$fields
+# This removes list items with nothing nested. 
+ee_filter <- function(i) {
+	length(i) > 0
+}
+fields_compacted <- Filter(ee_filter, fields)
+
+faceted_search_results <- lapply(fields_compacted, function(y) { 
+	temp_fields <- as.data.frame(t(unlist(y))) 
+	names(temp_fields) <- c("field", "results", "search_url")
+	temp_fields
+})
+faceted_search_results
 }
 
-# Notes
-# search_url <- "http://ecoengine.berkeley.edu/api/search/?q=genus:Lynx"
-# This API call (just the URL) wil work in browser
+
+
+
