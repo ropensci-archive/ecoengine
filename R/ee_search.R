@@ -34,3 +34,48 @@ faceted_search_results
 
 
 
+#'Search observations
+#'
+#' A powerful way to search through the observations. 
+#' @param query = The search term
+#' @param  foptions = list()  Additional arguments for httr
+#' @export
+#' @keywords search
+#' @seealso \code{\link{ee_search})}
+#' @return data.frame
+#' @examples \dontrun{
+#' ee_search_obs(query  = "Lynx")
+#' ee_search_obs(query  = "genus:Lynx")
+#'}
+ee_search_obs <- function(query = NULL, foptions = list()) {
+# http://ecoengine.berkeley.edu/api/observations/?q=Lynx
+	obs_search_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"	
+	args <- compact(as.list(c(q = query)))
+	obs_search <- GET(obs_search_url, query = args, foptions)
+	obs_results <- content(obs_search)
+	message(sprintf("Search returned %s results \n", obs_results$count))
+	# Split the two, with and without coordinates since we can't merge them into a data.frame otherwise
+	without_geojson <- Filter(function(x) { is.null(x$geojson) }, obs_results$results)
+	with_geojson <- Filter(function(x) { !is.null(x$geojson) }, obs_results$results)
+
+	with_geojson_df <- ldply(with_geojson, function(x) {
+						 geo_data <- data.frame(t(unlist(x[10])))
+						 main_data <- unlist(x[-10])
+  						 main_data[is.null(main_data)] <- "none"
+  						 md <-(data.frame(as.list(main_data), stringsAsFactors = FALSE))	
+  						 cbind(md, geo_data)
+					})
+
+	without_geojson_df <- ldply(without_geojson, function(x) {
+						main_data <- unlist(x[-10])
+  						main_data[is.null(main_data)] <- "none"
+  						md <-(data.frame(as.list(main_data), stringsAsFactors = FALSE))	
+	 					md$geojson.type  <- NA
+	 					md$geojson.coordinates1  <- NA
+	 					md$geojson.coordinates2 <- NA
+	 					md
+	}) 
+
+	rbind(with_geojson_df, without_geojson_df)  
+}
+
