@@ -1,6 +1,6 @@
 S3method(plot,holos)
 S3method(print,holos)
-export(about_bee)
+export(about_ee)
 export(checklist_details)
 export(holos_checklists)
 export(holos_observations)
