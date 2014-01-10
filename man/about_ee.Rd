@@ -1,8 +1,8 @@
-\name{about_bee}
-\alias{about_bee}
+\name{about_ee}
+\alias{about_ee}
 \title{About the Berkeley Ecoinformatics Engine}
 \usage{
-about_bee(as.df = TRUE, type = NA)
+about_ee(as.df = TRUE, type = NA)
 }
 \arguments{
   \item{as.df}{\code{FALSE} Returns a list unless this set
@@ -23,14 +23,14 @@ Returns endpoints and category. Default return is a
 }
 \examples{
 \dontrun{
-about_bee()
+about_ee()
 # set \\code{as.df} = \\code{FALSE} to return a \\code{list} rather than a \\code{data.frame}
-about_bee(as.df = FALSE)
+about_ee(as.df = FALSE)
 # You can also filter by methods by data, meta-data, and actions.
 *
-about_bee(type = "data")
-about_bee(type = "meta-data")
-about_bee(type = "actions")
+about_ee(type = "data")
+about_ee(type = "meta-data")
+about_ee(type = "actions")
 }
 }
 
