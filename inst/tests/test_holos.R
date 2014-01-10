@@ -63,4 +63,7 @@ context("Testing search")
 test_that("Elastic search works correctly", {
 	x <- ee_search(query = "genus:Lynx")
 	expect_is(x, "list")
+	all_lynx_data <- ee_search_obs(query  = "Lynx")
+	expect_is(all_lynx_data$data, "data.frame")
+	expect_is(all_lynx_data, "ecoengine")
 })

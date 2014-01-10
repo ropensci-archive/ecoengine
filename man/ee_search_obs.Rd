@@ -1,28 +1,26 @@
 \name{ee_search_obs}
 \alias{ee_search_obs}
-\title{Search observations}
+\title{ee_search_obs}
 \usage{
-ee_search_obs(query = NULL, foptions = list())
+ee_search_obs(..., page = NULL, page_size = 25, foptions = list())
 }
 \arguments{
-  \item{query}{= The search term}
+  \item{...}{<what param does>}
 
-  \item{foptions}{= list() Additional arguments for httr}
-}
-\value{
-data.frame
+  \item{page}{page number}
+
+  \item{page_size}{Number of results per page. Default in
+  the package is 25. Default on the API is 10.}
+
+  \item{foptions}{= list() additional options for httr.}
 }
 \description{
-A powerful way to search through the observations.
+Elastic search on observations. This wrapper for
+\code{\link{ee_search_obs}}
 }
 \examples{
 \dontrun{
-ee_search_obs(query  = "Lynx")
-ee_search_obs(query  = "genus:Lynx")
+all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all")
 }
 }
-\seealso{
-\code{\link{ee_search})}
-}
-\keyword{search}
 
