@@ -8,16 +8,16 @@
 #' @importFrom httr GET content stop_for_status
 #' @importFrom plyr ldply 
 #' @examples \dontrun{
-#' about_bee()
+#' about_ee()
 #' # set \code{as.df} = \code{FALSE} to return a \code{list} rather than a \code{data.frame}
-#' about_bee(as.df = FALSE)
+#' about_ee(as.df = FALSE)
 #' # You can also filter by methods by data, meta-data, and actions.
 #' *
-#' about_bee(type = "data")
-#' about_bee(type = "meta-data")
-#' about_bee(type = "actions")
+#' about_ee(type = "data")
+#' about_ee(type = "meta-data")
+#' about_ee(type = "actions")
 #'}
-about_bee <- function(as.df = TRUE, type = NA) {
+about_ee <- function(as.df = TRUE, type = NA) {
 about_url <- "http://ecoengine.berkeley.edu/api/?format=json" 
 about_call <- GET(about_url)
 stop_for_status(about_call)
@@ -45,7 +45,7 @@ if(!as.df) {
 
 # Expected output
 
-#  about_bee(type = "data")
+#  about_ee(type = "data")
 #   type                                        endpoint
 # 3 data   http://ecoengine.berkeley.edu/api/checklists/
 # 4 data      http://ecoengine.berkeley.edu/api/sensors/
@@ -54,12 +54,12 @@ if(!as.df) {
 # 7 data       http://ecoengine.berkeley.edu/api/photos/
 
 
-#  about_bee(type = "meta-data")
+#  about_ee(type = "meta-data")
 #        type                                      endpoint
 # 1 meta-data    http://ecoengine.berkeley.edu/api/sources/
 # 2 meta-data http://ecoengine.berkeley.edu/api/footprints/
 
 
-#  about_bee(type = "actions")
+#  about_ee(type = "actions")
 #      type                                  endpoint
 # 8 actions http://ecoengine.berkeley.edu/api/search/

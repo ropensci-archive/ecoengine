@@ -38,7 +38,7 @@
 holos_observations_get <- function(country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, page = NULL, page_size = 10,  quiet  = FALSE, foptions = list()) {
  obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
  if(page_size > 1000) {
- 		message("This is a unusually large page size and may cause the server to time out")
+ 		message("This is a unusually large page size and will likely cause the server to time out")
  }
 
 
@@ -52,7 +52,7 @@ message(sprintf("%s observations found", obs_data[[1]]))
 # The data are already returned in a nice list that include
 # number of results, the everything in appropriate slots.
 obs_df <- as.data.frame(do.call(rbind, obs_data[[4]]))
-observation_results <- list(results = obs_data$count, call = obs_data[[2]], type = "obs_data", data = obs_df)
+observation_results <- list(results = obs_data$count, call = obs_data[[2]], type = "observations", data = obs_df)
 class(observation_results) <- "holos"
 return(observation_results)
 }
@@ -73,11 +73,9 @@ return(observation_results)
 #' holos_observations(scientific_name_exact = "Pinus", page = 1:2)
 #'}
 holos_observations <- function(..., page_size = NULL, page = NULL) {
+	
 	total_results <- NULL
-
-	if(is.null(page_size)) {
-		page_size <- 10
-	}
+	page_size <- ifelse(is.null(page_size), 10, page_size)
 
 	x <- holos_observations_get(..., quiet = TRUE)
 	total_results <- x$results
@@ -100,10 +98,8 @@ max_pages <- all_pages <- ceiling(total_results/page_size)
 }
 
 if(!is.null(page)) {
-
-
 	result_list <- list()
-	message(sprintf("Retrieving %s pages (total: %s records)", max_pages, total_results))
+	message(sprintf("Retrieving %s pages (total: %s records) \n", max_pages, total_results))
 
 
 		if(is.numeric(page)) {
@@ -116,7 +112,7 @@ if(!is.null(page)) {
 		pb <- txtProgressBar(min = 0, max = max_pages, style = 3)
 
 		if(total_results > 1000) {
-		message(sprintf("Retrieving %s (%s requests) results. This may take a while", total_results, ceiling(total_results/10)))
+		message(sprintf("Retrieving %s (%s requests) results. This may take a while \n", total_results, ceiling(total_results/10)))
 		}
 
 		if(identical(page, "all")) { 
@@ -128,21 +124,16 @@ if(!is.null(page)) {
 		} 
 	 	} else { 
 		for(i in seq_along(all_pages)) {
-		# There is a problem here when using non sequential pages.
 		j <- all_pages[[i]]
-		# message(sprintf("Current page index is %s", j))
-		# browser()	
+
 		result_list[[i]] <- holos_observations_get(..., page_size = page_size, page = j, quiet = TRUE)$data
 		setTxtProgressBar(pb, i)
 		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
 		if(i %% 25 == 0) Sys.sleep(2)
+			}
 		}
-
-		}
-
-		# result_data <- as.data.frame(do.call(rbind, result_list))
 		result_data <- do.call(rbind.fill, result_list)
-		all_obs_results <- list(results = nrow(result_data), call = x[[2]], type = "photos", data = result_data)
+		all_obs_results <- list(results = nrow(result_data), call = x[[2]], type = "observations", data = result_data)
 		class(all_obs_results) <- "holos"
 }
 	if(is.null(page)) { 
