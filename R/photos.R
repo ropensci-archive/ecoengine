@@ -156,7 +156,7 @@ max_pages <- all_pages <- ceiling(total_results/10)
 if(!is.null(page)) {
 
 	result_list <- list()
-	message(sprintf("Retrieving %s pages (total: %s)", max_pages, total_results))
+	message(sprintf("Retrieving %s pages (total: %s) \n", max_pages, total_results))
 
 
 		if(is.numeric(page)) {
@@ -169,7 +169,7 @@ if(!is.null(page)) {
 		pb <- txtProgressBar(min = 0, max = max_pages, style = 3)
 
 		if(total_results > 1000) {
-		message(sprintf("Retrieving %s (%s requests) results. This may take a while", total_results, ceiling(total_results/10)))
+		message(sprintf("Retrieving %s (%s requests) results. This may take a while \n", total_results, ceiling(total_results/10)))
 		}
 
 		if(identical(page, "all")) { 
