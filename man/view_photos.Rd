@@ -6,7 +6,7 @@ view_photos(input = NULL, output = NULL, browse = TRUE)
 }
 \arguments{
   \item{input}{Input, usually output from a call to
-  \code{\link[ecoengine]{holos_photos}}}
+  \code{\link[ecoengine]{ee_photos}}}
 
   \item{output}{Path and file name for output file. If
   NULL, a temp file is used.}
@@ -20,7 +20,7 @@ Browse photo queries in your default browser.
 }
 \examples{
 \dontrun{
-view_photos(holos_photos())
+view_photos(ee_photos())
 # Pictures of racoons
 view_photos(holos_photos_get(scientific_name = "Procyon lotor", quiet = TRUE))
 # or the California Condor

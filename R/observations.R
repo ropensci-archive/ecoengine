@@ -32,10 +32,10 @@
 #' @importFrom httr content GET 
 #' @importFrom plyr compact
 #' @examples \dontrun{
-#' holos_observations_get(country = "United States")
-#' holos_observations_get(scientific_name_exact = "Pinus")
+#' ee_observations_get(country = "United States")
+#' ee_observations_get(scientific_name_exact = "Pinus")
 #'}
-holos_observations_get <- function(country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, page = NULL, page_size = 10,  quiet  = FALSE, foptions = list()) {
+ee_observations_get <- function(country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, page = NULL, page_size = 10,  quiet  = FALSE, foptions = list()) {
  obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
  if(page_size > 1000) {
  		message("This is a unusually large page size and will likely cause the server to time out")
@@ -53,7 +53,7 @@ message(sprintf("%s observations found", obs_data[[1]]))
 # number of results, the everything in appropriate slots.
 obs_df <- as.data.frame(do.call(rbind, obs_data[[4]]))
 observation_results <- list(results = obs_data$count, call = obs_data[[2]], type = "observations", data = obs_df)
-class(observation_results) <- "holos"
+class(observation_results) <- "ecoengine"
 return(observation_results)
 }
 
@@ -62,22 +62,22 @@ return(observation_results)
 #' Holos observations
 #'
 #'Retrieves observation records from BigCB
-#' @param ... all the arguments that get passed to \code{\link{holos_observations_get}}
+#' @param ... all the arguments that get passed to \code{\link{ee_observations_get}}
 #' @param  page Page number or range. Use "all" to retrieve all pages. May time out for extremely large queries
 #' @param  page_size The number of observations per page. Default is 10. Do not set this too high or the server will time out
 #' @export
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#' @seealso \code{\link{holos_observations_get}}
+#' @seealso \code{\link{ee_observations_get}}
 #' @examples \dontrun{
-#' holos_observations(scientific_name_exact = "Pinus", page = 1)
-#' holos_observations(scientific_name_exact = "Pinus", page = 1:2)
+#' ee_observations(scientific_name_exact = "Pinus", page = 1)
+#' ee_observations(scientific_name_exact = "Pinus", page = 1:2)
 #'}
-holos_observations <- function(..., page_size = NULL, page = NULL) {
+ee_observations <- function(..., page_size = NULL, page = NULL) {
 	
 	total_results <- NULL
 	page_size <- ifelse(is.null(page_size), 10, page_size)
 
-	x <- holos_observations_get(..., quiet = TRUE)
+	x <- ee_observations_get(..., quiet = TRUE)
 	total_results <- x$results
 	all_available_pages <- ceiling(total_results/page_size)	
 
@@ -117,7 +117,7 @@ if(!is.null(page)) {
 
 		if(identical(page, "all")) { 
 		for(i in seq_along(1:all_pages)) {
-		result_list[[i]] <- holos_observations_get(..., page_size = page_size, page = i, quiet = TRUE)$data
+		result_list[[i]] <- ee_observations_get(..., page_size = page_size, page = i, quiet = TRUE)$data
 		setTxtProgressBar(pb, i)
 		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
 		if(i %% 25 == 0) Sys.sleep(2)		
@@ -126,7 +126,7 @@ if(!is.null(page)) {
 		for(i in seq_along(all_pages)) {
 		j <- all_pages[[i]]
 
-		result_list[[i]] <- holos_observations_get(..., page_size = page_size, page = j, quiet = TRUE)$data
+		result_list[[i]] <- ee_observations_get(..., page_size = page_size, page = j, quiet = TRUE)$data
 		setTxtProgressBar(pb, i)
 		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
 		if(i %% 25 == 0) Sys.sleep(2)
@@ -134,18 +134,18 @@ if(!is.null(page)) {
 		}
 		result_data <- do.call(rbind.fill, result_list)
 		all_obs_results <- list(results = nrow(result_data), call = x[[2]], type = "observations", data = result_data)
-		class(all_obs_results) <- "holos"
+		class(all_obs_results) <- "ecoengine"
 }
 	if(is.null(page)) { 
 		pb <- txtProgressBar(min = 0, max = 1, style = 3)
 		# In case user forgets to request all pages then it just become a regular query.
-		all_obs_results <- holos_observations_get(...)
+		all_obs_results <- ee_observations_get(...)
 	}
 
 close(pb)
 all_obs_results
-# assemble data into the holos class
-# return the holos class object
+# assemble data into the ee class
+# return the ee class object
 
 }
 

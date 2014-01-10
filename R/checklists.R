@@ -1,21 +1,21 @@
 
 
-#'<brief desc>
+#' Ecoengine checklists
 #'
-#'<full description>
+#' Retrieves exisitng checklists from the ecoengine database
 #' @param  subject Enter one of the following subjects: Mammals, Mosses, Beetles, Spiders, Amphibians, Ants, Fungi, Lichen, Plants.
-#' @param  foptions = list() <what param does>
+#' @param  foptions = list() Additional arguments to httr
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom plyr ldply
 #' @importFrom httr GET content stop_for_status
 #' @return data.frame
 #' @examples \dontrun{
-#' all_lists  <- holos_checklists()
-#' mammals_list  <- holos_checklists(subject = "Mammals")
-#' spiders  <- holos_checklists(subject = "Spiders")
+#' all_lists  <- ee_checklists()
+#' mammals_list  <- ee_checklists(subject = "Mammals")
+#' spiders  <- ee_checklists(subject = "Spiders")
 #'}
-holos_checklists <- function(subject = NULL, foptions = list()) {
+ee_checklists <- function(subject = NULL, foptions = list()) {
 
 	base_url <- "http://ecoengine.berkeley.edu/api/checklists/?format=json"
 	full_checklist <- GET(base_url, foptions)
@@ -45,10 +45,10 @@ holos_checklists <- function(subject = NULL, foptions = list()) {
 #' @param list_name URL of a checklist
 #' @param  ... Additional arguments (currently not implemented)
 #' @export
-#' @seealso \code{\link{holos_checklists}}
+#' @seealso \code{\link{ee_checklists}}
 #' @return \code{data.frame}
 #' @examples \dontrun{
-#' spiders  <- holos_checklists(subject = "Spiders")
+#' spiders  <- ee_checklists(subject = "Spiders")
 #' # Now retrieve all the details for each species on the list
 #' spider_details <- ldply(spiders$url, checklist_details)
 #'}

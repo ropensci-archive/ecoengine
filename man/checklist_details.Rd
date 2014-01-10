@@ -18,12 +18,12 @@ Will return details on any checklist
 }
 \examples{
 \dontrun{
-spiders  <- holos_checklists(subject = "Spiders")
+spiders  <- ee_checklists(subject = "Spiders")
 # Now retrieve all the details for each species on the list
 spider_details <- ldply(spiders$url, checklist_details)
 }
 }
 \seealso{
-\code{\link{holos_checklists}}
+\code{\link{ee_checklists}}
 }
 

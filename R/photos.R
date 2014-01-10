@@ -1,4 +1,4 @@
-#' holos_photos
+#' ee_photos
 #'
 #' Search the photos methods in the Holos API. 
 #' @param page page number
@@ -20,32 +20,32 @@
 #' @export
 #' @importFrom httr stop_for_status content GET
 #' @importFrom plyr compact rbind.fill
-#' @seealso related: \code{\link{holos_photos_get}} \code{\link{california_counties}}
+#' @seealso related: \code{\link{ee_photos_get}} \code{\link{california_counties}}
 #' @examples \dontrun{
-#' # Request all photos. This request will paginate. Don't use holos_photos_get #' on such a large request
-#' holos_photos_get()
+#' # Request all photos. This request will paginate. Don't use ee_photos_get #' on such a large request
+#' ee_photos_get()
 #' # Search by collection code. See notes above on options
-#' holos_photos_get(collection_code = "CalAcademy")
-#' holos_photos_get(collection_code = "VTM")
-#' holos_photos_get(collection_code = "CalFlora")
-#' holos_photos_get(collection_code = "CDFA")
+#' ee_photos_get(collection_code = "CalAcademy")
+#' ee_photos_get(collection_code = "VTM")
+#' ee_photos_get(collection_code = "CalFlora")
+#' ee_photos_get(collection_code = "CDFA")
 #' # Search by county.
-#' holos_photos_get(county = "Santa Clara County")
-#' holos_photos_get(county = "Merced County")
+#' ee_photos_get(county = "Santa Clara County")
+#' ee_photos_get(county = "Merced County")
 #' # The package also contains a full list of counties
 #' data(california_counties)
-#' alameda <- holos_photos_get(county = california_counties[1, 1])
+#' alameda <- ee_photos_get(county = california_counties[1, 1])
 #' alameda$data
 #' # You can also get all the data for Alameda county with one request
-#' alameda <- holos_photos_get_get(county = california_counties[1, 1], page = "all")
+#' alameda <- ee_photos_get_get(county = california_counties[1, 1], page = "all")
 #' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
-#' charles_results <- holos_photos_get(author = "Charles Webber")
-#' # You can also request all pages in a single call by using holos_photos_get()
+#' charles_results <- ee_photos_get(author = "Charles Webber")
+#' # You can also request all pages in a single call by using ee_photos_get()
 #' # In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
-#' all_cdfa <- holos_photos_get(collection_code = "CDFA", page = "all")
+#' all_cdfa <- ee_photos_get(collection_code = "CDFA", page = "all")
 #'}
-holos_photos_get <- function(page = NULL, 
+ee_photos_get <- function(page = NULL, 
 						 state_province = NULL, 
 						 county = NULL, 
 						 genus = NULL, 
@@ -93,17 +93,17 @@ holos_photos_get <- function(page = NULL,
 
     # photos_data <- as.data.frame(do.call(rbind, photos[[4]]))
     photos_results <- list(results = photos$count, call = photos[[2]], type = "photos", data = photos_data)
-    class(photos_results) <- "holos"
+    class(photos_results) <- "ecoengine"
     return(photos_results)
 }
 
 
 
-#'holos_photos
+#'ee_photos
 #'
-#'This wrapper around holos_photos(). Allows a user to retrive all data at once for a query rather than request a page at a time.
+#'This wrapper around ee_photos(). Allows a user to retrive all data at once for a query rather than request a page at a time.
 #' @param page Use \code{all} to request all pages for a particular query.
-#' @param ... All the arguments that go into \code{holos_photos}
+#' @param ... All the arguments that go into \code{ee_photos}
 #'
 #' \itemize{
 #' \item{"page"                   } {Page Number}                                                        
@@ -124,16 +124,16 @@ holos_photos_get <- function(page = NULL,
 #'
 #' @export
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#' @seealso  \code{\link{holos_photos_get}}
+#' @seealso  \code{\link{ee_photos_get}}
 #' @examples \dontrun{
-#' all_cdfa <- holos_photos(collection_code = "CDFA", page = "all")
-#' some_cdfa <- holos_photos(collection_code = "CDFA", page = 1:2)
-#' some_other_cdfa <- holos_photos(collection_code = "CDFA", page = c(1:4,6)) 
+#' all_cdfa <- ee_photos(collection_code = "CDFA", page = "all")
+#' some_cdfa <- ee_photos(collection_code = "CDFA", page = 1:2)
+#' some_other_cdfa <- ee_photos(collection_code = "CDFA", page = c(1:4,6)) 
 #'}
-holos_photos <- function(..., page = NULL) {
+ee_photos <- function(..., page = NULL) {
 
 # First figure out how many pages total for a call regardless of supplied page range
-	x <- holos_photos_get(..., quiet = TRUE)
+	x <- ee_photos_get(..., quiet = TRUE)
 	total_results <- NULL
 	total_results <- x$results
 	all_available_pages <- ceiling(total_results/10)	
@@ -145,7 +145,7 @@ if(!is.null(page) && page!="all") {
 }
 
 if(identical(page, "all")) {
-x <- holos_photos_get(..., quiet = TRUE)	
+x <- ee_photos_get(..., quiet = TRUE)	
 total_results <- NULL
 # Reqest page 1 to get the total record count
 total_results <- x$results
@@ -174,7 +174,7 @@ if(!is.null(page)) {
 
 		if(identical(page, "all")) { 
 		for(i in seq_along(1:all_pages)) {
-		result_list[[i]] <- holos_photos_get(..., page = i, quiet = TRUE)$data
+		result_list[[i]] <- ee_photos_get(..., page = i, quiet = TRUE)$data
 		setTxtProgressBar(pb, i)
 		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
 		if(i %% 25 == 0) Sys.sleep(2)		
@@ -185,7 +185,7 @@ if(!is.null(page)) {
 		j <- all_pages[[i]]
 		# message(sprintf("Current page index is %s", j))
 		# browser()	
-		result_list[[i]] <- holos_photos_get(..., page = j, quiet = TRUE)$data
+		result_list[[i]] <- ee_photos_get(..., page = j, quiet = TRUE)$data
 		setTxtProgressBar(pb, i)
 		# Nice trick (I think) to sleep 2 seconds after every 25 API calls.
 		if(i %% 25 == 0) Sys.sleep(2)
@@ -196,14 +196,14 @@ if(!is.null(page)) {
 		# result_data <- as.data.frame(do.call(rbind, result_list))
 		result_data <- do.call(rbind.fill, result_list)
 		all_photo_results <- list(results = nrow(result_data), call = x[[2]], type = "photos", data = result_data)
-		class(all_photo_results) <- "holos"
+		class(all_photo_results) <- "ecoengine"
 
 	}  
 
 	if(is.null(page)) { 
 		pb <- txtProgressBar(min = 0, max = 1, style = 3)
 		# In case user forgets to request all pages then it just become a regular query.
-		all_photo_results <- holos_photos_get(...)
+		all_photo_results <- ee_photos_get(...)
 	}
 
 	close(pb)
