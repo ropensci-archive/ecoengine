@@ -16,6 +16,7 @@ test_that("Metadata is returned as expected", {
 	 expect_is(ee_sources(), "data.frame")
 	 expect_true(nrow(ee_sources()) == 10)
 	 expect_true(ncol(ee_sources()) == 4)
+	 expect_is(ee_footprints(), "data.frame")
 })
 
 
