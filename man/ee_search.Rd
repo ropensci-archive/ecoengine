@@ -15,7 +15,7 @@ Search the ecoengine
 }
 \examples{
 \dontrun{
-ee_search(query = "genus:Lynx", facet.field = "Genus")
+ee_search(query = "genus:Lynx")
 }
 }
 \keyword{search}

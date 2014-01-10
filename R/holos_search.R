@@ -8,7 +8,7 @@
 #' @export
 #' @keywords search
 #' @examples \dontrun{
-#' ee_search(query = "genus:Lynx", facet.field = "Genus")
+#' ee_search(query = "genus:Lynx")
 #'}
 ee_search <- function(query = NULL, foptions = list()) {
 
@@ -30,7 +30,7 @@ faceted_search_results <- lapply(fields_compacted, function(y) {
 })
 faceted_search_results
 }
-
+# TODO: coerce return list into a df
 
 
 

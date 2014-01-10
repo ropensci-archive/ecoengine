@@ -57,3 +57,9 @@ expect_is(x, "holos")
 expect_is(x1, "holos")
 expect_is(x$data, "data.frame")
 })
+
+context("Testing search")
+test_that("Elastic search works correctly", {
+	x <- ee_search(query = "genus:Lynx")
+	expect_is(x, "list")
+})
