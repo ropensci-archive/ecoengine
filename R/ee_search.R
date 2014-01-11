@@ -30,7 +30,6 @@ faceted_search_results <- lapply(fields_compacted, function(y) {
 })
 faceted_search_results
 }
-# TODO: coerce return list into a df
 
 
 
@@ -81,14 +80,12 @@ ee_search_obs_get <- function(query = NULL, page = NULL, page_size = 25, quiet =
 	class(all_obs_results) <- "ecoengine"
     return(all_obs_results)
 }
-# TODO: Make this es_search_obs_get
-# Make this a holos class
-# Write an es_search_obs wrapper
+
 
 #' ee_search_obs
 #'
 #' Elastic search on observations. This wrapper for \code{\link{ee_search_obs}}
-#' @param ... <what param does>
+#' @param ... all the arguments that get passed to \code{\link{ee_search_obs}}
 #' @param  page page number
 #' @param  page_size Number of results per page. Default in the package is 25. Default on the API is 10.
 #' @param  foptions = list() additional options for httr.
@@ -100,7 +97,7 @@ ee_search_obs_get <- function(query = NULL, page = NULL, page_size = 25, quiet =
 ee_search_obs <- function(..., page = NULL, page_size = 25, foptions = list()) {
 	 	obs_call <- ee_search_obs_get(..., quiet = TRUE)
 	 	total_obs <- obs_call$results
-	 	total_pages <- ceiling(total_obs/25)
+	 	total_pages <- ceiling(total_obs/page_size)
 
 
 	if(identical(class(page), "numeric") || identical(class(page), "integer")) {
@@ -122,7 +119,8 @@ ee_search_obs <- function(..., page = NULL, page_size = 25, foptions = list()) {
 		all_results <- list()
 		for(i in seq_along(1:total_pages)) {
 			all_results[[i]] <- ee_search_obs_get(..., page = i, page_size = page_size, quiet = TRUE)$data
-			if(i %% 25 == 0) Sys.sleep(2)
+			# API currently allows 25 calls per second
+			if(i %% 25 == 0) Sys.sleep(1)
 		}
 	result_data <- do.call(rbind.fill, all_results)
 	all_obs_results <- list(results = nrow(result_data), call = obs_call$call, type = "observations", data = result_data)
@@ -133,7 +131,8 @@ ee_search_obs <- function(..., page = NULL, page_size = 25, foptions = list()) {
 	all_results <- list()	
 	for(i in seq_along(total_pages)) {
 			all_results[[i]] <- ee_search_obs_get(..., page = i, page_size = page_size, quiet = TRUE)$data
-			if(i %% 25 == 0) Sys.sleep(2)
+			# API currently allows 25 calls 
+			if(i %% 25 == 0) Sys.sleep(1)
 		}
 	result_data <- do.call(rbind, all_results)
 	all_obs_results <- list(results = nrow(result_data), call = obs_call$call, type = "observations", data = result_data)
