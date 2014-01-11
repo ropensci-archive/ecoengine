@@ -31,6 +31,10 @@ faceted_search_results <- lapply(fields_compacted, function(y) {
 faceted_search_results
 }
 
+# ------------------------------------------------
+# Some notes, I realized this is not all that different from the ee_observations function. 
+# This does a full on query across all fields 
+# ------------------------------------------------
 
 
 #'Search observations

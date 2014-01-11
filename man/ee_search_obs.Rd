@@ -5,7 +5,8 @@
 ee_search_obs(..., page = NULL, page_size = 25, foptions = list())
 }
 \arguments{
-  \item{...}{<what param does>}
+  \item{...}{all the arguments that get passed to
+  \code{\link{ee_search_obs}}}
 
   \item{page}{page number}
 

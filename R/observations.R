@@ -59,7 +59,7 @@ return(observation_results)
 
 
 
-#' Holos observations
+#' Ecoengine observations
 #'
 #'Retrieves observation records from BigCB
 #' @param ... all the arguments that get passed to \code{\link{ee_observations_get}}
@@ -72,10 +72,10 @@ return(observation_results)
 #' ee_observations(scientific_name_exact = "Pinus", page = 1)
 #' ee_observations(scientific_name_exact = "Pinus", page = 1:2)
 #'}
-ee_observations <- function(..., page_size = NULL, page = NULL) {
+ee_observations <- function(..., page_size = 25, page = NULL) {
 	
 	total_results <- NULL
-	page_size <- ifelse(is.null(page_size), 10, page_size)
+	page_size <- ifelse(is.null(page_size), 25, page_size)
 
 	x <- ee_observations_get(..., quiet = TRUE)
 	total_results <- x$results

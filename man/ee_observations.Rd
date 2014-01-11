@@ -1,8 +1,8 @@
 \name{ee_observations}
 \alias{ee_observations}
-\title{Holos observations}
+\title{Ecoengine observations}
 \usage{
-ee_observations(..., page_size = NULL, page = NULL)
+ee_observations(..., page_size = 25, page = NULL)
 }
 \arguments{
   \item{...}{all the arguments that get passed to
