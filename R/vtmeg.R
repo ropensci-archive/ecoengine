@@ -8,7 +8,7 @@
 #' @param  quiet = FALSE Set to \code{TRUE} to suppress messages
 #' @param  foptions Additional arguments for httr
 #' @export
-#' @seealso \code{\link{vtmeg()}}
+#' @seealso vtmveg
 #' @return data.frame
 #' @examples \dontrun{
 #' veg_data <- vtmveg_get()
@@ -34,7 +34,7 @@ vtmveg_get <- function(page = NULL, page_size = 25, quiet = FALSE, foptions = li
 
 
 
-vtmeg <- function(..., page = NULL) {
+vtmveg <- function(..., page = NULL) {
 	page <- ifelse(is.null(page), 1, page)
 
 }
