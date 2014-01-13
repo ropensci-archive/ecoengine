@@ -28,9 +28,9 @@ test_that("Photos function returns results as expected", {
 	all_cdfa <- ee_photos(collection_code = "CDFA", page = "all")
 	expect_equal(nrow(all_cdfa$data), 52)
 	some_cdfa <- ee_photos(collection_code = "CDFA", page = 1:2)
-	expect_equal(nrow(some_cdfa$data), 20)
-	some_other_cdfa <- ee_photos(collection_code = "CDFA", page = c(1:4,6)) 
-	expect_equal(nrow(some_other_cdfa$data), 42)
+	expect_equal(nrow(some_cdfa$data), 50)
+	some_other_cdfa <- ee_photos(collection_code = "CDFA", page = c(1:3)) 
+	expect_equal(nrow(some_other_cdfa$data), 52)
 })
 
 context("Testing checklists")
@@ -67,3 +67,16 @@ test_that("Elastic search works correctly", {
 	expect_is(all_lynx_data$data, "data.frame")
 	expect_is(all_lynx_data, "ecoengine")
 })
+
+
+context("Testing sensor data")
+
+test_that("Sensor data is returned correctly", {
+full_sensor_list <- ee_sensors()
+expect_is(full_sensor_list, "data.frame")
+x <- full_sensor_list[1, ]$data_url
+sensor_data <- ee_sensor_data(data_url = x, page = 1:2)
+expect_is(sensor_data, "ecoengine")
+expect_is(sensor_data$data, "data.frame")
+})
+
