@@ -105,7 +105,6 @@ ee_photos_get <- function(page = NULL,
 #'ee_photos
 #'
 #'This wrapper around ee_photos(). Allows a user to retrive all data at once for a query rather than request a page at a time.
-#' @param page Use \code{all} to request all pages for a particular query.
 #' @param ... All the arguments that go into \code{ee_photos}
 #'
 #' \itemize{
