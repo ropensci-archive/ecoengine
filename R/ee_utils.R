@@ -53,18 +53,16 @@ ee_get <- function(..., input_fn = NULL, page = NULL, page_size = 25,  dtype =  
 	# 	stop("Specify a data type for ecoengine class")
 	# }
 	assert_that(is.character(dtype))
-	browser()	
 	total_results <- NULL
 
 	x <- input_fn(..., quiet = TRUE)
 	total_results <- x$results
-	all_available_pages <- ceiling(total_results/d)	
-
-	if(identical(class(page), "character") && !identical(page , "all")) {
+	all_available_pages <- ceiling(total_results/page_size)	
+	if(identical(class(page), "character") & !identical(page , "all")) {
 	stop("Page range not understood. Please use all or specify a numeric range")
 }
 
-	if(!is.null(page) && page!="all") { 
+	if(!is.null(page) & !identical(page, "all")) {
 	# still doesn't catch non=numeric, non-integer. TODO
 	max_pages <- length(page)
 	all_pages <- page
