@@ -11,14 +11,14 @@
 #' @seealso \code{\link{vtmeg()}}
 #' @return data.frame
 #' @examples \dontrun{
-#' veg_data <- vtmeg_get()
-#' veg_data <- vtmeg_get(quiet = TRUE)
+#' veg_data <- vtmveg_get()
+#' veg_data <- vtmveg_get(quiet = TRUE)
 #'}
-vtmeg_get <- function(page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
-	vtmeg_url <- "http://ecoengine.berkeley.edu/api/vtmveg/?format=json"
+vtmveg_get <- function(page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
+	vtmveg_url <- "http://ecoengine.berkeley.edu/api/vtmveg/?format=json"
 	if(is.null(page)) page <- 1
     args <- compact(as.list(c(page = page, page_size = page_size)))
-	vtcall <- GET(vtmeg_url, query = args, foptions)
+	vtcall <- GET(vtmveg_url, query = args, foptions)
 	stop_for_status(vtcall)
 	vtdata <- content(vtcall)
 	results <- vtdata

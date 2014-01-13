@@ -2,11 +2,14 @@
 \alias{ee_sensors_get}
 \title{ee_sensors}
 \usage{
-ee_sensors_get(page = NULL, remote_id = NULL, collection_code = NULL,
-  source = NULL, min_date = NULL, max_date = NULL, foptions = list())
+ee_sensors_get(page = NULL, page_size = 25, remote_id = NULL,
+  collection_code = NULL, source = NULL, min_date = NULL,
+  max_date = NULL, foptions = list())
 }
 \arguments{
   \item{page}{page number}
+
+  \item{page_size}{Number of observations per page}
 
   \item{remote_id}{Need to describe these parameters}
 
