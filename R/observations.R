@@ -23,6 +23,8 @@
 #' @param  source  description needed.
 #' @param  min_date description needed.
 #' @param  max_date description needed.
+#' @param  georeferenced Default is \code{FALSE}. Set to TRUE to return only georeferenced records.
+#' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}
 #' @param  page  Page page number. 
 #' @param  page_size  Number of results per page. Default is 10
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to supress messages.
@@ -35,7 +37,7 @@
 #' ee_observations_get(country = "United States")
 #' ee_observations_get(scientific_name_exact = "Pinus")
 #'}
-ee_observations_get <- function(country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, page = NULL, page_size = 10,  quiet  = FALSE, foptions = list()) {
+ee_observations_get <- function(country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, page = NULL, page_size = 10,  quiet  = FALSE, foptions = list()) {
  obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
  if(page_size > 1000) {
  		message("This is a unusually large page size and will likely cause the server to time out")
