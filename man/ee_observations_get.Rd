@@ -8,8 +8,9 @@ ee_observations_get(country = "United States", state_province = NULL,
   kingdom_exact = NULL, phylum_exact = NULL, order_exact = NULL,
   clss_exact = NULL, family_exact = NULL, genus_exact = NULL,
   scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL,
-  source = NULL, min_date = NULL, max_date = NULL, page = NULL,
-  page_size = 10, quiet = FALSE, foptions = list())
+  source = NULL, min_date = NULL, max_date = NULL,
+  georeferenced = FALSE, bbox = NULL, page = NULL, page_size = 10,
+  quiet = FALSE, foptions = list())
 }
 \arguments{
   \item{country}{description needed.}
@@ -55,6 +56,12 @@ ee_observations_get(country = "United States", state_province = NULL,
   \item{min_date}{description needed.}
 
   \item{max_date}{description needed.}
+
+  \item{georeferenced}{Default is \code{FALSE}. Set to TRUE
+  to return only georeferenced records.}
+
+  \item{bbox}{Set a bounding box for your search. Use
+  format \code{bbox=-124,32,-114,42}}
 
   \item{page}{Page page number.}
 

@@ -1,6 +1,6 @@
 \name{ee_photos_get}
 \alias{ee_photos_get}
-\title{ee_photos}
+\title{ee_photos_get}
 \usage{
 ee_photos_get(page = NULL, state_province = NULL, county = NULL,
   genus = NULL, scientific_name = NULL, authors = NULL,

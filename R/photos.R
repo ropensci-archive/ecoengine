@@ -1,7 +1,8 @@
-#' ee_photos
+#' ee_photos_get
 #'
 #' Search the photos methods in the Holos API. 
 #' @param page page number
+#' @param page_size  Number of results per page. Default is 25.
 #' @param  state_province Need to describe these parameters
 #' @param  county California counties. Package include a full list of counties. To load dataset \code{data(california_counties)}
 #' @param  genus Need to describe these parameters
@@ -58,6 +59,7 @@ ee_photos_get <- function(page = NULL,
 						 max_date = NULL, 
 						 related_type = NULL, 
 						 related  = NULL,
+						 page_size = 25,
 						 quiet = FALSE,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
@@ -67,7 +69,8 @@ ee_photos_get <- function(page = NULL,
 	# if yes, request page.
 	# If instead it is "all" or a range. e.g. 1-10
 	# Then run a loop/apply that request all those pages and squashes results
-	args <- as.list(compact(c(page = page, 						 
+	args <- as.list(compact(c(page = page, 	
+							page_size = page_size,					 
 							state_province = state_province, 
 						 	county = county, 
 						 	genus = genus, 
