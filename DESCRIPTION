@@ -2,7 +2,7 @@ Package: ecoengine
 Type: Package
 Title: Programmatic interface to the Berkeley Ecoengine
 Version: 0.6
-Date: 2013-12-04
+Date: 2014-01-15
 Author: Karthik Ram
 Authors@R: c(person("Karthik", "Ram", role = c("aut", "cre"), email =
     "karthik.ram@gmail.com"))

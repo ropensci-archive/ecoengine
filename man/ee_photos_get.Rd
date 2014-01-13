@@ -6,10 +6,14 @@ ee_photos_get(page = NULL, state_province = NULL, county = NULL,
   genus = NULL, scientific_name = NULL, authors = NULL,
   remote_id = NULL, collection_code = NULL, source = NULL,
   min_date = NULL, max_date = NULL, related_type = NULL, related = NULL,
-  quiet = FALSE, other_catalog_numbers = NULL, foptions = list())
+  page_size = 25, quiet = FALSE, other_catalog_numbers = NULL,
+  foptions = list())
 }
 \arguments{
   \item{page}{page number}
+
+  \item{page_size}{Number of results per page. Default is
+  25.}
 
   \item{state_province}{Need to describe these parameters}
 

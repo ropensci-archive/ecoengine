@@ -2,12 +2,9 @@
 \alias{ee_photos}
 \title{ee_photos}
 \usage{
-ee_photos(..., page = NULL)
+ee_photos(...)
 }
 \arguments{
-  \item{page}{Use \code{all} to request all pages for a
-  particular query.}
-
   \item{...}{All the arguments that go into
   \code{ee_photos}
 
@@ -34,7 +31,7 @@ a time.
 \dontrun{
 all_cdfa <- ee_photos(collection_code = "CDFA", page = "all")
 some_cdfa <- ee_photos(collection_code = "CDFA", page = 1:2)
-some_other_cdfa <- ee_photos(collection_code = "CDFA", page = c(1:4,6))
+some_other_cdfa <- ee_photos(collection_code = "CDFA", page = c(1,3))
 }
 }
 \seealso{

@@ -30,6 +30,6 @@ veg_data <- vtmveg_get(quiet = TRUE)
 }
 }
 \seealso{
-\code{\link{vtmeg()}}
+vtmveg
 }
 

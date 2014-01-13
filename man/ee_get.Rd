@@ -2,7 +2,7 @@
 \alias{ee_get}
 \title{Ecoengine paginator}
 \usage{
-ee_get(..., input_fn = NULL, page = NULL, dtype = NULL, d = 25)
+ee_get(..., input_fn = NULL, page = NULL, page_size = 25, dtype = NULL)
 }
 \arguments{
   \item{...}{Arguments that get passed to the input
