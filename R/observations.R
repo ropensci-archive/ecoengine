@@ -32,8 +32,8 @@
 #' @importFrom httr content GET 
 #' @importFrom plyr compact
 #' @examples \dontrun{
-#' ee_observations_get(country = "United States")
-#' ee_observations_get(scientific_name_exact = "Pinus")
+#' us <- ee_observations_get(country = "United States")
+#' pinus <- ee_observations_get(scientific_name_exact = "Pinus")
 #'}
 ee_observations_get <- function(country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, page = NULL, page_size = 10,  quiet  = FALSE, foptions = list()) {
  obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
@@ -51,8 +51,20 @@ message(sprintf("%s observations found", obs_data[[1]]))
 }
 # The data are already returned in a nice list that include
 # number of results, the everything in appropriate slots.
-obs_df <- as.data.frame(do.call(rbind, obs_data[[4]]))
-observation_results <- list(results = obs_data$count, call = obs_data[[2]], type = "observations", data = obs_df)
+obs_results <- obs_data[[4]]
+obs_df_cleaned <- ldply(obs_results, function(x) {
+							 if(is.null(x[[10]])) { 
+							 geo_data <- data.frame(geojson.type ="NA", geojson.coordinates1 ="NA", geojson.coordinates2 ="NA")	
+							 } else {
+                             geo_data <- data.frame(t(unlist(x[10])))
+                             }
+                             main_data <- (x[-10])
+                             main_data$end_date <- ifelse(is.null(main_data$end_date), "NA", main_data$end_date)
+                             md <-(data.frame((main_data)))
+                             cbind(md, geo_data)
+                            })
+observation_results <- list(results = obs_data$count, call = obs_data[[2]], type = "observations", data = obs_df_cleaned)
+
 class(observation_results) <- "ecoengine"
 return(observation_results)
 }
@@ -69,7 +81,7 @@ return(observation_results)
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso \code{\link{ee_observations_get}}
 #' @examples \dontrun{
-#' ee_observations(scientific_name_exact = "Pinus", page = 1)
+#' pinus_first_page <- ee_observations(scientific_name_exact = "Pinus", page = 1)
 #' ee_observations(scientific_name_exact = "Pinus", page = 1:2)
 #'}
 ee_observations <- function(..., page_size = 25, page = NULL) {
@@ -144,8 +156,6 @@ if(!is.null(page)) {
 
 close(pb)
 all_obs_results
-# assemble data into the ee class
-# return the ee class object
 
 }
 
