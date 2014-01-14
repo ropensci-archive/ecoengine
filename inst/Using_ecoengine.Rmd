@@ -1,41 +1,173 @@
+# Guide to using the ecoengine R package
 
-# The Berkeley Ecoengine
+The Berkeley Ecoengine ([http://ecoengine.berkeley.edu](http://ecoengine.berkeley.edu)) provides an open API to a wealth of museum data contained in the Berkeley natural history museums. This R package provides a programmatic interface to this rich repository of data allowing for the data to be readily analyzed and visualized in a variety of contexts. This vignette provides a brief overview of the package's capabilities. 
 
-Add a short description to what the ecoengine does.  Describe the value of what these kinds of data provide for museum scientists and other ecologists. The kinds of questions that can be answered with these data.
+The API documentation is available at [http://ecoengine.berkeley.edu/developers/](http://ecoengine.berkeley.edu/developers/). As with most APIs all requests return a call that displays all the data endpoints accessible to users. Ecoengine has something similar.
 
-## Rough guide to the package
+```{r, about, echo = FALSE}
+library(ecoengine)
+suppressPackageStartupMessages(library(pander))
+```
 
-### Main functions in the package
+```{r, about_ee_dont, eval = FALSE, tidy = TRUE}
+library(ecoengine)
+ee_about()
+```
 
-#### observations
+```{r, about_ee, results = "asis", echo = FALSE}
+pandoc.table(ee_about(), justify = "left")
+```
 
-#### photos
+## The ecoengine class
 
-#### browsing these photos
+Most functions in the ecoengine package will return a `S3` object of class `ecoengine`. The class contains 4 items.  
 
-#### checklists
+- A total result count (not necessarily the results in this particular object)  
+- The call (So a reader can replicate the results)  
+- The type (`photos`, `observation`, `checklist`, or `sensor`)  
+- The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
 
-#### sensors
+## Notes on downloading large data requests
 
-#### aggregated sensor data
+For the sake of speed, results are paginated at `25` results per page. It's possible to request all pages for any query by specifying `page = "all"` in any search. However, this should be used if the request is reasonably sized (`1,000` or fewer records). With larger requests, there is a chance that the query might become interrupted and you could lose all the partially downloaded data. Instead, use the returned observations to split the request.
+
+```{r, pagination, eval = FALSE}
+request <- ee_photos()
+total_available_observations <- request$results
+# This gives you the total number of results available
+# Now divide by 25 to get total pages you'll need to request
+total_pages <- ceiling(total_available_observations/25)
+
+# Now it's simple to parallelize this request
+# You can parallelize across number of cores by passing a vector of pages from 1 through total_pages.
+```
+
+
+#### Specimen Observations
+
+---
+
+#### Photos  
+
+```{r, photo_count}
+x <- ee_photos_get(quiet = TRUE)
+
+
+```
+The database currently holds `r x$count` photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos_get`.
+
+
+#### Searching photos by author
+
+```{r, photos_by_author, tidy = TRUE, width.cutoff = 60, background = '#F7F7F7'}
+charles_results <- ee_photos_get(author = "Charles Webber")
+charles_results
+# Let's examine a couple of rows of the data
+charles_results$data[1:2, ]
+```
+---  
+
+#### Browsing these photos
+
+```{r, browsing_photos}
+view_photos(charles_results)
+```
+This will launch your default browser and render a page with thumbnails of all images returned by the search query.
+
+![](browse_photos.png)
+
+---  
+
+
+#### Species checklists   
+
+
+There is a wealth of checklists from all the source locations. To get all available checklists:
+  
+```{r, checklists}
+all_lists  <- ee_checklists()
+head(all_lists[, c("footprint", "subject")])
+```  
+Currently there are `r nrow(all_lists)` lists available. We can drill deeper into any list to get all the available data. We can also narrow our checklist search to groups of interest. For example, to get the list of Spiders:
+
+```{r, checklist_spiders}
+spiders  <- ee_checklists(subject = "Spiders")
+```  
+
+Now we can drill deep into each list. For this tutorial I'll just retrieve data from the the two lists returned above.
+
+```{r, checklist_details}
+library(plyr)
+spider_details <- ldply(spiders$url, checklist_details)
+names(spider_details)
+unique(spider_details$scientific_name)
+```
+
+We've queried data in `r length(unique(spider_details$scientific_name))` spider species.
+
+
+
+---  
+
+#### Sensors
+
+Some notes on sensors. Where they are located and what kind of data they collect.  
+
+
+```{r, sensors}
+full_sensor_list <- ee_sensors()
+full_sensor_list[, c("station_name", "method_name")]
+```
+
+---
+
+#### Searching the engine
+
+How to search the engine.
+
+---
+
+#### Aggregated sensor data
+
+Ways to obtain aggregated sensor data.  
+
+
+---
 
 
 ### Miscellaneous functions
 
-- sources
+__Footprints__
 
-```{r}
-library(ecoengine)
-holos_sources()
+```{r, footprints_notrun, results = "asis", eval = FALSE, echo = TRUE}
+footprints <- ee_footprints()
+footprints[, -3] # To keep the table from spilling over
 ```
 
- - about_ee (About the ecoengine)
-To quickly document the various sources from the engine, including new ones as they are added to the repository, simply call `about_ee()`: 
-
-```{r}
-about_ee()
+```{r, footprints, results = "asis", echo = FALSE}
+footprints <- ee_footprints()
+pandoc.table(footprints[, -3], justify = "left") # To keep the table from spilling over
 ```
 
-Please send any comments, questions, or ideas for new functionality or improvements to karthik.ram@berkeley.edu. The code lives on GitHub [under the rOpenSci account](https://github.com/ropensci/ecoengine). Pull requests and [bug reports](https://github.com/ropensci/ecoengine/issues?state=open) are most welcome.
 
- Karthik Ram, January 9th, 2014
+__Data sources__
+
+To obtain a list of data sources for the specimens contained in the museum.
+
+```{r, results = "asis", eval = FALSE}
+source_list <- ee_sources()
+unique(source_list$name)
+```
+
+```{r, results = "asis", echo = FALSE}
+source_list <- ee_sources()
+pandoc.table(data.frame(unique(source_list$name)), justify = "left")
+```
+
+
+
+Please send any comments, questions, or ideas for new functionality or improvements to <[karthik.ram@berkeley.edu](karthik.ram@berkeley.edu)>. The code lives on GitHub [under the rOpenSci account](https://github.com/ropensci/ecoengine). Pull requests and [bug reports](https://github.com/ropensci/ecoengine/issues?state=open) are most welcome.
+
+ Karthik Ram  
+ January, 2014  
+ _Berkeley, CA_
