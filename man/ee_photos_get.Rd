@@ -10,10 +10,13 @@ ee_photos_get(page = NULL, state_province = NULL, county = NULL,
   foptions = list())
 }
 \arguments{
-  \item{page}{page number}
+  \item{page}{Page number}
 
-  \item{page_size}{Number of results per page. Default is
-  25.}
+  \item{page_size}{The number of observations per page
+  returned by the query. The package default is \code{25}
+  observations. The API default, however, is \code{10}.
+  Setting this number higher will require fewer calls (i.e.
+  pages) but a large size may also fail or timeout.}
 
   \item{state_province}{Need to describe these parameters}
 
@@ -77,7 +80,7 @@ alameda <- ee_photos_get_get(county = california_counties[1, 1], page = "all")
 charles_results <- ee_photos_get(author = "Charles Webber")
 # You can also request all pages in a single call by using ee_photos_get()
 # In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
-all_cdfa <- ee_photos_get(collection_code = "CDFA", page = "all")
+racoons <- ee_photos_get(scientific_name = "Procyon lotor", quiet = TRUE)
 }
 }
 \seealso{

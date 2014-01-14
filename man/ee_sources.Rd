@@ -5,8 +5,8 @@
 ee_sources(foptions = list())
 }
 \arguments{
-  \item{foptions}{A list of additional arguments. Currently
-  this function takes none.}
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. Used for diagnostic reasons.}
 }
 \value{
 \code{data.frame}
@@ -17,7 +17,7 @@ ecoengine
 }
 \examples{
 \dontrun{
-ee_sources()
+source_list <- ee_sources()
 }
 }
 

@@ -5,7 +5,8 @@
 ee_footprints(foptions = list())
 }
 \arguments{
-  \item{foptions}{= list() additional arguments for httr}
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. Used for diagnostic reasons.}
 }
 \value{
 data.frame

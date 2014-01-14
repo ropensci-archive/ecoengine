@@ -53,9 +53,9 @@ ee_observations_get(country = "United States", state_province = NULL,
 
   \item{source}{description needed.}
 
-  \item{min_date}{description needed.}
+  \item{min_date}{Need to describe these parameters}
 
-  \item{max_date}{description needed.}
+  \item{max_date}{Need to describe these parameters}
 
   \item{georeferenced}{Default is \code{FALSE}. Set to TRUE
   to return only georeferenced records.}
@@ -63,15 +63,19 @@ ee_observations_get(country = "United States", state_province = NULL,
   \item{bbox}{Set a bounding box for your search. Use
   format \code{bbox=-124,32,-114,42}}
 
-  \item{page}{Page page number.}
+  \item{page}{Page number}
 
-  \item{page_size}{Number of results per page. Default is
-  10}
+  \item{page_size}{The number of observations per page
+  returned by the query. The package default is \code{25}
+  observations. The API default, however, is \code{10}.
+  Setting this number higher will require fewer calls (i.e.
+  pages) but a large size may also fail or timeout.}
 
   \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
   to supress messages.}
 
-  \item{foptions}{description needed.}
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. Used for diagnostic reasons.}
 }
 \value{
 \code{data.frame}

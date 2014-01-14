@@ -9,7 +9,8 @@ ee_checklists(subject = NULL, foptions = list())
   Mammals, Mosses, Beetles, Spiders, Amphibians, Ants,
   Fungi, Lichen, Plants.}
 
-  \item{foptions}{= list() Additional arguments to httr}
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. Used for diagnostic reasons.}
 }
 \value{
 data.frame

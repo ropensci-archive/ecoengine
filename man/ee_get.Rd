@@ -8,16 +8,19 @@ ee_get(..., input_fn = NULL, page = NULL, page_size = 25, dtype = NULL)
   \item{...}{Arguments that get passed to the input
   function.}
 
+  \item{page}{Page number}
+
+  \item{page_size}{The number of observations per page
+  returned by the query. The package default is \code{25}
+  observations. The API default, however, is \code{10}.
+  Setting this number higher will require fewer calls (i.e.
+  pages) but a large size may also fail or timeout.}
+
   \item{input_fn}{An input function that needs to be
   recursively called to retrieve all results.}
 
-  \item{page}{A page number, page size,}
-
   \item{dtype}{data type can be \code{photos},
   \code{observations}, \code{checklists}.}
-
-  \item{page_size}{Number of observations per page. Package
-  default is \code{25}}
 }
 \description{
 This function allows for paginating through calls that

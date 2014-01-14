@@ -8,12 +8,16 @@ ee_search_obs(..., page = NULL, page_size = 25, foptions = list())
   \item{...}{all the arguments that get passed to
   \code{\link{ee_search_obs}}}
 
-  \item{page}{page number}
+  \item{page}{Page number}
 
-  \item{page_size}{Number of results per page. Default in
-  the package is 25. Default on the API is 10.}
+  \item{page_size}{The number of observations per page
+  returned by the query. The package default is \code{25}
+  observations. The API default, however, is \code{10}.
+  Setting this number higher will require fewer calls (i.e.
+  pages) but a large size may also fail or timeout.}
 
-  \item{foptions}{= list() additional options for httr.}
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. Used for diagnostic reasons.}
 }
 \description{
 Elastic search on observations. This wrapper for

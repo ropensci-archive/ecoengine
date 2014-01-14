@@ -18,6 +18,7 @@ Depends:
 Imports:
     httr,
     plyr,
+    data.table,
     assertthat,
     whisker
 Suggests:

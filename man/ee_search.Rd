@@ -7,8 +7,8 @@ ee_search(query = NULL, foptions = list())
 \arguments{
   \item{query}{search term}
 
-  \item{foptions}{= list() Additional (optional) arguments
-  to httr}
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. Used for diagnostic reasons.}
 }
 \description{
 Search the ecoengine
