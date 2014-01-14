@@ -16,7 +16,7 @@ List of ecoengine footprints
 }
 \examples{
 \dontrun{
-ee_footprints()
+footprints <- ee_footprints()
 }
 }
 
