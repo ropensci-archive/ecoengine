@@ -4,7 +4,7 @@
 #'
 #' Search the ecoengine
 #' @param query search term
-#' @param  foptions = list() Additional (optional) arguments to httr
+#' @template foptions
 #' @export
 #' @keywords search
 #' @examples \dontrun{
@@ -41,10 +41,9 @@ faceted_search_results
 #'
 #' A powerful way to search through the observations. 
 #' @param query = The search term
-#' @param  foptions = list()  Additional arguments for httr
+#' @template foptions
 #' @param  quiet Default is FALSE. Set to TRUE to suppress messages.
-#' @param  page page number
-#' @param  page_size Number of results per page. Default in the package is 25. Default on the API is 10.
+#' @template pages
 #' @export
 #' @keywords search
 #' @seealso \code{\link{ee_search})}
@@ -54,7 +53,6 @@ faceted_search_results
 #' ee_search_obs_get(query  = "genus:Lynx")
 #'}
 ee_search_obs_get <- function(query = NULL, page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
-# http://ecoengine.berkeley.edu/api/observations/?q=Lynx
 	obs_search_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"	
 	args <- compact(as.list(c(q = query, page = page, page_size = 25)))
 	obs_search <- GET(obs_search_url, query = args, foptions)
@@ -90,10 +88,10 @@ ee_search_obs_get <- function(query = NULL, page = NULL, page_size = 25, quiet =
 #'
 #' Elastic search on observations. This wrapper for \code{\link{ee_search_obs}}
 #' @param ... all the arguments that get passed to \code{\link{ee_search_obs}}
-#' @param  page page number
-#' @param  page_size Number of results per page. Default in the package is 25. Default on the API is 10.
-#' @param  foptions = list() additional options for httr.
+#' @template pages
+#' @template foptions
 #' @importFrom plyr rbind.fill
+#' @importFrom data.table rbindlist
 #' @export
 #' @examples \dontrun{
 #' all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all")
@@ -138,7 +136,7 @@ ee_search_obs <- function(..., page = NULL, page_size = 25, foptions = list()) {
 			# API currently allows 25 calls 
 			if(i %% 25 == 0) Sys.sleep(1)
 		}
-	result_data <- do.call(rbind, all_results)
+	result_data <- do.call(rbindlist, all_results)
 	all_obs_results <- list(results = nrow(result_data), call = obs_call$call, type = "observations", data = result_data)
 	class(all_obs_results) <- "ecoengine"
 	}	

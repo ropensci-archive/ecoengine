@@ -3,7 +3,7 @@
 #' ee_footprints
 #'
 #' List of ecoengine footprints
-#' @param foptions = list() additional arguments for httr
+#' @template foptions
 #' @export
 #' @return data.frame
 #' @examples \dontrun{

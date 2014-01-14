@@ -21,14 +21,12 @@
 #' @param  remote_id description needed.
 #' @param  collection_code description needed.
 #' @param  source  description needed.
-#' @param  min_date description needed.
-#' @param  max_date description needed.
+#' @template dates
 #' @param  georeferenced Default is \code{FALSE}. Set to TRUE to return only georeferenced records.
 #' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}
-#' @param  page  Page page number. 
-#' @param  page_size  Number of results per page. Default is 10
+#' @template pages
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to supress messages.
-#' @param  foptions description needed.
+#' @template foptions
 #' @export
 #' @return \code{data.frame}
 #' @importFrom httr content GET 
