@@ -15,6 +15,11 @@ ee_about()
 
 
 
+```
+## Loading required package: rjson
+```
+
+
 ---------------------------------------------------------
 type      endpoint                                       
 --------- -----------------------------------------------
@@ -336,7 +341,15 @@ full_sensor_list[, c("station_name", "method_name")]
 
 #### Searching the engine
 
-How to search the engine.
+How to search the engine. Some notes on elastic search.
+
+
+```r
+ee_search()
+ee_search_obs_get()
+ee_search()
+```
+
 
 ---
 
