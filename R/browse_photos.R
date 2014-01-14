@@ -9,9 +9,9 @@
 #' @examples \dontrun{
 #' view_photos(ee_photos())
 #' # Pictures of racoons
-#' view_photos(holos_photos_get(scientific_name = "Procyon lotor", quiet = TRUE))
+#' view_photos(ee_photos_get(scientific_name = "Procyon lotor", quiet = TRUE))
 #' # or the California Condor
-#' view_photos(holos_photos_get(scientific_name = "Gymnogyps californianus", quiet = TRUE))
+#' view_photos(ee_photos_get(scientific_name = "Gymnogyps californianus", quiet = TRUE))
 #' }
 
 view_photos <- function(input = NULL, output = NULL, browse = TRUE)
@@ -34,6 +34,17 @@ view_photos <- function(input = NULL, output = NULL, browse = TRUE)
               <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
               <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.css" rel="stylesheet">
               <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-responsive.css" rel="stylesheet">
+              <script src="http://use.edgefonts.net/quattrocento-sans.js"></script>
+              <style>
+              body {
+                margin: 0;
+                font-family: quattrocento-sans, Helvetica, Arial, sans-serif;
+                font-size: 16px;
+                line-height: 20px;
+                color: #333333;
+                background-color: #ffffff;
+              }
+              </style>
       </head>
 
       <body>
@@ -54,7 +65,8 @@ view_photos <- function(input = NULL, output = NULL, browse = TRUE)
               </thead>
               <tbody>
         {{#photo_list}}
-          <tr><td><a href="{{media_url}}"><img src="{{media_url}}" height = 250></a></td>
+          <tr><td>
+          <a href="{{media_url}}"><img src="{{media_url}}" height = 250></a></td>
           <td>{{authors}}</td>
           <td>{{locality}}, {{county}}</td>
           <td>{{photog_notes}}</td>
