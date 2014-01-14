@@ -1,6 +1,7 @@
 Package: ecoengine
 Type: Package
-Title: Programmatic interface to the Berkeley Ecoengine
+Title: Programmatic interface to the API serving UC Berkeley's Natural History
+    Data
 Version: 0.6
 Date: 2014-01-15
 Author: Karthik Ram
