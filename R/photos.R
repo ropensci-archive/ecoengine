@@ -1,8 +1,7 @@
 #' ee_photos_get
 #'
 #' Search the photos methods in the Holos API. 
-#' @param page page number
-#' @param page_size  Number of results per page. Default is 25.
+#' @template pages
 #' @param  state_province Need to describe these parameters
 #' @param  county California counties. Package include a full list of counties. To load dataset \code{data(california_counties)}
 #' @param  genus Need to describe these parameters
@@ -11,8 +10,7 @@
 #' @param  remote_id Need to describe these parameters
 #' @param  collection_code Type of collection. Can be \code{CalAcademy}, \code{Private}, \code{VTM}, \code{CDFA}. \code{CalFlora} Others TBA 
 #' @param  source  Need to describe these parameters
-#' @param  min_date Need to describe these parameters
-#' @param  max_date Need to describe these parameters
+#' @template dates
 #' @param  related_type Need to describe these parameters
 #' @param  related  Need to describe these parameters
 #' @param  other_catalog_numbers Need to describe these parameters
@@ -44,7 +42,7 @@
 #' charles_results <- ee_photos_get(author = "Charles Webber")
 #' # You can also request all pages in a single call by using ee_photos_get()
 #' # In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
-#' all_cdfa <- ee_photos_get(collection_code = "CDFA", page = "all")
+#' racoons <- ee_photos_get(scientific_name = "Procyon lotor", quiet = TRUE)
 #'}
 ee_photos_get <- function(page = NULL, 
 						 state_province = NULL, 
@@ -65,10 +63,6 @@ ee_photos_get <- function(page = NULL,
 						 foptions = list()) {
 
 	photos_url <- "http://ecoengine.berkeley.edu/api/photos/?format=json"
-	# Some thoughts. I can check if page is integer
-	# if yes, request page.
-	# If instead it is "all" or a range. e.g. 1-10
-	# Then run a loop/apply that request all those pages and squashes results
 	args <- as.list(compact(c(page = page, 	
 							page_size = page_size,					 
 							state_province = state_province, 
@@ -89,12 +83,12 @@ ee_photos_get <- function(page = NULL,
     photos <- content(data_sources)
     page_num <- ifelse(is.null(page), 1, page)
     if(!quiet) {
-    message(sprintf("Search returned %s photos (downloading page %s of %s)", photos$count, page_num, ceiling(photos[[1]]/10)))
+    message(sprintf("Search returned %s photos (downloading page %s of %s)", photos$count, page_num, ceiling(photos[[1]]/page_size)))
 	}
+	photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
+	photos_data$begin_date <- as.Date(photos_data$begin_date)
+	photos_data$end_date <- as.Date(photos_data$end_date)
 
-	 photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
-
-    # photos_data <- as.data.frame(do.call(rbind, photos[[4]]))
     photos_results <- list(results = photos$count, call = photos[[2]], type = "photos", data = photos_data)
     class(photos_results) <- "ecoengine"
     return(photos_results)
