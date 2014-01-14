@@ -1,5 +1,5 @@
 engine_notes.R
-man-oxygen/
+man-roxygen/
 testing.R
 .travis.yml
 .Rapp.history
