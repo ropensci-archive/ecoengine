@@ -20,7 +20,7 @@ Retrieves observation records from BigCB
 }
 \examples{
 \dontrun{
-ee_observations(scientific_name_exact = "Pinus", page = 1)
+pinus_first_page <- ee_observations(scientific_name_exact = "Pinus", page = 1)
 ee_observations(scientific_name_exact = "Pinus", page = 1:2)
 }
 }

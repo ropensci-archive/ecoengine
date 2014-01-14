@@ -5,8 +5,9 @@
 ee_sensors(..., page_size = 25)
 }
 \arguments{
-  \item{...}{same arguments as \code{\link{ee_sensors}}.
-  Use this function over ee_sensors_get.}
+  \item{...}{same arguments as
+  \code{\link{ee_sensors_get}}. Use this function rather
+  than calling \code{\link{ee_sensors_get}}.}
 
   \item{page_size}{Number of observations per page}
 }

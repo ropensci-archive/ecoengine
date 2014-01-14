@@ -86,8 +86,8 @@ Prameter options have not been fleshed out yet
 }
 \examples{
 \dontrun{
-ee_observations_get(country = "United States")
-ee_observations_get(scientific_name_exact = "Pinus")
+us <- ee_observations_get(country = "United States")
+pinus <- ee_observations_get(scientific_name_exact = "Pinus")
 }
 }
 
