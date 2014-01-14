@@ -13,7 +13,6 @@
 #' @export
 #' @examples \dontrun{
 #' ee_sensors_get()
-#' ee_sensors_get(page = 40)
 #'}
 ee_sensors_get <- function(page = NULL, 
                         page_size = 25,
@@ -36,8 +35,13 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
     sensor_data <- GET(sensor_url, query = args, foptions)
     stop_for_status(sensor_data)
     sensor_results <- content(sensor_data)
-    basic_sensor_data <- as.data.frame(do.call(rbind, sensor_results[[4]]))
-    basic_sensor_data
+    basic_sensor_data <- ldply(sensor_results$results, function(x) {
+                             geo_data <- data.frame(t(unlist(x[5])))
+                             main_data <- (x[-5])
+                             main_data$end_date <- ifelse(is.null(main_data$end_date), "NA", main_data$end_date)
+                             md <-(data.frame(as.list(main_data)))        
+                             res <- cbind(md, geo_data)
+                            })
 }
 # [BUG] the geojson is not correctly flattened
 
@@ -47,6 +51,7 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
 #'Returns a full list of sensors with available data
 #' @param ... same arguments as \code{\link{ee_sensors}}. Use this function over ee_sensors_get. 
 #' @param page_size Number of observations per page
+#' @importFrom lubridate ymd_hms
 #' @export
 #' @return data.frame
 #' @examples \dontrun{
@@ -61,9 +66,16 @@ ee_sensors <- function(..., page_size = 25) {
     for(i in seq(all_available_pages)) {
         all_results[[i]] <- ee_sensors_get(page = i, page_size = page_size)
     }
-    return(ldply(all_results))
-}
 
+    res <- ldply(all_results)
+    res$record <- as.integer(res$record)
+    res$geojson.coordinates1 <- as.numeric(res$geojson.coordinates1)
+    res$geojson.coordinates2 <- as.numeric(res$geojson.coordinates2)
+    res$begin_date <- ymd_hms(res$begin_date)
+    # Suppressing warnings here because we can't coerce NULLs into Data format
+    res$end_date <- suppressWarnings(ymd_hms(res$end_date))
+    res
+}
 
 
 #' Sensor data get

@@ -21,7 +21,8 @@ Imports:
     plyr,
     data.table,
     assertthat,
-    whisker
+    whisker,
+    lubridate
 Suggests:
     testthat,
     knitr,

@@ -36,7 +36,6 @@ Returns UC reserve system sensor data
 \examples{
 \dontrun{
 ee_sensors_get()
-ee_sensors_get(page = 40)
 }
 }
 

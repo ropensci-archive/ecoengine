@@ -2,8 +2,8 @@
 \alias{ee_sensor_agg}
 \title{sensor aggregation}
 \usage{
-ee_sensor_agg(page = NULL, page_size = 25, min_date = NULL,
-  max_date = NULL, foptions = list())
+ee_sensor_agg(page = NULL, page_size = 25, interval = NULL,
+  min_date = NULL, max_date = NULL, foptions = list())
 }
 \arguments{
   \item{page}{Page number}
@@ -17,6 +17,8 @@ ee_sensor_agg(page = NULL, page_size = 25, min_date = NULL,
   \item{min_date}{Need to describe these parameters}
 
   \item{max_date}{Need to describe these parameters}
+
+  \item{interval}{.......}
 
   \item{foptions}{A list of additional arguments for
   \code{httr}. Used for diagnostic reasons.}
