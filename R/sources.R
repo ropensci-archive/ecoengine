@@ -1,6 +1,6 @@
 #' Ecoengine data sources
 #'
-#' Returns a full list of data source supported by the ecoengine
+#' Returns a full list of data sources supported by the ecoengine
 #' @template foptions
 #' @export
 #' @importFrom httr GET content stop_for_status

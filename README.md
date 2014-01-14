@@ -13,11 +13,9 @@ This package provides a R wrapper for the newly available [ecoinformatics engine
 * Georeferenced data from the Wieslander project
 * Data on > 2 million georeferenced Berkley museum specimens.
 
-Package is currently in early development and not fully funcitonal but watch the repo for updates.
-
 ## Installing
 
-Install the package with `devtools`
+Install the package with `devtools` until package is submitted to CRAN.
 
 ```coffee
 library(devtools)

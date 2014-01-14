@@ -39,7 +39,7 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
     basic_sensor_data <- as.data.frame(do.call(rbind, sensor_results[[4]]))
     basic_sensor_data
 }
-# BUG the geojson is not correctly flattened
+# [BUG] the geojson is not correctly flattened
 
 
 #' ee sensors
