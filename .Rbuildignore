@@ -1,4 +1,5 @@
-Engine2R.R
+engine_notes.R
+man-oxygen/
 testing.R
 .travis.yml
 .Rapp.history
