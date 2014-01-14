@@ -12,7 +12,10 @@
 #' @template foptions
 #' @export
 #' @examples \dontrun{
+#' Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
 #' ee_sensors_get()
+#' s1 <- ee_sensors_get(page = 1)
+#' s2 <- ee_sensors_get(page = 2)
 #'}
 ee_sensors_get <- function(page = NULL, 
                         page_size = 25,
@@ -40,16 +43,16 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
                              main_data <- (x[-5])
                              main_data$end_date <- ifelse(is.null(main_data$end_date), "NA", main_data$end_date)
                              md <-(data.frame(as.list(main_data)))        
-                             res <- cbind(md, geo_data)
+                             cbind(md, geo_data)
                             })
+    basic_sensor_data
 }
-# [BUG] the geojson is not correctly flattened
 
 
 #' ee sensors
 #'
 #'Returns a full list of sensors with available data
-#' @param ... same arguments as \code{\link{ee_sensors}}. Use this function over ee_sensors_get. 
+#' @param ... same arguments as \code{\link{ee_sensors_get}}. Use this function rather than calling \code{\link{ee_sensors_get}}. 
 #' @param page_size Number of observations per page
 #' @importFrom lubridate ymd_hms
 #' @export
@@ -72,7 +75,7 @@ ee_sensors <- function(..., page_size = 25) {
     res$geojson.coordinates1 <- as.numeric(res$geojson.coordinates1)
     res$geojson.coordinates2 <- as.numeric(res$geojson.coordinates2)
     res$begin_date <- ymd_hms(res$begin_date)
-    # Suppressing warnings here because we can't coerce NULLs into Data format
+    # Suppressing warnings here because we can't coerce NULLs into Date format
     res$end_date <- suppressWarnings(ymd_hms(res$end_date))
     res
 }
@@ -110,6 +113,8 @@ ee_sensor_data_get <- function(data_url = NULL, page = NULL, page_size = 25, qui
     stop_for_status(temp_data)
     sensor_raw <- content(temp_data)$results
     results <- do.call(rbind.data.frame, lapply(sensor_raw, LinearizeNestedList))
+    names(results) <- c("local_date", "value", "data_quality_qualifierid", "data_quality_qualifier_description", "data_quality_valid")
+    results$local_date <- suppressWarnings(ymd_hms(results$local_date))
     sensor_data <- list(results = total_obs, call = data_list[[2]], type = "sensor", data = results)
     class(sensor_data) <- "ecoengine"
     sensor_data

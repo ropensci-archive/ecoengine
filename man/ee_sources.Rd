@@ -12,7 +12,7 @@ ee_sources(foptions = list())
 \code{data.frame}
 }
 \description{
-Returns a full list of data source supported by the
+Returns a full list of data sources supported by the
 ecoengine
 }
 \examples{
