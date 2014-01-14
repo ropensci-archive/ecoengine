@@ -4,7 +4,7 @@
 #'
 #' Retrieves exisitng checklists from the ecoengine database
 #' @param  subject Enter one of the following subjects: Mammals, Mosses, Beetles, Spiders, Amphibians, Ants, Fungi, Lichen, Plants.
-#' @param  foptions = list() Additional arguments to httr
+#' @template foptions
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom plyr ldply
@@ -59,8 +59,8 @@ first_results <- ldply(details_data$observations, function(x) data.frame(x))
 first_results$url <- paste0(first_results$url, "?format=json")
 # Now fetch all the results from the URL (2nd column)
 full_results <- ldply(first_results$url, function(x) {
-				dd <- content(GET(x))
-			    rbindfillnull(dd)
+				full_checklist <- content(GET(x))
+			    rbindfillnull(full_checklist)
 })
 }
 
@@ -69,13 +69,10 @@ full_results <- ldply(first_results$url, function(x) {
 eco_capwords <- function(s, strict = FALSE, onlyfirst = FALSE) {
         cap <- function(s) paste(toupper(substring(s,1,1)),
                 {s <- substring(s,2); if(strict) tolower(s) else s}, sep="", collapse=" " )
-        if(!onlyfirst){
-                sapply(strsplit(s, split = " "), cap, USE.NAMES = !is.null(names(s)))
-        } else
-                {
-                        sapply(s, function(x)
-                                paste(toupper(substring(x,1,1)),
-                                                        tolower(substring(x,2)),
-                                                        sep="", collapse=" "), USE.NAMES=F)
-                }
+  if(!onlyfirst){
+    sapply(strsplit(s, split = " "), cap, USE.NAMES = !is.null(names(s)))
+  } else
+  {
+   sapply(s, function(x) paste(toupper(substring(x,1,1)),tolower(substring(x,2)),sep = "", collapse = " "), USE.NAMES = F)
+  }
 }
