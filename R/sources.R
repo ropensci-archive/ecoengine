@@ -13,7 +13,7 @@ ee_sources <- function(foptions = list()) {
     data_sources <- GET(base_url, foptions)
     stop_for_status(data_sources)
     ds <- content(data_sources)
-    as.data.frame(do.call(rbind, ds$results))
+    as.data.frame(do.call(rbind.data.frame, ds$results))
 }
 
 
