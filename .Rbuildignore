@@ -3,3 +3,4 @@ man-roxygen/
 testing.R
 .travis.yml
 .Rapp.history
+inst/doc
