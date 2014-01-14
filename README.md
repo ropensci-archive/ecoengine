@@ -13,18 +13,22 @@ This package provides a R wrapper for the newly available [ecoinformatics engine
 * Georeferenced data from the Wieslander project
 * Data on > 2 million georeferenced Berkley museum specimens.
 
-## Installing
+## Installing the package
 
 Install the package with `devtools` until package is submitted to CRAN.
 
 ```coffee
+# If you don't already have the devtools package installed, run
+# install.packages("devtools")
+# unlike most packages, devtools requires additional non-R dependencies depending on your OS. See → https://github.com/karthik/dlab-advanced-r/blob/master/installation.md#installation for more information. 
 library(devtools)
 install_github('ecoengine', 'ropensci')
 ```
 
 ## Resources
 
-* [API documentation](http://ecoengine.berkeley.edu/developers/)
+* [Ecoengine API documentation](http://ecoengine.berkeley.edu/developers/)
+* [Berkeley Natural History Museums](http://bnhm.berkeley.edu/)
 
 ---
 
