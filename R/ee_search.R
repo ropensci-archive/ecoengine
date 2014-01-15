@@ -5,10 +5,11 @@
 #' Search the ecoengine
 #' @param query search term
 #' @template foptions
+#' @importFrom data.table rbindlist
 #' @export
 #' @keywords search
 #' @examples \dontrun{
-#' ee_search(query = "genus:Lynx")
+#' lynx_results <- ee_search(query = "genus:Lynx")
 #'}
 ee_search <- function(query = NULL, foptions = list()) {
 
@@ -24,11 +25,12 @@ ee_filter <- function(i) {
 fields_compacted <- Filter(ee_filter, fields)
 
 faceted_search_results <- lapply(fields_compacted, function(y) { 
-	temp_fields <- as.data.frame(t(unlist(y))) 
+	temp_fields <- do.call(rbind.data.frame, lapply(y, LinearizeNestedList))
+	# temp_fields <- as.data.frame(t(unlist(y))) 
 	names(temp_fields) <- c("field", "results", "search_url")
 	temp_fields
 })
-faceted_search_results
+rbindlist(faceted_search_results)
 }
 
 # ------------------------------------------------
