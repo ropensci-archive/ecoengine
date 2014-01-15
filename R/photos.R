@@ -19,6 +19,7 @@
 #' @export
 #' @importFrom httr stop_for_status content GET
 #' @importFrom plyr compact rbind.fill
+#' @importFrom lubridate ymd_hms
 #' @seealso related: \code{\link{ee_photos_get}} \code{\link{california_counties}}
 #' @examples \dontrun{
 #' # Request all photos. This request will paginate. Don't use ee_photos_get #' on such a large request
@@ -36,7 +37,7 @@
 #' alameda <- ee_photos_get(county = california_counties[1, 1])
 #' alameda$data
 #' # You can also get all the data for Alameda county with one request
-#' alameda <- ee_photos_get_get(county = california_counties[1, 1], page = "all")
+#' alameda <- ee_photos_get(county = california_counties[1, 1], page = "all")
 #' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
 #' charles_results <- ee_photos_get(author = "Charles Webber")
@@ -86,9 +87,10 @@ ee_photos_get <- function(page = NULL,
     message(sprintf("Search returned %s photos (downloading page %s of %s)", photos$count, page_num, ceiling(photos[[1]]/page_size)))
 	}
 	photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
-	photos_data$begin_date <- as.Date(photos_data$begin_date)
-	photos_data$end_date <- as.Date(photos_data$end_date)
-
+	photos_data$begin_date <- suppressWarnings(ymd_hms(photos_data$begin_date))
+	# photos_data$begin_date <- as.Date(photos_data$begin_date)
+	# photos_data$end_date <- as.Date(photos_data$end_date)
+	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
     photos_results <- list(results = photos$count, call = photos[[2]], type = "photos", data = photos_data)
     class(photos_results) <- "ecoengine"
     return(photos_results)
