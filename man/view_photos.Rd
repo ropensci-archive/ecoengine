@@ -12,8 +12,8 @@ view_photos(input = NULL, output = NULL, browse = TRUE)
   NULL, a temp file is used.}
 
   \item{browse}{Browse file in your default browse
-  immediately after file creation.  If FALSE, the file is
-  written, but not opened.}
+  immediately after file creation.  If \code{FALSE}, the
+  file is written, but not opened.}
 }
 \description{
 Browse photo queries in your default browser.

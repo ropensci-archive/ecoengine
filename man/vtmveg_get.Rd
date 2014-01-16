@@ -18,7 +18,8 @@ vtmveg_get(page = NULL, page_size = 25, quiet = FALSE,
   to suppress messages}
 
   \item{foptions}{A list of additional arguments for
-  \code{httr}. Used for diagnostic reasons.}
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \value{
 data.frame

@@ -9,7 +9,10 @@ ee_sensor_agg(...)
   \code{\link{ee_sensor_agg_get}}}
 }
 \description{
-<full description>
+Retrieves sensor data. This functions serves as a wrapper
+for \code{\link{ee_sensor_agg_get}} and takes the same
+arguments along with page options. Page can be a integer, a
+range, or "all"
 }
 \examples{
 \dontrun{

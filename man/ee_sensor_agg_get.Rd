@@ -16,9 +16,13 @@ ee_sensor_agg_get(sensor_id = NULL, page = NULL, page_size = 25,
   Setting this number higher will require fewer calls (i.e.
   pages) but a large size may also fail or timeout.}
 
-  \item{min_date}{Need to describe these parameters}
+  \item{min_date}{Lower date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
 
-  \item{max_date}{Need to describe these parameters}
+  \item{max_date}{upper date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
 
   \item{sensor_id}{The id of the sensor.}
 
@@ -40,7 +44,8 @@ ee_sensor_agg_get(sensor_id = NULL, page = NULL, page_size = 25,
   to suppress messages.}
 
   \item{foptions}{A list of additional arguments for
-  \code{httr}. Used for diagnostic reasons.}
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \description{
 Aggregated sensor data for any station.

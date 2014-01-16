@@ -15,10 +15,9 @@ sensor data
 }
 \examples{
 \dontrun{
-full_sensor_list <- ee_sensors()
-x <- full_sensor_list[1, ]$data_url
-sensor_data <- ee_sensor_data(data_url = x,  page = 1:2)
-sensor_data_3 <- ee_sensor_data(data_url = x,  page = 1)
+stations <- ee_list_sensors()$record
+sensor_data <- ee_sensor_data(sensor_id = stations[1],  page = 1:2)
+sensor_data_3 <- ee_sensor_data(sensor_id = stations[1],  page = 1)
 }
 }
 \seealso{

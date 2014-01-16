@@ -2,15 +2,15 @@ Package: ecoengine
 Type: Package
 Title: Programmatic interface to the API serving UC Berkeley's Natural History
     Data
-Version: 0.6
+Version: 0.8
 Date: 2014-01-15
 Author: Karthik Ram
 Authors@R: c(person("Karthik", "Ram", role = c("aut", "cre"), email =
     "karthik.ram@gmail.com"))
 VignetteBuilder: knitr
-Description: ecoengine provides access to more than 2 million georeferenced
-    specimen records from the Berkeley Natural History Museums.
-    http://bnhm.berkeley.edu/
+Description: The ecoengine (http://ecoengine.berkeley.edu/) provides access to
+    more than 2 million georeferenced specimen records from the Berkeley
+    Natural History Museums. http://bnhm.berkeley.edu/
 License: CC0
 URL: https://github.com/ropensci/ecoengine
 BugReports: https://github.com/ropensci/ecoengine/issues

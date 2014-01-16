@@ -23,12 +23,17 @@ ee_sensors_get(page = NULL, page_size = 25, remote_id = NULL,
 
   \item{source}{Need to describe these parameters}
 
-  \item{min_date}{Need to describe these parameters}
+  \item{min_date}{Lower date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
 
-  \item{max_date}{Need to describe these parameters}
+  \item{max_date}{upper date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
 
   \item{foptions}{A list of additional arguments for
-  \code{httr}. Used for diagnostic reasons.}
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \description{
 Returns UC reserve system sensor data
@@ -37,8 +42,8 @@ Returns UC reserve system sensor data
 \dontrun{
 Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
 ee_sensors_get()
-s1 <- ee_sensors_get(page = 1)
-s2 <- ee_sensors_get(page = 2)
+stations_1 <- ee_sensors_get(page = 1)
+stations_2 <- ee_sensors_get(page = 2)
 }
 }
 

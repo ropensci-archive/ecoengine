@@ -20,7 +20,8 @@ ee_sensor_data_get(sensor_id = NULL, page = NULL, page_size = 25,
   to suppress output.}
 
   \item{foptions}{A list of additional arguments for
-  \code{httr}. Used for diagnostic reasons.}
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \description{
 Retrieves data for any sensor returned by
@@ -29,9 +30,9 @@ Retrieves data for any sensor returned by
 \examples{
 \dontrun{
 full_sensor_list <- ee_sensors()
-x <- ee_list_sensors()$record
-z <- ee_sensor_data_get(x[1], page = 2)
-z1 <- ee_sensor_data_get(x, page = 3)
+station <- ee_list_sensors()$record
+page_1_data <- ee_sensor_data_get(station[1], page = 2)
+page_2_data <- ee_sensor_data_get(station[1], page = 3)
 }
 }
 

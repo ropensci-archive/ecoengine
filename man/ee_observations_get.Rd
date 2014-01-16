@@ -13,49 +13,54 @@ ee_observations_get(country = "United States", state_province = NULL,
   quiet = FALSE, foptions = list())
 }
 \arguments{
-  \item{country}{description needed.}
+  \item{country}{country name}
 
   \item{state_province}{description needed.}
 
-  \item{county}{description needed.}
+  \item{county}{California county. See
+  \code{data(california_counties)}}
 
-  \item{kingdom}{description needed.}
+  \item{kingdom}{kingdom name}
 
-  \item{phylum}{description needed.}
+  \item{phylum}{phylum name}
 
-  \item{order}{description needed.}
+  \item{order}{order name}
 
-  \item{clss}{description needed.}
+  \item{clss}{class name}
 
-  \item{family}{description needed.}
+  \item{family}{family name}
 
-  \item{genus}{description needed.}
+  \item{genus}{genus name.}
 
   \item{scientific_name}{description needed.}
 
-  \item{kingdom_exact}{description needed.}
+  \item{kingdom_exact}{exact kingdom name}
 
-  \item{phylum_exact}{description needed.}
+  \item{phylum_exact}{exact phylum name}
 
-  \item{order_exact}{description needed.}
+  \item{order_exact}{exact order name}
 
-  \item{clss_exact}{description needed.}
+  \item{clss_exact}{class name}
 
-  \item{family_exact}{description needed.}
+  \item{family_exact}{exact family name}
 
-  \item{genus_exact}{description needed.}
+  \item{genus_exact}{exact genus name}
 
-  \item{scientific_name_exact}{description needed.}
+  \item{scientific_name_exact}{exact scientific name}
 
-  \item{remote_id}{description needed.}
+  \item{remote_id}{remote ID}
 
-  \item{collection_code}{description needed.}
+  \item{collection_code}{collections code}
 
-  \item{source}{description needed.}
+  \item{source}{data source. See \code{\link{ee_sources}}}
 
-  \item{min_date}{Need to describe these parameters}
+  \item{min_date}{Lower date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
 
-  \item{max_date}{Need to describe these parameters}
+  \item{max_date}{upper date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
 
   \item{georeferenced}{Default is \code{FALSE}. Set to TRUE
   to return only georeferenced records.}
@@ -75,14 +80,14 @@ ee_observations_get(country = "United States", state_province = NULL,
   to supress messages.}
 
   \item{foptions}{A list of additional arguments for
-  \code{httr}. Used for diagnostic reasons.}
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \value{
 \code{data.frame}
 }
 \description{
 API endpoint that represents a list of observations.
-Prameter options have not been fleshed out yet
 }
 \examples{
 \dontrun{

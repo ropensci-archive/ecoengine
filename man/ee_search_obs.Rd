@@ -17,7 +17,8 @@ ee_search_obs(..., page = NULL, page_size = 25, foptions = list())
   pages) but a large size may also fail or timeout.}
 
   \item{foptions}{A list of additional arguments for
-  \code{httr}. Used for diagnostic reasons.}
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \description{
 Elastic search on observations. This wrapper for

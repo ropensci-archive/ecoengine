@@ -24,23 +24,27 @@ ee_photos_get(page = NULL, state_province = NULL, county = NULL,
   list of counties. To load dataset
   \code{data(california_counties)}}
 
-  \item{genus}{Need to describe these parameters}
+  \item{genus}{genus name}
 
-  \item{scientific_name}{Need to describe these parameters}
+  \item{scientific_name}{scientiifc name}
 
-  \item{authors}{Need to describe these parameters}
+  \item{authors}{author name}
 
-  \item{remote_id}{Need to describe these parameters}
+  \item{remote_id}{remote id}
 
   \item{collection_code}{Type of collection. Can be
   \code{CalAcademy}, \code{Private}, \code{VTM},
   \code{CDFA}. \code{CalFlora} Others TBA}
 
-  \item{source}{Need to describe these parameters}
+  \item{source}{data source. See \code{\link{ee_sources}}}
 
-  \item{min_date}{Need to describe these parameters}
+  \item{min_date}{Lower date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
 
-  \item{max_date}{Need to describe these parameters}
+  \item{max_date}{upper date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
 
   \item{related_type}{Need to describe these parameters}
 
@@ -50,9 +54,11 @@ ee_photos_get(page = NULL, state_province = NULL, county = NULL,
   parameters}
 
   \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
-  to suppress output.}
+  to suppress messages.}
 
-  \item{foptions}{= list() Other options to pass to curl}
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \description{
 Search the photos methods in the Holos API.
@@ -74,12 +80,13 @@ data(california_counties)
 alameda <- ee_photos_get(county = california_counties[1, 1])
 alameda$data
 # You can also get all the data for Alameda county with one request
-alameda <- ee_photos_get(county = california_counties[1, 1], page = "all")
+alameda <- ee_photos(county = "Alameda county", page = "all")
 # Spidering through the rest of the counties can easily be automated.
 # Or by author
 charles_results <- ee_photos_get(author = "Charles Webber")
 # You can also request all pages in a single call by using ee_photos_get()
-# In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
+# In this example below, there are 6 pages of results (52 result items).
+Function will return all at once.
 racoons <- ee_photos_get(scientific_name = "Procyon lotor", quiet = TRUE)
 }
 }

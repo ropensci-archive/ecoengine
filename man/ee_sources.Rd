@@ -6,7 +6,8 @@ ee_sources(foptions = list())
 }
 \arguments{
   \item{foptions}{A list of additional arguments for
-  \code{httr}. Used for diagnostic reasons.}
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \value{
 \code{data.frame}

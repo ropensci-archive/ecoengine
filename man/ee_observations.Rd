@@ -8,12 +8,13 @@ ee_observations(..., page_size = 25, page = NULL)
   \item{...}{all the arguments that get passed to
   \code{\link{ee_observations_get}}}
 
-  \item{page}{Page number or range. Use "all" to retrieve
-  all pages. May time out for extremely large queries}
+  \item{page}{Page number}
 
-  \item{page_size}{The number of observations per page.
-  Default is 10. Do not set this too high or the server
-  will time out}
+  \item{page_size}{The number of observations per page
+  returned by the query. The package default is \code{25}
+  observations. The API default, however, is \code{10}.
+  Setting this number higher will require fewer calls (i.e.
+  pages) but a large size may also fail or timeout.}
 }
 \description{
 Retrieves observation records from BigCB
@@ -21,7 +22,7 @@ Retrieves observation records from BigCB
 \examples{
 \dontrun{
 pinus_first_page <- ee_observations(scientific_name_exact = "Pinus", page = 1)
-ee_observations(scientific_name_exact = "Pinus", page = 1:2)
+pinus_two_page <- ee_observations(scientific_name_exact = "Pinus", page = 1:2)
 }
 }
 \seealso{

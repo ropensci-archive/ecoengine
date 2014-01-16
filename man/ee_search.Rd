@@ -1,6 +1,6 @@
 \name{ee_search}
 \alias{ee_search}
-\title{ee search}
+\title{Ecoengine search}
 \usage{
 ee_search(query = NULL, foptions = list())
 }
@@ -8,10 +8,11 @@ ee_search(query = NULL, foptions = list())
   \item{query}{search term}
 
   \item{foptions}{A list of additional arguments for
-  \code{httr}. Used for diagnostic reasons.}
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \description{
-Search the ecoengine
+Search across the entire ecoengine database.
 }
 \examples{
 \dontrun{

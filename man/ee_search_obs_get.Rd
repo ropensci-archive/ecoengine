@@ -9,10 +9,11 @@ ee_search_obs_get(query = NULL, page = NULL, page_size = 25,
   \item{query}{= The search term}
 
   \item{foptions}{A list of additional arguments for
-  \code{httr}. Used for diagnostic reasons.}
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 
-  \item{quiet}{Default is FALSE. Set to TRUE to suppress
-  messages.}
+  \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
+  to suppress messages.}
 
   \item{page}{Page number}
 

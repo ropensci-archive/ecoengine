@@ -6,7 +6,7 @@ ee_photos(...)
 }
 \arguments{
   \item{...}{All the arguments that go into
-  \code{ee_photos}
+  \code{\link{ee_photos}}
 
   \itemize{ \item{"page" } {Page Number}
   \item{"state_province" } {Need to describe these
