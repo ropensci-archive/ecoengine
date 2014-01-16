@@ -7,8 +7,8 @@
 print.ecoengine <- function(x, ...) {
     value <- NA
 
-	string <- "Number of results: %s \n Call: %s \n Output dataset: %s rows"
-    vals   <- c(x$results,  x$call, nrow(x$data))
+	string <- " [Type]: %s\n [Number of results]: %s \n [Call]: %s \n [Output dataset]: %s rows"
+    vals   <- c(x$type, x$results,  x$call, nrow(x$data))
     cat(do.call(sprintf, as.list(c(string, vals))))
     cat("\n")
 }
@@ -33,6 +33,22 @@ if (!is(x, "ecoengine"))
 }
 
 
+#' ee_pages - Returns total number of pages for any ecoengine request
+#'
+#' @param ee Object of class \code{ecoengine}
+#' @param  page_size Default page size. Currently set to \code{25} package wide.
+#' @export
+#' @return integer
+#' @examples \dontrun{
+#' page_1_data <- ee_sensor_data_get(1625, page = 2)
+#' ee_pages(page_1_data)
+#'}
+ee_pages <- function(ee, page_size = 25) {
+    if(!identical(class(ee), "ecoengine"))
+        stop("Object must be of class ecoengine")
+
+   return(ceiling(ee$results/page_size)) 
+}
 
 #' Ecoengine paginator
 #'
