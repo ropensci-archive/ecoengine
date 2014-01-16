@@ -49,7 +49,7 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 #' @return \code{data.frame}
 #' @examples \dontrun{
 #' spiders  <- ee_checklists(subject = "Spiders")
-#' # Now retrieve all the details for each species on the list
+#' # Now retrieve all the details for each species on both lists
 #' spider_details <- ldply(spiders$url, checklist_details)
 #'}
 checklist_details <- function(list_name, ...) {
@@ -65,6 +65,7 @@ full_results <- ldply(first_results$url, function(x) {
 }
 
 
+# Function to capitalize words
 #' @noRd
 eco_capwords <- function(s, strict = FALSE, onlyfirst = FALSE) {
         cap <- function(s) paste(toupper(substring(s,1,1)),

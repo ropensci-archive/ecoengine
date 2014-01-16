@@ -12,7 +12,6 @@
 #' # set \code{as.df} = \code{FALSE} to return a \code{list} rather than a \code{data.frame}
 #' ee_about(as.df = FALSE)
 #' # You can also filter by methods by data, meta-data, and actions.
-#' *
 #' ee_about(type = "data")
 #' ee_about(type = "meta-data")
 #' ee_about(type = "actions")
@@ -41,25 +40,4 @@ if(!as.df) {
 
 }
 
-}
-
-# Expected output
-
-#  ee_about(type = "data")
-#   type                                        endpoint
-# 3 data   http://ecoengine.berkeley.edu/api/checklists/
-# 4 data      http://ecoengine.berkeley.edu/api/sensors/
-# 5 data       http://ecoengine.berkeley.edu/api/vtmveg/
-# 6 data http://ecoengine.berkeley.edu/api/observations/
-# 7 data       http://ecoengine.berkeley.edu/api/photos/
-
-
-#  ee_about(type = "meta-data")
-#        type                                      endpoint
-# 1 meta-data    http://ecoengine.berkeley.edu/api/sources/
-# 2 meta-data http://ecoengine.berkeley.edu/api/footprints/
-
-
-#  ee_about(type = "actions")
-#      type                                  endpoint
-# 8 actions http://ecoengine.berkeley.edu/api/search/
+} 
