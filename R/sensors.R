@@ -83,30 +83,31 @@ ee_sensors <- function(..., page_size = 25) {
 
 #' Sensor data get
 #'
-#' Retrieves data for any sensor returned by \code{\link{ee_sensors}}.
-#' @param data_url The URL returned by \code{\link{ee_sensors}}
+#' Retrieves data for any sensor returned by \code{\link{ee_list_sensors}}.
+#' @param sensor_id The id of the sensor. 
 #' @template pages
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress output.
 #' @template foptions
 #' @export
 #' @examples \dontrun{
 #' full_sensor_list <- ee_sensors()
-#' x <- full_sensor_list[1, ]$data_url
-#' z <- ee_sensor_data_get(x, page = 2)
+#' x <- ee_list_sensors()$record
+#' z <- ee_sensor_data_get(x[1], page = 2)
 #' z1 <- ee_sensor_data_get(x, page = 3)
 #'}
-ee_sensor_data_get <- function(data_url = NULL, page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
+ee_sensor_data_get <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
+
+    data_url <- paste0("http://ecoengine.berkeley.edu/api/sensors/", sensor_id, "/data?format=json")
 
     if(length(page) > 1) {
             stop("Please supply only one page at a time. See ee_sensor_data for pagination.")
             }
-    data_url <- paste0(data_url, "?format=json")
     data <- GET(data_url)
     stop_for_status(data)
     data_list <- content(data)
     total_obs <- data_list$count
     if(!quiet) {
-    message(sprintf("Search returned %s photos (downloading page %s of %s)", total_obs, page, ceiling(total_obs/page_size)))
+    message(sprintf("Search returned %s observations (downloading page %s of %s)", total_obs, page, ceiling(total_obs/page_size)))
     }
     args <- compact(list(page = page, page_size = page_size))
     temp_data <- GET(data_url, query = args)
