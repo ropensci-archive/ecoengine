@@ -74,7 +74,7 @@ data(california_counties)
 alameda <- ee_photos_get(county = california_counties[1, 1])
 alameda$data
 # You can also get all the data for Alameda county with one request
-alameda <- ee_photos_get_get(county = california_counties[1, 1], page = "all")
+alameda <- ee_photos_get(county = california_counties[1, 1], page = "all")
 # Spidering through the rest of the counties can easily be automated.
 # Or by author
 charles_results <- ee_photos_get(author = "Charles Webber")
