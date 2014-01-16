@@ -1,7 +1,7 @@
 
 #'sensor aggregation
 #'
-#' Aggregated sensor_id ID of desired sensor. See \code{\link{ee_list_sensors}} for a list.
+#' Aggregated sensor data for any station.
 #' @template pages
 #' @template dates
 #' @param sensor_id The id of the sensor. 
@@ -64,6 +64,7 @@ ee_sensor_agg <- function(...) {
 
 #' Lists subset of the full sensor list
 #'
+#' @export
 #' @examples \dontrun{
 #' ee_list_sensors()
 #'}

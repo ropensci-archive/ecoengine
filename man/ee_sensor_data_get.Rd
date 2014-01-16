@@ -2,12 +2,11 @@
 \alias{ee_sensor_data_get}
 \title{Sensor data get}
 \usage{
-ee_sensor_data_get(data_url = NULL, page = NULL, page_size = 25,
+ee_sensor_data_get(sensor_id = NULL, page = NULL, page_size = 25,
   quiet = FALSE, foptions = list())
 }
 \arguments{
-  \item{data_url}{The URL returned by
-  \code{\link{ee_sensors}}}
+  \item{sensor_id}{The id of the sensor.}
 
   \item{page}{Page number}
 
@@ -25,13 +24,13 @@ ee_sensor_data_get(data_url = NULL, page = NULL, page_size = 25,
 }
 \description{
 Retrieves data for any sensor returned by
-\code{\link{ee_sensors}}.
+\code{\link{ee_list_sensors}}.
 }
 \examples{
 \dontrun{
 full_sensor_list <- ee_sensors()
-x <- full_sensor_list[1, ]$data_url
-z <- ee_sensor_data_get(x, page = 2)
+x <- ee_list_sensors()$record
+z <- ee_sensor_data_get(x[1], page = 2)
 z1 <- ee_sensor_data_get(x, page = 3)
 }
 }

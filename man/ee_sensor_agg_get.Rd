@@ -43,8 +43,7 @@ ee_sensor_agg_get(sensor_id = NULL, page = NULL, page_size = 25,
   \code{httr}. Used for diagnostic reasons.}
 }
 \description{
-Aggregated sensor_id ID of desired sensor. See
-\code{\link{ee_list_sensors}} for a list.
+Aggregated sensor data for any station.
 }
 \examples{
 \dontrun{
