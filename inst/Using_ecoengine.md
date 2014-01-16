@@ -45,37 +45,90 @@ actions   http://ecoengine.berkeley.edu/api/search/
 
 Most functions in the ecoengine package will return a `S3` object of class `ecoengine`. The class contains 4 items.  
 
-- A total result count (not necessarily the results in this particular object)  
+- A total result count (not necessarily the results in this particular object)
 - The call (So a reader can replicate the results)  
 - The type (`photos`, `observation`, `checklist`, or `sensor`)  
 - The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
 
+
 ## Notes on downloading large data requests
 
-For the sake of speed, results are paginated at `25` results per page. It's possible to request all pages for any query by specifying `page = "all"` in any search. However, this should be used if the request is reasonably sized (`1,000` or fewer records). With larger requests, there is a chance that the query might become interrupted and you could lose all the partially downloaded data. Instead, use the returned observations to split the request.
+For the sake of speed, results are paginated at `25` results per page. It's possible to request all pages for any query by specifying page = all in any search. However, this should be used if the request is reasonably sized (`1,000` or fewer records). With larger requests, there is a chance that the query might become interrupted and you could lose all the partially downloaded data. Instead, use the returned observations to split the request. You can always check the number of requests you'll need to retreive data for any query by running `ee_pages(obj)` where `obj` is an object of class `ecoengine`.
 
 
 ```r
-request <- ee_photos()
-total_available_observations <- request$results
-# This gives you the total number of results available Now divide by 25 to
-# get total pages you'll need to request
-total_pages <- ceiling(total_available_observations/25)
+request <- ee_photos(county = "Santa Clara County")
+```
+
+```
+##   |                                                                         |                                                                 |   0%
+```
+
+```
+## Search returned 754 photos (downloading page 1 of 31)
+```
+
+```r
+ee_pages(request)
+```
+
+```
+## [1] 31
+```
+
+```r
 # Now it's simple to parallelize this request You can parallelize across
 # number of cores by passing a vector of pages from 1 through total_pages.
 ```
 
 
 
-#### Specimen Observations
+### Specimen Observations
 
----
-
-#### Photos  
+The database contains over 2 million records. Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
 
 
 ```r
-x <- ee_photos_get(quiet = TRUE)
+pinus_observations <- ee_observations(scientific_name_exact = "Pinus", page = 1)
+```
+
+```
+## Retrieving 1 pages (total: 25 records)
+```
+
+```
+##   |                                                                         |                                                                 |   0%  |                                                                         |=================================================================| 100%
+```
+
+```r
+pinus_observations
+```
+
+```
+##  [Type]: observations
+##  [Number of results]: 25 
+##  [Call]: http://ecoengine.berkeley.edu/api/observations/?country=United+States&page=2&scientific_name_exact=Pinus&page_size=10&format=json 
+##  [Output dataset]: 25 rows
+```
+
+
+For additional fields upon which to query, simply look through the help for `?ee_observations`. In addition to narrowing data by taxonomic group, it's also possible to add a bounding box (add argument `bbox`) or request only data that have been georeferenced (set `georeferenced = TRUE`). 
+
+---
+
+### Photos  
+
+
+```r
+photos <- ee_photos_get(quiet = TRUE)
+photos
+```
+
+```
+##  [Type]: photos
+##  [Number of results]: 43708 
+##  [Call]: http://ecoengine.berkeley.edu/api/photos/?page=2&page_size=25&format=json 
+##  [Output dataset]: 25 rows
 ```
 
 The database currently holds  photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos_get`.
@@ -85,7 +138,11 @@ The database currently holds  photos. Photos can be searched by state province, 
 
 
 ```r
-charles_results <- ee_photos_get(author = "Charles Webber")
+charles_results <- ee_photos(author = "Charles Webber")
+```
+
+```
+##   |                                                                         |                                                                 |   0%
 ```
 
 ```
@@ -97,9 +154,10 @@ charles_results
 ```
 
 ```
-## Number of results: 4012 
-##  Call: http://ecoengine.berkeley.edu/api/photos/?format=json&page=2&page_size=25&authors=Charles+Webber 
-##  Output dataset: 25 rows
+##  [Type]: photos
+##  [Number of results]: 4012 
+##  [Call]: http://ecoengine.berkeley.edu/api/photos/?format=json&page=2&page_size=25&authors=Charles+Webber 
+##  [Output dataset]: 25 rows
 ```
 
 ```r
@@ -156,10 +214,9 @@ This will launch your default browser and render a page with thumbnails of all i
 ---  
 
 
-#### Species checklists   
+### Species checklists
 
-
-There is a wealth of checklists from all the source locations. To get all available checklists:
+There is a wealth of checklists from all the source locations. To get all available checklists from the engine, run: 
   
 
 ```r
@@ -191,7 +248,7 @@ head(all_lists[, c("footprint", "subject")])
 ## 6       Ants
 ```
 
-Currently there are 57 lists available. We can drill deeper into any list to get all the available data. We can also narrow our checklist search to groups of interest. For example, to get the list of Spiders:
+Currently there are 57 lists available. We can drill deeper into any list to get all the available data. We can also narrow our checklist search to groups of interest (see `unique(all_lists$subject)`). For example, to get the list of Spiders:
 
 
 ```r
@@ -200,6 +257,25 @@ spiders <- ee_checklists(subject = "Spiders")
 
 ```
 ## Returning 2 checklists
+```
+
+```r
+spiders
+```
+
+```
+##                  record
+## 4  bigcb:specieslist:15
+## 10 bigcb:specieslist:20
+##                                                         footprint
+## 4  http://ecoengine.berkeley.edu/api/footprints/hastings-reserve/
+## 10   http://ecoengine.berkeley.edu/api/footprints/angelo-reserve/
+##                                                                       url
+## 4  http://ecoengine.berkeley.edu/api/checklists/bigcb%3Aspecieslist%3A15/
+## 10 http://ecoengine.berkeley.edu/api/checklists/bigcb%3Aspecieslist%3A20/
+##                                           source subject
+## 4  http://ecoengine.berkeley.edu/api/sources/18/ Spiders
+## 10 http://ecoengine.berkeley.edu/api/sources/18/ Spiders
 ```
 
 
@@ -275,71 +351,192 @@ unique(spider_details$scientific_name)
 ```
 
 
-We've queried data in 80 spider species.
+Our resulting dataset now contains 80 unique spider species. 
 
 
 
----  
+### Sensors
 
-#### Sensors
 
-Some notes on sensors. Where they are located and what kind of data they collect.  
+Some notes on the sensors.  
 
+You'll need a sensor's id to query the data for that particular metric and location. The `ee_list_sensors()` function will give you a condensed list with the location, metric, binning method and most importantly the `sensor_id`. You'll need this id for the data retrieval. 
 
 
 ```r
-full_sensor_list <- ee_sensors()
-full_sensor_list[, c("station_name", "method_name")]
-```
-
-```
-##             station_name                       method_name
-## 1           Angelo HQ WS Conversion to 30-minute timesteps
-## 2       Angelo Meadow WS Conversion to 30-minute timesteps
-## 3  Angelo HQ SF Eel Gage Conversion to 30-minute timesteps
-## 4           Angelo HQ WS Conversion to 30-minute timesteps
-## 5          Cahto Peak WS Conversion to 30-minute timesteps
-## 6       Angelo Meadow WS Conversion to 30-minute timesteps
-## 7          Cahto Peak WS Conversion to 30-minute timesteps
-## 8           Angelo HQ WS Conversion to 30-minute timesteps
-## 9  Angelo HQ SF Eel Gage Conversion to 30-minute timesteps
-## 10 Angelo HQ SF Eel Gage Conversion to 30-minute timesteps
-## 11      Angelo Meadow WS Conversion to 30-minute timesteps
-## 12      Angelo Meadow WS Conversion to 30-minute timesteps
-## 13          Angelo HQ WS Conversion to 30-minute timesteps
-## 14      Angelo Meadow WS Conversion to 30-minute timesteps
-## 15         Cahto Peak WS Conversion to 30-minute timesteps
-## 16          Angelo HQ WS Conversion to 30-minute timesteps
-## 17 Angelo HQ SF Eel Gage Conversion to 30-minute timesteps
-## 18          Angelo HQ WS Conversion to 30-minute timesteps
-## 19      Angelo Meadow WS Conversion to 30-minute timesteps
-## 20         Cahto Peak WS Conversion to 30-minute timesteps
-## 21      Angelo Meadow WS Conversion to 30-minute timesteps
-## 22         Cahto Peak WS Conversion to 30-minute timesteps
-## 23          Angelo HQ WS Conversion to 30-minute timesteps
-## 24      Angelo Meadow WS Conversion to 30-minute timesteps
-## 25         Cahto Peak WS Conversion to 30-minute timesteps
-## 26      Angelo Meadow WS Conversion to 30-minute timesteps
-## 27         Cahto Peak WS Conversion to 30-minute timesteps
-## 28          Angelo HQ WS Conversion to 30-minute timesteps
-## 29         Cahto Peak WS Conversion to 30-minute timesteps
-## 30          Angelo HQ WS Conversion to 30-minute timesteps
-## 31         Cahto Peak WS Conversion to 30-minute timesteps
-## 32          Angelo HQ WS Conversion to 30-minute timesteps
-## 33          Angelo HQ WS Conversion to 30-minute timesteps
-## 34      Angelo Meadow WS Conversion to 30-minute timesteps
-## 35         Cahto Peak WS Conversion to 30-minute timesteps
-## 36      Angelo Meadow WS Conversion to 30-minute timesteps
-## 37         Cahto Peak WS Conversion to 30-minute timesteps
-## 38          Angelo HQ WS Conversion to 30-minute timesteps
-## 39      Angelo Meadow WS Conversion to 30-minute timesteps
-## 40      Angelo Meadow WS Conversion to 30-minute timesteps
+head(ee_list_sensors())
 ```
 
 
----
 
-#### Searching the engine
+-------------------------------------------------
+    station_name                 units           
+--------------------- ---------------------------
+    Angelo HQ WS      Kilojoules per square meter
+
+  Angelo Meadow WS      Watts per square meter   
+
+Angelo HQ SF Eel Gage           Percent          
+
+    Angelo HQ WS                Degree           
+
+    Cahto Peak WS          Meters per second     
+
+  Angelo Meadow WS         Meters per second     
+-------------------------------------------------
+
+Table: List of stations (continued below)
+
+ 
+-------------------------------------------------------------
+          variable                 method_name        record 
+---------------------------- ----------------------- --------
+Solar radiation total kj/m^2 Conversion to 30-minute   1625  
+                                    timesteps                
+
+Solar radiation total w/m^2  Conversion to 30-minute   1632  
+                                    timesteps                
+
+     Rel humidity perc       Conversion to 30-minute   1641  
+                                    timesteps                
+
+   Wind direction degrees    Conversion to 30-minute   1644  
+                                    timesteps                
+
+     Wind speed avg ms       Conversion to 30-minute   1651  
+                                    timesteps                
+
+     Wind speed max ms       Conversion to 30-minute   1654  
+                                    timesteps                
+-------------------------------------------------------------
+
+
+Let's download solar radiation for the Angelo reserve HQ (sensor_id = `1625`).
+
+
+```r
+# First we can grab the list of sensor ids
+sensor_ids <- ee_list_sensors()$record
+# In this case we just need data for sensor with id 1625
+angelo_hq <- sensor_ids[1]
+results <- ee_sensor_data_get(angelo_hq, page = 2)
+```
+
+```
+## Search returned 56779 observations (downloading page 2 of 2272)
+```
+
+```r
+results
+```
+
+```
+##  [Type]: sensor
+##  [Number of results]: 56779 
+##  [Call]: http://ecoengine.berkeley.edu/api/sensors/1625/data/?page=2&format=json 
+##  [Output dataset]: 25 rows
+```
+
+
+Notice that the query returned 56779 observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request page = "all" but remember that this will make 2271 requests. This could take a while and might make sense to parallelize the request or split the calls so as to avoid hammering the server all at once.
+
+Now we can examine the data itself.
+
+
+```r
+head(results$data)
+```
+
+```
+##             local_date value data_quality_qualifierid
+## 2  2010-01-06 02:00:00 -9999                       19
+## 26 2010-01-06 02:30:00 -9999                       19
+## 3  2010-01-06 03:00:00 -9999                       19
+## 4  2010-01-06 03:30:00 -9999                       19
+## 5  2010-01-06 04:00:00 -9999                       19
+## 6  2010-01-06 04:30:00 -9999                       19
+##               data_quality_qualifier_description data_quality_valid
+## 2  Passed sanity check; see incident report IR_8              FALSE
+## 26 Passed sanity check; see incident report IR_8              FALSE
+## 3  Passed sanity check; see incident report IR_8              FALSE
+## 4  Passed sanity check; see incident report IR_8              FALSE
+## 5  Passed sanity check; see incident report IR_8              FALSE
+## 6  Passed sanity check; see incident report IR_8              FALSE
+```
+
+
+We can also aggregate sensor data for any of the above mentioned sensors. We do this using the `ee_sensor_agg()` function. The function requires a sensor id and how the data should be binned. You can specify hours, minutes, seconds, days, weeks, month, and years. If for example you need the data binned every `15` days, simply add `days = 15` to the call. Once every `10` days and `2` hours would be `ee_sensor_agg(sensor_id = 1625, days = 10, hours = 2)` 
+
+
+```r
+stations <- ee_list_sensors()
+# This gives you a list to choose from
+sensor_df <- ee_sensor_agg(sensor_id = stations[1, c("record")], weeks = 2)
+```
+
+```
+##   |                                                                         |                                                                 |   0%
+```
+
+```
+## Retrieving page 1 (85 observations total)
+```
+
+```r
+sensor_df
+```
+
+```
+##  [Type]: sensor
+##  [Number of results]: 85 
+##  [Call]: http://ecoengine.berkeley.edu/api/sensors/1625/aggregate/?interval=2W&page=2&page_size=25&format=json 
+##  [Output dataset]: 25 rows
+```
+
+```r
+head(sensor_df$data)
+```
+
+```
+##    begin_date  mean min   max   sum count
+## 2  2010-01-17 18.94   0 150.8  7613   402
+## 26 2010-01-31 17.03   0 237.7 11444   672
+## 3  2010-02-14 29.54   0 336.3 19852   672
+## 4  2010-02-28 42.08   0 402.5 28276   672
+## 5  2010-03-14 59.12   0 466.6 39730   672
+## 6  2010-03-28 93.55   0 490.6 62678   670
+```
+
+
+As with other functions, the results are paginated. So the full dataset can be retrieved by adding page = all to the query. If you think this might be unusally large, simply request the first page (default action) and look at the number of results. This divided by 25 (the number of observations per request) is how many API calls you will make. if this is less than `30`, it will run very quickly. If this is over a 100, your best course of action would be to parallelize the request or split them up. Since we only need `85` records in this case:
+
+
+```r
+sensor_df <- ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
+```
+
+```
+## Retrieving 4 pages (total: 85 records)
+```
+
+```
+##   |                                                                         |                                                                 |   0%  |                                                                         |================                                                 |  25%  |                                                                         |================================                                 |  50%  |                                                                         |=================================================                |  75%  |                                                                         |=================================================================| 100%
+```
+
+```r
+sensor_df
+```
+
+```
+##  [Type]: sensor
+##  [Number of results]: 85 
+##  [Call]: http://ecoengine.berkeley.edu/api/sensors/1625/aggregate/?interval=2W&page=2&page_size=25&format=json 
+##  [Output dataset]: 85 rows
+```
+
+
+
+### Searching the engine  
 
 How to search the engine. Some notes on elastic search.
 
@@ -349,13 +546,6 @@ ee_search()
 ee_search_obs_get()
 ee_search()
 ```
-
-
----
-
-#### Aggregated sensor data
-
-Ways to obtain aggregated sensor data.  
 
 
 ---
@@ -400,7 +590,7 @@ unique(source_list$name)
 
 
 --------------------------
-unique.source_list.name.  
+name                      
 --------------------------
 LACM Vertebrate Collection
 
