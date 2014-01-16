@@ -1,6 +1,7 @@
 engine_notes.R
 man-roxygen/
 testing.R
+test_data.R
 .travis.yml
 .Rapp.history
 inst/doc
