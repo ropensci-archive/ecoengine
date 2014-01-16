@@ -7,15 +7,14 @@
 #' @param  remote_id Need to describe these parameters
 #' @param  collection_code Type of collection. Can be \code{CalAcademy}, \code{Private}, \code{VTM}, \code{CDFA}. \code{CalFlora} Others TBA 
 #' @param  source  Need to describe these parameters
-#' @param  min_date Need to describe these parameters
-#' @param  max_date Need to describe these parameters
+#' @template dates
 #' @template foptions
 #' @export
 #' @examples \dontrun{
 #' Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
 #' ee_sensors_get()
-#' s1 <- ee_sensors_get(page = 1)
-#' s2 <- ee_sensors_get(page = 2)
+#' stations_1 <- ee_sensors_get(page = 1)
+#' stations_2 <- ee_sensors_get(page = 2)
 #'}
 ee_sensors_get <- function(page = NULL, 
                         page_size = 25,
@@ -91,9 +90,9 @@ ee_sensors <- function(..., page_size = 25) {
 #' @export
 #' @examples \dontrun{
 #' full_sensor_list <- ee_sensors()
-#' x <- ee_list_sensors()$record
-#' z <- ee_sensor_data_get(x[1], page = 2)
-#' z1 <- ee_sensor_data_get(x, page = 3)
+#' station <- ee_list_sensors()$record
+#' page_1_data <- ee_sensor_data_get(station[1], page = 2)
+#' page_2_data <- ee_sensor_data_get(station[1], page = 3)
 #'}
 ee_sensor_data_get <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
 
@@ -129,10 +128,9 @@ ee_sensor_data_get <- function(sensor_id = NULL, page = NULL, page_size = 25, qu
 #' @export
 #' @seealso \code{\link{ee_sensors})}
 #' @examples \dontrun{
-#' full_sensor_list <- ee_sensors()
-#' x <- full_sensor_list[1, ]$data_url
-#' sensor_data <- ee_sensor_data(data_url = x,  page = 1:2)
-#' sensor_data_3 <- ee_sensor_data(data_url = x,  page = 1)
+#' stations <- ee_list_sensors()$record
+#' sensor_data <- ee_sensor_data(sensor_id = stations[1],  page = 1:2)
+#' sensor_data_3 <- ee_sensor_data(sensor_id = stations[1],  page = 1)
 #'}
 ee_sensor_data <- function(...) {
     ee_get(..., input_fn = ee_sensor_data_get, dtype = "sensor")

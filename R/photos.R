@@ -4,18 +4,18 @@
 #' @template pages
 #' @param  state_province Need to describe these parameters
 #' @param  county California counties. Package include a full list of counties. To load dataset \code{data(california_counties)}
-#' @param  genus Need to describe these parameters
-#' @param  scientific_name Need to describe these parameters
-#' @param  authors Need to describe these parameters
-#' @param  remote_id Need to describe these parameters
+#' @param  genus genus name
+#' @param  scientific_name scientiifc name
+#' @param  authors author name
+#' @param  remote_id remote id
 #' @param  collection_code Type of collection. Can be \code{CalAcademy}, \code{Private}, \code{VTM}, \code{CDFA}. \code{CalFlora} Others TBA 
-#' @param  source  Need to describe these parameters
+#' @param  source data source. See \code{\link{ee_sources}}
 #' @template dates
 #' @param  related_type Need to describe these parameters
 #' @param  related  Need to describe these parameters
 #' @param  other_catalog_numbers Need to describe these parameters
-#' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress output.
-#' @param  foptions = list() Other options to pass to curl
+#' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.
+#' @template foptions
 #' @export
 #' @importFrom httr stop_for_status content GET
 #' @importFrom plyr compact rbind.fill
@@ -37,12 +37,13 @@
 #' alameda <- ee_photos_get(county = california_counties[1, 1])
 #' alameda$data
 #' # You can also get all the data for Alameda county with one request
-#' alameda <- ee_photos_get(county = california_counties[1, 1], page = "all")
+#' alameda <- ee_photos(county = "Alameda county", page = "all")
 #' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
 #' charles_results <- ee_photos_get(author = "Charles Webber")
 #' # You can also request all pages in a single call by using ee_photos_get()
-#' # In this example below, there are 6 pages of results (52 result items). #' Function will return all at once.
+#' # In this example below, there are 6 pages of results (52 result items). 
+#' Function will return all at once.
 #' racoons <- ee_photos_get(scientific_name = "Procyon lotor", quiet = TRUE)
 #'}
 ee_photos_get <- function(page = NULL, 
@@ -101,7 +102,7 @@ ee_photos_get <- function(page = NULL,
 #'ee_photos
 #'
 #'This wrapper around ee_photos(). Allows a user to retrive all data at once for a query rather than request a page at a time.
-#' @param ... All the arguments that go into \code{ee_photos}
+#' @param ... All the arguments that go into \code{\link{ee_photos}}
 #'
 #' \itemize{
 #' \item{"page"                   } {Page Number}                                                        

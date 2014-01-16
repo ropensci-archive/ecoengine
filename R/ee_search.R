@@ -1,8 +1,8 @@
 
 
-#' ee search
+#' Ecoengine search
 #'
-#' Search the ecoengine
+#' Search across the entire ecoengine database. 
 #' @param query search term
 #' @template foptions
 #' @importFrom data.table rbindlist
@@ -44,7 +44,7 @@ rbindlist(faceted_search_results)
 #' A powerful way to search through the observations. 
 #' @param query = The search term
 #' @template foptions
-#' @param  quiet Default is FALSE. Set to TRUE to suppress messages.
+#' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.
 #' @template pages
 #' @export
 #' @keywords search
@@ -117,7 +117,7 @@ ee_search_obs <- function(..., page = NULL, page_size = 25, foptions = list()) {
 	# If all pages
 	if(identical(page, "all")) {
 		if(total_obs > 5000) { 
-			message("This request may take some time given the large size of the request")
+			message("This request may take a significant amount of time or become unresponsive given the large size of the request")
 	}
 		message(sprintf("Retrieving %s records ...\n", total_obs))
 		all_results <- list()

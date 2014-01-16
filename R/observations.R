@@ -1,26 +1,26 @@
 #' Observations List
 #'
-#'API endpoint that represents a list of observations. Prameter options have not been fleshed out yet
-#' @param country description needed.
+#'API endpoint that represents a list of observations.
+#' @param country country name
 #' @param  state_province description needed.
-#' @param  county description needed.
-#' @param  kingdom  description needed.
-#' @param  phylum description needed.
-#' @param  order  description needed.
-#' @param  clss description needed.
-#' @param  family description needed.
-#' @param  genus description needed.
+#' @param  county California county. See \code{data(california_counties)}
+#' @param  kingdom  kingdom name
+#' @param  phylum phylum name
+#' @param  order order name
+#' @param  clss class name
+#' @param  family family name
+#' @param  genus genus name.
 #' @param  scientific_name description needed.
-#' @param  kingdom_exact  description needed.
-#' @param  phylum_exact description needed.
-#' @param  order_exact  description needed.
-#' @param  clss_exact description needed.
-#' @param  family_exact description needed.
-#' @param  genus_exact description needed.
-#' @param  scientific_name_exact description needed.
-#' @param  remote_id description needed.
-#' @param  collection_code description needed.
-#' @param  source  description needed.
+#' @param  kingdom_exact  exact kingdom name
+#' @param  phylum_exact exact phylum name
+#' @param  order_exact  exact order name
+#' @param  clss_exact class name
+#' @param  family_exact exact family name
+#' @param  genus_exact exact genus name
+#' @param  scientific_name_exact exact scientific name
+#' @param  remote_id remote ID
+#' @param  collection_code collections code
+#' @param  source  data source. See \code{\link{ee_sources}}
 #' @template dates
 #' @param  georeferenced Default is \code{FALSE}. Set to TRUE to return only georeferenced records.
 #' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}
@@ -75,14 +75,13 @@ return(observation_results)
 #'
 #'Retrieves observation records from BigCB
 #' @param ... all the arguments that get passed to \code{\link{ee_observations_get}}
-#' @param  page Page number or range. Use "all" to retrieve all pages. May time out for extremely large queries
-#' @param  page_size The number of observations per page. Default is 10. Do not set this too high or the server will time out
+#' @template pages
 #' @export
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso \code{\link{ee_observations_get}}
 #' @examples \dontrun{
 #' pinus_first_page <- ee_observations(scientific_name_exact = "Pinus", page = 1)
-#' ee_observations(scientific_name_exact = "Pinus", page = 1:2)
+#' pinus_two_page <- ee_observations(scientific_name_exact = "Pinus", page = 1:2)
 #'}
 ee_observations <- function(..., page_size = 25, page = NULL) {
 	
