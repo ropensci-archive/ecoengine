@@ -46,6 +46,7 @@ if(sensor_res$count == 0) {
 		})
 		sensor_data_agg <- do.call(rbind.data.frame, (lapply(sensor_res_list, LinearizeNestedList)))
 		sensor_data_agg$begin_date <- ymd_hms(sensor_data_agg$begin_date)
+		sensor_res[[2]] <- ifelse(is.null(sensor_res[[2]]),"NA", sensor_res[[2]])
 		sensor_results <- list(results = sensor_res$count, call = sensor_res[[2]], type = "sensor", data = sensor_data_agg)
     	class(sensor_results) <- "ecoengine"
 		sensor_results

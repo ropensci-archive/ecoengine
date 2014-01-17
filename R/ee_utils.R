@@ -127,6 +127,7 @@ if(!is.null(page)) {
 			}
 		}
 		result_data <- do.call(rbind.fill, result_list)
+        x[[2]] <- ifelse(is.null(x[[2]]),"NA", x[[2]])
 		all_obs_results <- list(results = nrow(result_data), call = x[[2]], type = dtype, data = result_data)
 		class(all_obs_results) <- "ecoengine"
 }

@@ -115,6 +115,7 @@ ee_sensor_data_get <- function(sensor_id = NULL, page = NULL, page_size = 25, qu
     results <- do.call(rbind.data.frame, lapply(sensor_raw, LinearizeNestedList))
     names(results) <- c("local_date", "value", "data_quality_qualifierid", "data_quality_qualifier_description", "data_quality_valid")
     results$local_date <- suppressWarnings(ymd_hms(results$local_date))
+    data_list[[2]] <- ifelse(is.null(data_list[[2]]),"NA", data_list[[2]])
     sensor_data <- list(results = total_obs, call = data_list[[2]], type = "sensor", data = results)
     class(sensor_data) <- "ecoengine"
     sensor_data

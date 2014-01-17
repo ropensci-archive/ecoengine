@@ -69,6 +69,7 @@ obs_df_cleaned <- ldply(obs_results, function(x) {
                              md <-(data.frame((main_data)))
                              cbind(md, geo_data)
                             })
+obs_data[[2]] <- ifelse(is.null(obs_data[[2]]),"NA", obs_data[[2]])
 observation_results <- list(results = obs_data$count, call = obs_data[[2]], type = "observations", data = obs_df_cleaned)
 
 class(observation_results) <- "ecoengine"
@@ -149,6 +150,7 @@ if(!is.null(page)) {
 			}
 		}
 		result_data <- do.call(rbind.fill, result_list)
+		x[[2]] <- ifelse(is.null(x[[2]]),"NA", x[[2]])
 		all_obs_results <- list(results = nrow(result_data), call = x[[2]], type = "observations", data = result_data)
 		class(all_obs_results) <- "ecoengine"
 }
