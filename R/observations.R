@@ -1,6 +1,7 @@
 #' Observations List
 #'
 #'API endpoint that represents a list of observations.
+#' @template pages
 #' @param country country name
 #' @param  state_province description needed.
 #' @param  county California county. See \code{data(california_counties)}
@@ -24,7 +25,7 @@
 #' @template dates
 #' @param  georeferenced Default is \code{FALSE}. Set to TRUE to return only georeferenced records.
 #' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}
-#' @template pages
+
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to supress messages.
 #' @template foptions
 #' @export
@@ -34,13 +35,15 @@
 #' @examples \dontrun{
 #' us <- ee_observations_get(country = "United States")
 #' pinus <- ee_observations_get(scientific_name_exact = "Pinus")
+#' lynx_data <- ee_observations_get(genus = "Lynx")
+#' # Georeferenced data only
+#' lynx_data <- ee_observations_get(genus = "Lynx", georeferenced = TRUE)
 #'}
-ee_observations_get <- function(country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, page = NULL, page_size = 10,  quiet  = FALSE, foptions = list()) {
+ee_observations_get <- function(page = NULL, page_size = 25, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE, foptions = list()) {
  obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
  if(page_size > 1000) {
  		message("This is a unusually large page size and will likely cause the server to time out")
  }
-
 
  args <- as.list(compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom_exact = kingdom_exact, phylum_exact = phylum_exact, order_exact = order_exact, clss_exact = clss_exact ,family_exact = family_exact , genus_exact  = genus_exact, scientific_name_exact = scientific_name_exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, page = page, page_size = page_size)))
 data_sources <- GET(obs_url, query = args, foptions)
@@ -53,6 +56,9 @@ message(sprintf("%s observations found", obs_data[[1]]))
 # number of results, the everything in appropriate slots.
 obs_results <- obs_data[[4]]
 obs_df_cleaned <- ldply(obs_results, function(x) {
+							 x$begin_date <- ifelse(is.null(x$begin_date), "NA", x$begin_date)
+							 x$end_date <- ifelse(is.null(x$end_date), "NA", x$end_date)
+
 							 if(is.null(x[[10]])) { 
 							 geo_data <- data.frame(geojson.type ="NA", geojson.coordinates1 ="NA", geojson.coordinates2 ="NA")	
 							 } else {
@@ -82,16 +88,15 @@ return(observation_results)
 #' @examples \dontrun{
 #' pinus_first_page <- ee_observations(scientific_name_exact = "Pinus", page = 1)
 #' pinus_two_page <- ee_observations(scientific_name_exact = "Pinus", page = 1:2)
+#' lynx_data <- ee_observations(genus = "Lynx", page = "all")
 #'}
 ee_observations <- function(..., page_size = 25, page = NULL) {
 	
 	total_results <- NULL
-	page_size <- ifelse(is.null(page_size), 25, page_size)
 
 	x <- ee_observations_get(..., quiet = TRUE)
 	total_results <- x$results
 	all_available_pages <- ceiling(total_results/page_size)	
-
 	if(identical(class(page), "character") && !identical(page , "all")) {
 	stop("Page range not understood. Please use all or specify a numeric range")
 }
