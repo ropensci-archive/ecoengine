@@ -1,23 +1,58 @@
 \name{ee_sensor_agg}
 \alias{ee_sensor_agg}
-\title{Ecoengine sensor aggregations}
+\title{sensor aggregation}
 \usage{
-ee_sensor_agg(...)
+ee_sensor_agg(sensor_id = NULL, page = NULL, page_size = 25,
+  hours = NULL, minutes = NULL, seconds = NULL, days = NULL,
+  weeks = NULL, month = NULL, years = NULL, min_date = NULL,
+  max_date = NULL, quiet = FALSE, foptions = list())
 }
 \arguments{
-  \item{...}{all the arguments that get passed to
-  \code{\link{ee_sensor_agg_get}}}
+  \item{page}{Page number}
+
+  \item{page_size}{The number of observations per page
+  returned by the query. The package default is \code{25}
+  observations. The API default, however, is \code{10}.
+  Setting this number higher will require fewer calls (i.e.
+  pages) but a large size may also fail or timeout.}
+
+  \item{min_date}{Lower date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
+
+  \item{max_date}{upper date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
+
+  \item{sensor_id}{The id of the sensor.}
+
+  \item{hours}{Time interval in hours}
+
+  \item{minutes}{Time interval in minutes}
+
+  \item{seconds}{Time interval in seconds}
+
+  \item{days}{Time interval in days}
+
+  \item{weeks}{Time interval in weeks}
+
+  \item{month}{Time interval in months}
+
+  \item{years}{Time interval in years}
+
+  \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
+  to suppress messages.}
+
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \description{
-Retrieves sensor data. This functions serves as a wrapper
-for \code{\link{ee_sensor_agg_get}} and takes the same
-arguments along with page options. Page can be a integer, a
-range, or "all"
+Aggregated sensor data for any station.
 }
 \examples{
 \dontrun{
-sensor_df <- ee_sensor_agg(sensor_id = 1625, weeks = 2)
-sensor_df <- ee_sensor_agg(page = "all", sensor_id = 1625, weeks = 2)
+aggregated_data <-  ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
 }
 }
 

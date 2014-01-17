@@ -1,26 +1,38 @@
 \name{ee_sensor_data}
 \alias{ee_sensor_data}
-\title{sensor data}
+\title{Sensor data}
 \usage{
-ee_sensor_data(...)
+ee_sensor_data(sensor_id = NULL, page = NULL, page_size = 25,
+  quiet = FALSE, foptions = list())
 }
 \arguments{
-  \item{...}{All argument that get passed to
-  \code{\link{ee_sensor_data_get}} This function is a
-  wrapper around \code{\link{ee_sensor_data_get}}. Allows a
-  user to request several pages worth of data.}
+  \item{sensor_id}{The id of the sensor.}
+
+  \item{page}{Page number}
+
+  \item{page_size}{The number of observations per page
+  returned by the query. The package default is \code{25}
+  observations. The API default, however, is \code{10}.
+  Setting this number higher will require fewer calls (i.e.
+  pages) but a large size may also fail or timeout.}
+
+  \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
+  to suppress output.}
+
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \description{
-sensor data
+Retrieves data for any sensor returned by
+\code{\link{ee_list_sensors}}.
 }
 \examples{
 \dontrun{
-stations <- ee_list_sensors()$record
-sensor_data <- ee_sensor_data(sensor_id = stations[1],  page = 1:2)
-sensor_data_3 <- ee_sensor_data(sensor_id = stations[1],  page = 1)
+full_sensor_list <- ee_sensors()
+station <- ee_list_sensors()$record
+page_1_data <- ee_sensor_data(sensor_id = station[1], page = 1)
+page_2_data <- ee_sensor_data(station[1], page = 1:3)
 }
-}
-\seealso{
-\code{\link{ee_sensors})}
 }
 

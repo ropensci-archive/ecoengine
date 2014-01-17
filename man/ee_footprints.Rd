@@ -13,7 +13,7 @@ ee_footprints(foptions = list())
 data.frame
 }
 \description{
-List of ecoengine footprints
+List of ecoengine footprints.
 }
 \examples{
 \dontrun{

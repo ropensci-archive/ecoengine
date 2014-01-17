@@ -32,10 +32,6 @@ faceted_search_results <- lapply(fields_compacted, function(y) {
 rbindlist(faceted_search_results)
 }
 
-# ------------------------------------------------
-# Some notes, I realized this is not all that different from the ee_observations function. 
-# This does a full on query across all fields 
-# ------------------------------------------------
 
 
 #'Search observations
@@ -49,106 +45,65 @@ rbindlist(faceted_search_results)
 #' @keywords search
 #' @seealso \code{\link{ee_search})}
 #' @return data.frame
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @examples \dontrun{
-#' ee_search_obs_get(query  = "Lynx")
-#' ee_search_obs_get(query  = "genus:Lynx")
+#' general_lynx_query <- ee_search_obs(query  = "Lynx")
+#' lynx_data <- ee_search_obs(query  = "genus:Lynx")
+#' all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all")
 #'}
-ee_search_obs_get <- function(query = NULL, page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
+ee_search_obs <- function(query = NULL, page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
 	obs_search_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"	
-	args <- compact(as.list(c(q = query, page = page, page_size = 25)))
+	args <- compact(as.list(c(q = query, page_size = 25)))
+    main_args <- args
+    main_args$page <- as.character(page)
 	obs_search <- GET(obs_search_url, query = args, foptions)
 	obs_results <- content(obs_search)
-	if(!quiet) message(sprintf("Search returned %s results \n", obs_results$count))
+	if(is.null(page)) { page <- 1 }
+required_pages <- ee_paginator(page, obs_results$count)
 
-	# Split the two, with and without coordinates since we can't merge them into a data.frame otherwise
-	without_geojson <- Filter(function(x) { is.null(x$geojson) }, obs_results$results)
-	with_geojson <- Filter(function(x) { !is.null(x$geojson) }, obs_results$results)
+if(!quiet) {
+message(sprintf("Search contains %s observations (downloading %s of %s pages)", obs_results$count, length(required_pages), max(required_pages)))
+pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
+}
 
-	with_geojson_df <- ldply(with_geojson, function(x) {
-						 geo_data <- data.frame(t(unlist(x[10])))
-						 main_data <- unlist(x[-10])
-  						 main_data[is.null(main_data)] <- "none" # doesn't address empty strings
-  						 md <-(data.frame(as.list(main_data), stringsAsFactors = FALSE))	
-  						 cbind(md, geo_data)
-					})
+    results <- list()
+    for(i in required_pages) {
+    	args$page <- i 
+    		obs_search <- GET(obs_search_url, query = args, foptions)
+			obs_results <- content(obs_search)
 
-	without_geojson_df <- ldply(without_geojson, function(x) {
-						main_data <- unlist(x[-10])
-  						main_data[is.null(main_data)] <- "none" # doesn't address empty strings
-  						md <-(data.frame(as.list(main_data), stringsAsFactors = FALSE))	
-	}) 
+    		# Split the two, with and without coordinates since we can't merge them into a data.frame otherwise
+			without_geojson <- Filter(function(x) { is.null(x$geojson) }, obs_results$results)
+			with_geojson <- Filter(function(x) { !is.null(x$geojson) }, obs_results$results)
 
-	obs_data <- rbind.fill(with_geojson_df, without_geojson_df)  
-	all_obs_results <- list(results = obs_results$count, call = obs_results[[2]], type = "observations", data = obs_data)
-	# all_obs_results <- list(results = obs_results$count, call = args, type = "observations", data = obs_data)
+			with_geojson_df <- ldply(with_geojson, function(x) {
+								 geo_data <- data.frame(t(unlist(x[10])))
+								 main_data <- unlist(x[-10])
+		  						 main_data[is.null(main_data)] <- "none" # doesn't address empty strings
+		  						 md <-(data.frame(as.list(main_data), stringsAsFactors = FALSE))	
+		  						 cbind(md, geo_data)
+							})
+
+			without_geojson_df <- ldply(without_geojson, function(x) {
+								main_data <- unlist(x[-10])
+		  						main_data[is.null(main_data)] <- "none" # doesn't address empty strings
+		  						md <-(data.frame(as.list(main_data), stringsAsFactors = FALSE))	
+			}) 
+
+	obs_data <- rbind.fill(with_geojson_df, without_geojson_df) 
+	results[[i]] <- obs_data
+	if(!quiet) setTxtProgressBar(pb, i)
+   	if(i %% 25 == 0) Sys.sleep(2) 
+    }    	
+
+	all_obs_data <- do.call(rbind.fill, results)
+	all_obs_results <- list(results = obs_results$count, call = main_args, type = "observations", data = all_obs_data)
 	class(all_obs_results) <- "ecoengine"
+
+	if(!quiet) close(pb)
     all_obs_results
 }
 
-
-#' ee_search_obs
-#'
-#' Elastic search on observations. This wrapper for \code{\link{ee_search_obs}}
-#' @param ... all the arguments that get passed to \code{\link{ee_search_obs}}
-#' @template pages
-#' @template foptions
-#' @importFrom plyr rbind.fill
-#' @importFrom data.table rbindlist
-#' @export
-#' @examples \dontrun{
-#' all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all")
-#'}
-ee_search_obs <- function(..., page = NULL, page_size = 25, foptions = list()) {
-	 	obs_call <- ee_search_obs_get(..., quiet = TRUE)
-	 	total_obs <- obs_call$results
-	 	total_pages <- ceiling(total_obs/page_size)
-
-
-	if(identical(class(page), "numeric") || identical(class(page), "integer")) {
-		message("Page class is numeric/integer")
-		last_page <- max(page)
-		if(last_page > total_pages) {
-				stop("Request includes a page not in range")	
-			} else {
-			total_pages <- length(page)				
-			}
-	}
-
-	# If all pages
-	if(identical(page, "all")) {
-		if(total_obs > 5000) { 
-			message("This request may take a significant amount of time or become unresponsive given the large size of the request")
-	}
-		message(sprintf("Retrieving %s records ...\n", total_obs))
-		all_results <- list()
-		for(i in seq_along(1:total_pages)) {
-			all_results[[i]] <- ee_search_obs_get(..., page = i, page_size = page_size, quiet = TRUE)$data
-			# API currently allows 25 calls per second
-			if(i %% 25 == 0) Sys.sleep(1)
-		}
-	result_data <- do.call(rbind.fill, all_results)
-	all_obs_results <- list(results = nrow(result_data), call = obs_call$call, type = "observations", data = result_data)
-	class(all_obs_results) <- "ecoengine"
-	}
-	# If some pages
-	if(identical(class(page), "numeric") || identical(class(page), "integer")) {
-	all_results <- list()	
-	for(i in seq_along(total_pages)) {
-			all_results[[i]] <- ee_search_obs_get(..., page = i, page_size = page_size, quiet = TRUE)$data
-			# API currently allows 25 calls 
-			if(i %% 25 == 0) Sys.sleep(1)
-		}
-	result_data <- do.call(rbindlist, all_results)
-	all_obs_results <- list(results = nrow(result_data), call = obs_call$call, type = "observations", data = result_data)
-	class(all_obs_results) <- "ecoengine"
-	}	
-	# If no page
-	if(is.null(page)) {
-		all_obs_results <- ee_search_obs_get(..., quiet = TRUE)
-	}
-
-	all_obs_results
-}
 
 
 
