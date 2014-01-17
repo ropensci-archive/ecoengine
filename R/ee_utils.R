@@ -3,7 +3,8 @@
 #' @method print ecoengine
 #' @S3method print ecoengine
 #' @param x An object of class \code{ecoengine}
-#' @importFrom DBI  print.list.pairs
+#' @importFrom DBI print.list.pairs
+#' @importFrom plyr compact
 #' @param ... additional arguments
 print.ecoengine <- function(x, ...) {
 cat(sprintf("[Total results]: %s \n", x$results))

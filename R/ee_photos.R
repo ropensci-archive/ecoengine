@@ -81,11 +81,11 @@ ee_photos <- function(page = NULL,
 						 	related  = related , 
 						 	other_catalog_numbers = other_catalog_numbers)))
 	main_args <- args
+	if(is.null(page)) { page <- 1 }
 	main_args$page <- as.character(page)
 	data_sources <- GET(photos_url, query = args, foptions)
     stop_for_status(data_sources)
     photos <- content(data_sources)
-    if(is.null(page)) { page <- 1 }
 	required_pages <- ee_paginator(page, photos$count)
     
 

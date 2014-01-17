@@ -88,11 +88,12 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
     data_url <- paste0("http://ecoengine.berkeley.edu/api/sensors/", sensor_id, "/data?format=json")
     args <- compact(list(page_size = page_size))
     main_args <- args
+    if(is.null(page)) { page <- 1 }
     main_args$page <- as.character(page)
     temp_data <- GET(data_url, query = args)
     stop_for_status(temp_data)
     sensor_raw <- content(temp_data)
-     if(is.null(page)) { page <- 1 }
+
     required_pages <- ee_paginator(page, sensor_raw$count)
     total_p <- ceiling(sensor_raw$count/page_size)
 
@@ -100,7 +101,7 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
     message(sprintf("Search contains %s records (downloading %s page(s) of %s)", sensor_raw$count, length(required_pages), total_p))
     pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
     }
-    
+
     results <- list()
     for(i in required_pages) {
         args$page <- i 

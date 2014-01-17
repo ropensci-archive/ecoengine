@@ -32,12 +32,13 @@ interval <- as.list(compact(c(H = hours,  T = minutes, S = seconds, D = days, W 
 paste_names <- function(interval_name, value) { paste(interval_name, value, collapse = "", sep = "") }
 interval <- llply(interval, paste_names, names(interval))
 args <- as.list(compact(c(page_size = 25, min_date = min_date,  interval = interval[[1]], max_date = max_date)))
+if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
 sensor_call <- GET(sensor_agg_url, query = args, foptions)
 stop_for_status(sensor_call)
 sensor_res <- content(sensor_call)
-if(is.null(page)) { page <- 1 }
+
 if(sensor_res$count == 0) {
 	return(NULL)
 }
