@@ -12,23 +12,6 @@ print.ecoengine <- function(x, ...) {
     cat("\n")
 }
 
-#' Plots metrics for an ecoengine object
-#' 
-#' @method plot ecoengine
-#' @S3method plot ecoengine
-#' @param x An object of class \code{ecoengine}
-#' @param ... additional arguments
-plot.ecoengine <- function(x, ...) {
-
-value <- NA
-# just to trick check()    
-if (!is(x, "ecoengine"))   
-    stop("Not an ecoengine object")
-# Rest of this is not coded up. 
-# Will have to figure out what to plot on a case by case basis or possibily ditch this.
-
-}
-
 
 #' ee_pages - Returns total number of pages for any ecoengine request
 #'
