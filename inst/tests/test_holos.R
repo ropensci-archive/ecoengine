@@ -74,8 +74,8 @@ context("Testing sensor data")
 test_that("Sensor data is returned correctly", {
 full_sensor_list <- ee_sensors()
 expect_is(full_sensor_list, "data.frame")
-x <- full_sensor_list[1, ]$data_url
-sensor_data <- ee_sensor_data(data_url = x, page = 1:2)
+x <- full_sensor_list[1, ]$record
+sensor_data <- ee_sensor_data(sensor_id = x, page = 1:2)
 expect_is(sensor_data, "ecoengine")
 expect_is(sensor_data$data, "data.frame")
 })
