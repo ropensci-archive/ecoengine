@@ -2,17 +2,25 @@
 \alias{ee_observations_get}
 \title{Observations List}
 \usage{
-ee_observations_get(country = "United States", state_province = NULL,
-  county = NULL, kingdom = NULL, phylum = NULL, order = NULL,
-  clss = NULL, family = NULL, genus = NULL, scientific_name = NULL,
+ee_observations_get(page = NULL, page_size = 25,
+  country = "United States", state_province = NULL, county = NULL,
+  kingdom = NULL, phylum = NULL, order = NULL, clss = NULL,
+  family = NULL, genus = NULL, scientific_name = NULL,
   kingdom_exact = NULL, phylum_exact = NULL, order_exact = NULL,
   clss_exact = NULL, family_exact = NULL, genus_exact = NULL,
   scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL,
   source = NULL, min_date = NULL, max_date = NULL,
-  georeferenced = FALSE, bbox = NULL, page = NULL, page_size = 10,
-  quiet = FALSE, foptions = list())
+  georeferenced = FALSE, bbox = NULL, quiet = FALSE, foptions = list())
 }
 \arguments{
+  \item{page}{Page number}
+
+  \item{page_size}{The number of observations per page
+  returned by the query. The package default is \code{25}
+  observations. The API default, however, is \code{10}.
+  Setting this number higher will require fewer calls (i.e.
+  pages) but a large size may also fail or timeout.}
+
   \item{country}{country name}
 
   \item{state_province}{description needed.}
@@ -68,14 +76,6 @@ ee_observations_get(country = "United States", state_province = NULL,
   \item{bbox}{Set a bounding box for your search. Use
   format \code{bbox=-124,32,-114,42}}
 
-  \item{page}{Page number}
-
-  \item{page_size}{The number of observations per page
-  returned by the query. The package default is \code{25}
-  observations. The API default, however, is \code{10}.
-  Setting this number higher will require fewer calls (i.e.
-  pages) but a large size may also fail or timeout.}
-
   \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
   to supress messages.}
 
@@ -93,6 +93,9 @@ API endpoint that represents a list of observations.
 \dontrun{
 us <- ee_observations_get(country = "United States")
 pinus <- ee_observations_get(scientific_name_exact = "Pinus")
+lynx_data <- ee_observations_get(genus = "Lynx")
+# Georeferenced data only
+lynx_data <- ee_observations_get(genus = "Lynx", georeferenced = TRUE)
 }
 }
 

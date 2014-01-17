@@ -23,6 +23,7 @@ Retrieves observation records from BigCB
 \dontrun{
 pinus_first_page <- ee_observations(scientific_name_exact = "Pinus", page = 1)
 pinus_two_page <- ee_observations(scientific_name_exact = "Pinus", page = 1:2)
+lynx_data <- ee_observations(genus = "Lynx", page = "all")
 }
 }
 \seealso{
