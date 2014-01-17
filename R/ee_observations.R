@@ -45,12 +45,13 @@ ee_observations <- function(page = NULL, page_size = 25, country = "United State
 
 
 args <- as.list(compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom_exact = kingdom_exact, phylum_exact = phylum_exact, order_exact = order_exact, clss_exact = clss_exact ,family_exact = family_exact , genus_exact  = genus_exact, scientific_name_exact = scientific_name_exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, page_size = page_size)))
+if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
 data_sources <- GET(obs_url, query = args, foptions)
 stop_for_status(data_sources)
 obs_data <- content(data_sources)
-if(is.null(page)) { page <- 1 }
+
 required_pages <- ee_paginator(page, obs_data$count)
 
 
