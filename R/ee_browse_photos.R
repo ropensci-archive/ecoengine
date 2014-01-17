@@ -10,9 +10,9 @@
 #' @examples \dontrun{
 #' view_photos(ee_photos())
 #' # Pictures of racoons
-#' view_photos(ee_photos_get(scientific_name = "Procyon lotor", quiet = TRUE))
+#' view_photos(ee_photos(scientific_name = "Procyon lotor", quiet = TRUE))
 #' # or the California Condor
-#' view_photos(ee_photos_get(scientific_name = "Gymnogyps californianus", quiet = TRUE))
+#' view_photos(ee_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
 #' }
 
 view_photos <- function(input = NULL, output = NULL, browse = TRUE)
