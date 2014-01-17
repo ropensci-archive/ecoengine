@@ -1,0 +1,26 @@
+\name{ee_pages}
+\alias{ee_pages}
+\title{ee_pages - Returns total number of pages for any ecoengine request}
+\usage{
+ee_pages(ee, page_size = 25)
+}
+\arguments{
+  \item{ee}{Object of class \code{ecoengine}}
+
+  \item{page_size}{Default page size. Currently set to
+  \code{25} package wide.}
+}
+\value{
+integer
+}
+\description{
+ee_pages - Returns total number of pages for any ecoengine
+request
+}
+\examples{
+\dontrun{
+page_1_data <- ee_sensor_data_get(1625, page = 2)
+ee_pages(page_1_data)
+}
+}
+

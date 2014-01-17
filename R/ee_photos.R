@@ -23,7 +23,7 @@
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso related: \code{\link{ee_photos}} \code{\link{california_counties}}
 #' @examples \dontrun{
-#' # Request all photos. This request will paginate. Don't use ee_photos_get #' on such a large request
+#' # Request all photos. This request will paginate. 
 #' ee_photos()
 #' # Search by collection code. See notes above on options
 #' ee_photos(collection_code = "CalAcademy")
