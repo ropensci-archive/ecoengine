@@ -20,18 +20,19 @@
 #' @importFrom httr stop_for_status content GET
 #' @importFrom plyr compact rbind.fill
 #' @importFrom lubridate ymd_hms
-#' @seealso related: \code{\link{ee_photos_get}} \code{\link{california_counties}}
+#' @seealso related: \code{\link{ee_photos}} \code{\link{california_counties}}
 #' @examples \dontrun{
 #' # Request all photos. This request will paginate. Don't use ee_photos_get #' on such a large request
-#' ee_photos_get()
+#' ee_photos()
 #' # Search by collection code. See notes above on options
-#' ee_photos_get(collection_code = "CalAcademy")
-#' ee_photos_get(collection_code = "VTM")
-#' ee_photos_get(collection_code = "CalFlora")
-#' ee_photos_get(collection_code = "CDFA")
+#' ee_photos(collection_code = "CalAcademy")
+#' ee_photos(collection_code = "VTM")
+#' ee_photos(collection_code = "CalFlora")
+#' ee_photos(collection_code = "CDFA")
 #' # Search by county.
-#' ee_photos_get(county = "Santa Clara County")
-#' ee_photos_get(county = "Merced County")
+#' sc_county <- ee_photos(county = "Santa Clara County")
+#' merced <- ee_photos(county = "Merced County")
+#' merced <- ee_photos(county = "Merced County", page = "all")
 #' # The package also contains a full list of counties
 #' data(california_counties)
 #' alameda <- ee_photos(county = california_counties[1, 1])
@@ -102,8 +103,6 @@ ee_photos <- function(page = NULL,
     	if(i %% 25 == 0) Sys.sleep(2) 
     }
     
-    browser()
-
 	photos_data <- do.call(rbind.fill, results)
 	photos_data$begin_date <- suppressWarnings(ymd_hms(photos_data$begin_date))
 	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
@@ -114,7 +113,22 @@ ee_photos <- function(page = NULL,
 }
 
 
-    ee_paginator <- function(page, total_obs) {
+
+#'ecoengine paginator
+#'
+#'Takes a page range and total number of observations to return the right sequence of pages that need to be crawled.
+#' @param page requested page number or page range. Can also be "all"
+#' @param  total_obs Total number of records available for any search query
+#' @export
+#' @examples \dontrun{
+#' ee_paginator(1, 100)
+#' ee_paginator("all", 100)
+#' ee_paginator(1:2, 100)
+#' ee_paginator(1:4, 100)
+#' # This will return an error since there are only 4 pages per 100 observations
+#' ee_paginator(1:5, 100)
+#'}
+ee_paginator <- function(page, total_obs) {
     	all_pages <- ceiling(total_obs/25)
     	if(total_obs < 25) { req_pages <- 1 }
     	if(identical(page, "all")) { req_pages <- seq_along(1: all_pages)}
