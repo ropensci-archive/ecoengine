@@ -41,10 +41,10 @@
 #' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
 #' charles_results <- ee_photos_get(author = "Charles Webber")
-#' # You can also request all pages in a single call by using ee_photos_get()
+#' # You can also request all pages in a single call by using ee_photos()
 #' # In this example below, there are 6 pages of results (52 result items). 
 #' Function will return all at once.
-#' racoons <- ee_photos_get(scientific_name = "Procyon lotor", quiet = TRUE)
+#' racoons <- ee_photos(scientific_name = "Procyon lotor", page = "all")
 #'}
 ee_photos_get <- function(page = NULL, 
 						 state_province = NULL, 
@@ -92,6 +92,7 @@ ee_photos_get <- function(page = NULL,
 	# photos_data$begin_date <- as.Date(photos_data$begin_date)
 	# photos_data$end_date <- as.Date(photos_data$end_date)
 	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
+	photos[[2]] <- ifelse(is.null(photos[[2]]),"NA", photos[[2]])
     photos_results <- list(results = photos$count, call = photos[[2]], type = "photos", data = photos_data)
     class(photos_results) <- "ecoengine"
     return(photos_results)
