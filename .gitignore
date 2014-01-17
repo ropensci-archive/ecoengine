@@ -3,4 +3,4 @@ test_data.R
 engine_notes.R
 # inst/doc/ecoengine.pdf
 .Rapp.history
-Makefile
+inst/Makefile
