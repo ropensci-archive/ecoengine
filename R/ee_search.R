@@ -23,7 +23,6 @@ ee_filter <- function(i) {
 	length(i) > 0
 }
 fields_compacted <- Filter(ee_filter, fields)
-
 faceted_search_results <- lapply(fields_compacted, function(y) { 
 	temp_fields <- do.call(rbind.data.frame, lapply(y, LinearizeNestedList))
 	# temp_fields <- as.data.frame(t(unlist(y))) 
@@ -82,7 +81,7 @@ ee_search_obs_get <- function(query = NULL, page = NULL, page_size = 25, quiet =
 	obs_data <- rbind.fill(with_geojson_df, without_geojson_df)  
 	all_obs_results <- list(results = obs_results$count, call = obs_results[[2]], type = "observations", data = obs_data)
 	class(all_obs_results) <- "ecoengine"
-    return(all_obs_results)
+    all_obs_results
 }
 
 
