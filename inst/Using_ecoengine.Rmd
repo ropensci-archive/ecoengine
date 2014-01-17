@@ -34,7 +34,8 @@ The default `print` method for the class will summarize the object.
 For the sake of speed, results are paginated at `25` results per page. It is possible to request all pages for any query by specifying `page = all` in any function that retrieves data. However, this option should be used if the request is reasonably sized (`1,000` or fewer records). With larger requests, there is a chance that the query might become interrupted and you could lose any data that may have been partially downloaded. In such cases the recommended practice is to use the returned observations to split the request. You can always check the number of requests you'll need to retreive data for any query by running `ee_pages(obj)` where `obj` is an object of class `ecoengine`.
 
 ```{r, pagination, eval = TRUE}
-request <- ee_photos(county = "Santa Clara County")
+request <- ee_photos(county = "Santa Clara County", quiet = TRUE)
+# Use quiet to suppress messages and progress bars
 ee_pages(request)
 # Now it's simple to parallelize this request
 # You can parallelize across number of cores by passing a vector of pages from 1 through the total available.
@@ -44,20 +45,20 @@ ee_pages(request)
 ### Specimen Observations
 
 ```{r, obs_counts, echo = FALSE, message = FALSE}
-x <- ee_observations()
+x <- ee_observations(quiet = TRUE)
 ```
 
 The database contains over 2 million records (`r format(x$results, nsmall = 0)` total). Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
 
 ```{r, observations_1}
-pinus_observations <- ee_observations(scientific_name_exact = "Pinus", page = 1)
+pinus_observations <- ee_observations(scientific_name_exact = "Pinus", page = 1, quiet = TRUE)
 pinus_observations
 ```
 
 For additional fields upon which to query, simply look through the help for `?ee_observations`. In addition to narrowing data by taxonomic group, it's also possible to add a bounding box (add argument `bbox`) or request only data that have been georeferenced (set `georeferenced = TRUE`). 
 
 ```{r, lynx_data}
-lynx_data <- ee_observations(genus = "Lynx",georeferenced = TRUE)
+lynx_data <- ee_observations(genus = "Lynx",georeferenced = TRUE, quiet = TRUE)
 lynx_data
 # Notice that we only for the first 25 rows.
 # But since 795 is not a big request, we can obtain this all in one go.
@@ -86,7 +87,7 @@ The ecoengine also contains a large number of photos from various sources. It's 
 
 
 ```{r, photo_count}
-photos <- ee_photos()
+photos <- ee_photos(quiet = TRUE)
 photos
 ```
 The database currently holds `r format(photos$results, nsmall = 0)` photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos_get`.
@@ -95,7 +96,7 @@ The database currently holds `r format(photos$results, nsmall = 0)` photos. Phot
 #### Searching photos by author
 
 ```{r, photos_by_author, tidy = TRUE, width.cutoff = 60, background = '#F7F7F7'}
-charles_results <- ee_photos(author = "Charles Webber")
+charles_results <- ee_photos(author = "Charles Webber", quiet = TRUE)
 charles_results
 # Let's examine a couple of rows of the data
 charles_results$data[1:2, ]
@@ -174,7 +175,7 @@ Let's download solar radiation for the Angelo reserve HQ (sensor_id = `1625`).
 sensor_ids <- ee_list_sensors()$record
 # In this case we just need data for sensor with id 1625
 angelo_hq <- sensor_ids[1]
-results <- ee_sensor_data_get(angelo_hq, page = 2)
+results <- ee_sensor_data(angelo_hq, page = 2)
 results
 ```  
 

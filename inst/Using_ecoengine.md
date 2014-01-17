@@ -58,18 +58,8 @@ For the sake of speed, results are paginated at `25` results per page. It is pos
 
 
 ```r
-request <- ee_photos(county = "Santa Clara County")
-```
-
-```
-##   |                                                                         |                                                                 |   0%
-```
-
-```
-## Search returned 754 photos (downloading page 1 of 31)
-```
-
-```r
+request <- ee_photos(county = "Santa Clara County", quiet = TRUE)
+# Use quiet to suppress messages and progress bars
 ee_pages(request)
 ```
 
@@ -88,35 +78,26 @@ ee_pages(request)
 ### Specimen Observations
 
 
-```
-##   |                                                                         |                                                                 |   0%
-```
 
 
 The database contains over 2 million records (3062744 total). Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
 
 
 ```r
-pinus_observations <- ee_observations(scientific_name_exact = "Pinus", page = 1)
-```
-
-```
-## Retrieving 1 pages (total: 25 records)
-```
-
-```
-##   |                                                                         |                                                                 |   0%  |                                                                         |=================================================================| 100%
-```
-
-```r
+pinus_observations <- ee_observations(scientific_name_exact = "Pinus", page = 1, 
+    quiet = TRUE)
 pinus_observations
 ```
 
 ```
-##  [Type]: observations
-##  [Number of results]: 25 
-##  [Call]: http://ecoengine.berkeley.edu/api/observations/?country=United+States&page=2&scientific_name_exact=Pinus&page_size=25&format=json 
-##  [Output dataset]: 25 rows
+## [Total results]: 3062744 
+## [Call]: 
+## country = United States 
+## scientific_name_exact = Pinus 
+## page_size = 25 
+## page = 1 
+## [Type]: observations 
+## [Number of results]: 25
 ```
 
 
@@ -124,27 +105,20 @@ For additional fields upon which to query, simply look through the help for `?ee
 
 
 ```r
-lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)
-```
-
-```
-##   |                                                                         |                                                                 |   0%
-```
-
-```
-## 
-##  795 observations found
-```
-
-```r
+lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE)
 lynx_data
 ```
 
 ```
-##  [Type]: observations
-##  [Number of results]: 795 
-##  [Call]: http://ecoengine.berkeley.edu/api/observations/?country=United+States&genus=Lynx&page=2&page_size=25&format=json 
-##  [Output dataset]: 25 rows
+## [Total results]: 795 
+## [Call]: 
+## country = United States 
+## genus = Lynx 
+## page_size = 25
+```
+
+```
+## Error: argument is of length zero
 ```
 
 ```r
@@ -154,7 +128,7 @@ lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all")
 ```
 
 ```
-## Retrieving 32 pages (total: 795 records)
+## Search contains 795 observations (downloading 32 of 32 pages)
 ```
 
 ```
@@ -166,10 +140,14 @@ lynx_data
 ```
 
 ```
-##  [Type]: observations
-##  [Number of results]: 795 
-##  [Call]: http://ecoengine.berkeley.edu/api/observations/?country=United+States&genus=Lynx&page=2&page_size=25&format=json 
-##  [Output dataset]: 795 rows
+## [Total results]: 795 
+## [Call]: 
+## country = United States 
+## genus = Lynx 
+## page_size = 25 
+## page = all 
+## [Type]: observations 
+## [Number of results]: 795
 ```
 
 
@@ -197,26 +175,17 @@ The ecoengine also contains a large number of photos from various sources. It's 
 
 
 ```r
-photos <- ee_photos()
-```
-
-```
-##   |                                                                         |                                                                 |   0%
-```
-
-```
-## Search returned 43708 photos (downloading page 1 of 1749)
-```
-
-```r
+photos <- ee_photos(quiet = TRUE)
 photos
 ```
 
 ```
-##  [Type]: photos
-##  [Number of results]: 43708 
-##  [Call]: http://ecoengine.berkeley.edu/api/photos/?page=2&page_size=25&format=json 
-##  [Output dataset]: 25 rows
+## [Total results]: 43708 
+## [Call]: 
+## page_size = 25 
+## page = 1 
+## [Type]: photos 
+## [Number of results]: 25
 ```
 
 The database currently holds 43708 photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos_get`.
@@ -226,26 +195,18 @@ The database currently holds 43708 photos. Photos can be searched by state provi
 
 
 ```r
-charles_results <- ee_photos(author = "Charles Webber")
-```
-
-```
-##   |                                                                         |                                                                 |   0%
-```
-
-```
-## Search returned 4012 photos (downloading page 1 of 161)
-```
-
-```r
+charles_results <- ee_photos(author = "Charles Webber", quiet = TRUE)
 charles_results
 ```
 
 ```
-##  [Type]: photos
-##  [Number of results]: 4012 
-##  [Call]: http://ecoengine.berkeley.edu/api/photos/?format=json&page=2&page_size=25&authors=Charles+Webber 
-##  [Output dataset]: 25 rows
+## [Total results]: 4012 
+## [Call]: 
+## page_size = 25 
+## authors = Charles Webber 
+## page = 1 
+## [Type]: photos 
+## [Number of results]: 25
 ```
 
 ```r
@@ -519,11 +480,15 @@ Let's download solar radiation for the Angelo reserve HQ (sensor_id = `1625`).
 sensor_ids <- ee_list_sensors()$record
 # In this case we just need data for sensor with id 1625
 angelo_hq <- sensor_ids[1]
-results <- ee_sensor_data_get(angelo_hq, page = 2)
+results <- ee_sensor_data(angelo_hq, page = 2)
 ```
 
 ```
-## Search returned 56779 observations (downloading page 2 of 2272)
+## Search contains 56779 records (downloading 1 page(s) of 2272)
+```
+
+```
+##   |                                                                         |                                                                 |   0%
 ```
 
 ```r
@@ -531,10 +496,12 @@ results
 ```
 
 ```
-##  [Type]: sensor
-##  [Number of results]: 56779 
-##  [Call]: http://ecoengine.berkeley.edu/api/sensors/1625/data/?page=2&format=json 
-##  [Output dataset]: 25 rows
+## [Total results]: 56779 
+## [Call]: 
+## page_size = 25 
+## page = 2 
+## [Type]: sensor 
+## [Number of results]: 25
 ```
 
 
@@ -548,20 +515,20 @@ head(results$data)
 ```
 
 ```
-##             local_date value data_quality_qualifierid
-## 2  2010-01-06 02:00:00 -9999                       19
-## 26 2010-01-06 02:30:00 -9999                       19
-## 3  2010-01-06 03:00:00 -9999                       19
-## 4  2010-01-06 03:30:00 -9999                       19
-## 5  2010-01-06 04:00:00 -9999                       19
-## 6  2010-01-06 04:30:00 -9999                       19
-##               data_quality_qualifier_description data_quality_valid
-## 2  Passed sanity check; see incident report IR_8              FALSE
-## 26 Passed sanity check; see incident report IR_8              FALSE
-## 3  Passed sanity check; see incident report IR_8              FALSE
-## 4  Passed sanity check; see incident report IR_8              FALSE
-## 5  Passed sanity check; see incident report IR_8              FALSE
-## 6  Passed sanity check; see incident report IR_8              FALSE
+##            local_date value data_quality_qualifierid
+## 1 2010-01-06 02:00:00 -9999                       19
+## 2 2010-01-06 02:30:00 -9999                       19
+## 3 2010-01-06 03:00:00 -9999                       19
+## 4 2010-01-06 03:30:00 -9999                       19
+## 5 2010-01-06 04:00:00 -9999                       19
+## 6 2010-01-06 04:30:00 -9999                       19
+##              data_quality_qualifier_description data_quality_valid
+## 1 Passed sanity check; see incident report IR_8              FALSE
+## 2 Passed sanity check; see incident report IR_8              FALSE
+## 3 Passed sanity check; see incident report IR_8              FALSE
+## 4 Passed sanity check; see incident report IR_8              FALSE
+## 5 Passed sanity check; see incident report IR_8              FALSE
+## 6 Passed sanity check; see incident report IR_8              FALSE
 ```
 
 
@@ -575,11 +542,11 @@ sensor_df <- ee_sensor_agg(sensor_id = stations[1, c("record")], weeks = 2)
 ```
 
 ```
-##   |                                                                         |                                                                 |   0%
+## Search contains 85 records (downloading 1 page(s) of 4)
 ```
 
 ```
-## Retrieving page 1 (85 observations total)
+##   |                                                                         |                                                                 |   0%  |                                                                         |=================================================================| 100%
 ```
 
 ```r
@@ -587,10 +554,13 @@ sensor_df
 ```
 
 ```
-##  [Type]: sensor
-##  [Number of results]: 85 
-##  [Call]: http://ecoengine.berkeley.edu/api/sensors/1625/aggregate/?interval=2W&page=2&page_size=25&format=json 
-##  [Output dataset]: 25 rows
+## [Total results]: 85 
+## [Call]: 
+## page_size = 25 
+## interval = 2W 
+## page = 1 
+## [Type]: sensor 
+## [Number of results]: 25
 ```
 
 ```r
@@ -616,7 +586,7 @@ sensor_df <- ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
 ```
 
 ```
-## Retrieving 4 pages (total: 85 records)
+## Search contains 85 records (downloading 4 page(s) of 4)
 ```
 
 ```
@@ -628,10 +598,13 @@ sensor_df
 ```
 
 ```
-##  [Type]: sensor
-##  [Number of results]: 85 
-##  [Call]: http://ecoengine.berkeley.edu/api/sensors/1625/aggregate/?interval=2W&page=2&page_size=25&format=json 
-##  [Output dataset]: 85 rows
+## [Total results]: 85 
+## [Call]: 
+## page_size = 25 
+## interval = 2W 
+## page = all 
+## [Type]: sensor 
+## [Number of results]: 85
 ```
 
 
@@ -669,17 +642,32 @@ footprints[, -3]  # To keep the table from spilling over
 
 
 
----------------------------
-id   name                  
----- ----------------------
-12   Angelo Reserve        
+----------------------
+name                  
+----------------------
+Angelo Reserve        
 
-13   Sagehen Reserve       
+Sagehen Reserve       
 
-14   Hastings Reserve      
+Hastings Reserve      
 
-15   Blue Oak Ranch Reserve
----------------------------
+Blue Oak Ranch Reserve
+----------------------
+
+Table: Table continues below
+
+ 
+--------------------------------------------------------------------
+url                                                                 
+--------------------------------------------------------------------
+http://ecoengine.berkeley.edu/api/footprints/angelo-reserve/        
+
+http://ecoengine.berkeley.edu/api/footprints/sagehen-reserve/       
+
+http://ecoengine.berkeley.edu/api/footprints/hastings-reserve/      
+
+http://ecoengine.berkeley.edu/api/footprints/blue-oak-ranch-reserve/
+--------------------------------------------------------------------
 
 
 
