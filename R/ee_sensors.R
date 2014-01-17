@@ -1,6 +1,6 @@
 
 
-#' ee_sensors_get
+#' ee_sensors
 #'
 #' Returns UC reserve system sensor data
 #' @template pages
@@ -13,16 +13,15 @@
 #' @examples \dontrun{
 #' Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
 #' ee_sensors_get()
-#' stations_1 <- ee_sensors_get(page = 1)
-#' stations_2 <- ee_sensors_get(page = 2)
+#' all_sensors <- ee_sensors()
 #'}
-ee_sensors_get <- function(page = NULL, 
+ee_sensors <- function(page = NULL, 
                         page_size = 25,
 						remote_id = NULL, 
 						collection_code = NULL, 
 						source = NULL, 
 						min_date = NULL, 
-						max_date = NULL, 
+						max_date = NULL,
 						foptions = list()) {
 
 sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
@@ -34,42 +33,30 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
                             min_date = min_date, 
                             max_date = max_date
    							)))
+    args$page <- NULL
     sensor_data <- GET(sensor_url, query = args, foptions)
     stop_for_status(sensor_data)
     sensor_results <- content(sensor_data)
-    basic_sensor_data <- ldply(sensor_results$results, function(x) {
+    if(is.null(page)) { page <- 1 }
+    required_pages <- ee_paginator(page, sensor_results$count)
+    
+
+      results <- list()
+    for(i in required_pages) {
+        args$page <- i 
+            basic_sensor_data <- ldply(sensor_results$results, function(x) {
                              geo_data <- data.frame(t(unlist(x[5])))
                              main_data <- (x[-5])
                              main_data$end_date <- ifelse(is.null(main_data$end_date), "NA", main_data$end_date)
                              md <-(data.frame(as.list(main_data)))        
                              cbind(md, geo_data)
                             })
-    basic_sensor_data
-}
 
-
-#' ee sensors
-#'
-#'Returns a full list of sensors with available data
-#' @param ... same arguments as \code{\link{ee_sensors_get}}. Use this function rather than calling \code{\link{ee_sensors_get}}. 
-#' @param page_size Number of observations per page
-#' @importFrom lubridate ymd_hms
-#' @export
-#' @return data.frame
-#' @examples \dontrun{
-#' # This call will return a full set of available sensors.
-#' full_sensor_list <- ee_sensors()
-#'}
-ee_sensors <- function(..., page_size = 25) {
-    sensor_request <- content(GET("http://ecoengine.berkeley.edu/api/sensors/?format=json"))
-    total_results <- sensor_request$count
-    all_available_pages <- ceiling(total_results/page_size) 
-    all_results <- list()       
-    for(i in seq(all_available_pages)) {
-        all_results[[i]] <- ee_sensors_get(page = i, page_size = page_size)
+        results[[i]] <- basic_sensor_data
+        if(i %% 25 == 0) Sys.sleep(2) 
     }
 
-    res <- ldply(all_results)
+    res <- do.call(rbind, results)
     res$record <- as.integer(res$record)
     res$geojson.coordinates1 <- as.numeric(res$geojson.coordinates1)
     res$geojson.coordinates2 <- as.numeric(res$geojson.coordinates2)
@@ -77,10 +64,11 @@ ee_sensors <- function(..., page_size = 25) {
     # Suppressing warnings here because we can't coerce NULLs into Date format
     res$end_date <- suppressWarnings(ymd_hms(res$end_date))
     res
+  
 }
 
 
-#' Sensor data get
+#' Sensor data 
 #'
 #' Retrieves data for any sensor returned by \code{\link{ee_list_sensors}}.
 #' @param sensor_id The id of the sensor. 
@@ -91,53 +79,61 @@ ee_sensors <- function(..., page_size = 25) {
 #' @examples \dontrun{
 #' full_sensor_list <- ee_sensors()
 #' station <- ee_list_sensors()$record
-#' page_1_data <- ee_sensor_data_get(station[1], page = 2)
-#' page_2_data <- ee_sensor_data_get(station[1], page = 3)
+#' page_1_data <- ee_sensor_data(sensor_id = station[1], page = 1)
+#' page_2_data <- ee_sensor_data(station[1], page = 1:3)
 #'}
-ee_sensor_data_get <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
+ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
 
     data_url <- paste0("http://ecoengine.berkeley.edu/api/sensors/", sensor_id, "/data?format=json")
-
-    if(length(page) > 1) {
-            stop("Please supply only one page at a time. See ee_sensor_data for pagination.")
-            }
-    data <- GET(data_url)
-    stop_for_status(data)
-    data_list <- content(data)
-    total_obs <- data_list$count
-    if(!quiet) {
-    message(sprintf("Search returned %s observations (downloading page %s of %s)", total_obs, page, ceiling(total_obs/page_size)))
-    }
-    args <- compact(list(page = page, page_size = page_size))
+    args <- compact(list(page_size = page_size))
+    main_args <- args
+    main_args$page <- as.character(page)
     temp_data <- GET(data_url, query = args)
     stop_for_status(temp_data)
-    sensor_raw <- content(temp_data)$results
-    results <- do.call(rbind.data.frame, lapply(sensor_raw, LinearizeNestedList))
-    names(results) <- c("local_date", "value", "data_quality_qualifierid", "data_quality_qualifier_description", "data_quality_valid")
-    results$local_date <- suppressWarnings(ymd_hms(results$local_date))
-    data_list[[2]] <- ifelse(is.null(data_list[[2]]),"NA", data_list[[2]])
-    sensor_data <- list(results = total_obs, call = data_list[[2]], type = "sensor", data = results)
+    sensor_raw <- content(temp_data)
+     if(is.null(page)) { page <- 1 }
+    required_pages <- ee_paginator(page, sensor_raw$count)
+    total_p <- ceiling(sensor_raw$count/page_size)
+
+    if(!quiet) {
+    message(sprintf("Search contains %s records (downloading %s page(s) of %s)", sensor_raw$count, length(required_pages), total_p))
+    }
+    
+    results <- list()
+    for(i in required_pages) {
+        args$page <- i 
+        temp_data <- GET(data_url, query = args)
+        sensor_iterate <- content(temp_data)$results
+        if(!is.null(sensor_iterate)) {
+        raw_data <- do.call(rbind.data.frame, lapply(sensor_iterate, LinearizeNestedList))
+        names(raw_data) <- c("local_date", "value", "data_quality_qualifierid", "data_quality_qualifier_description", "data_quality_valid")
+        raw_data$local_date <- suppressWarnings(ymd_hms(raw_data$local_date))
+        } else {
+            raw_data <- NULL
+        }
+        
+        results[[i]] <- raw_data
+     if(i %% 25 == 0) Sys.sleep(2) 
+    }
+
+    results_data <- ldply(compact(results))
+    sensor_data <- list(results = sensor_raw$count, call = main_args, type = "sensor", data = results_data)
     class(sensor_data) <- "ecoengine"
     sensor_data
 }
 
 
-#' sensor data
+
+
+#' Lists subset of the full sensor list
 #'
-#' @param ... All argument that get passed to \code{\link{ee_sensor_data_get}}
-#' This function is a wrapper around \code{\link{ee_sensor_data_get}}. Allows a user to request several pages worth of data.
 #' @export
-#' @seealso \code{\link{ee_sensors})}
 #' @examples \dontrun{
-#' stations <- ee_list_sensors()$record
-#' sensor_data <- ee_sensor_data(sensor_id = stations[1],  page = 1:2)
-#' sensor_data_3 <- ee_sensor_data(sensor_id = stations[1],  page = 1)
+#' ee_list_sensors()
 #'}
-ee_sensor_data <- function(...) {
-    ee_get(..., input_fn = ee_sensor_data_get, dtype = "sensor")
+ee_list_sensors <- function() {
+full_sensor_list[, c("station_name", "units", "variable", "method_name", "record")] 
 }
-
-
 
 
 

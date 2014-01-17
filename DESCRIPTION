@@ -23,6 +23,7 @@ Imports:
     data.table,
     assertthat,
     whisker,
+    DBI,
     lubridate
 Suggests:
     testthat,

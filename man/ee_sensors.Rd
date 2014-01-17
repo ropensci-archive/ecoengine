@@ -1,26 +1,48 @@
 \name{ee_sensors}
 \alias{ee_sensors}
-\title{ee sensors}
+\title{ee_sensors}
 \usage{
-ee_sensors(..., page_size = 25)
+ee_sensors(page = NULL, page_size = 25, remote_id = NULL,
+  collection_code = NULL, source = NULL, min_date = NULL,
+  max_date = NULL, foptions = list())
 }
 \arguments{
-  \item{...}{same arguments as
-  \code{\link{ee_sensors_get}}. Use this function rather
-  than calling \code{\link{ee_sensors_get}}.}
+  \item{page}{Page number}
 
-  \item{page_size}{Number of observations per page}
-}
-\value{
-data.frame
+  \item{page_size}{The number of observations per page
+  returned by the query. The package default is \code{25}
+  observations. The API default, however, is \code{10}.
+  Setting this number higher will require fewer calls (i.e.
+  pages) but a large size may also fail or timeout.}
+
+  \item{remote_id}{Need to describe these parameters}
+
+  \item{collection_code}{Type of collection. Can be
+  \code{CalAcademy}, \code{Private}, \code{VTM},
+  \code{CDFA}. \code{CalFlora} Others TBA}
+
+  \item{source}{Need to describe these parameters}
+
+  \item{min_date}{Lower date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
+
+  \item{max_date}{upper date bound. Most be in format Y-m-D
+  h:m:s. This package uses lubridate's \code{ymd_hms}
+  function to format dates.}
+
+  \item{foptions}{A list of additional arguments for
+  \code{httr}. There is no reason to use this argument
+  except for debugging purposes.}
 }
 \description{
-Returns a full list of sensors with available data
+Returns UC reserve system sensor data
 }
 \examples{
 \dontrun{
-# This call will return a full set of available sensors.
-full_sensor_list <- ee_sensors()
+Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
+ee_sensors_get()
+all_sensors <- ee_sensors()
 }
 }
 

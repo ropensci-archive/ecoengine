@@ -65,8 +65,7 @@ ee_photos <- function(page = NULL,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
 	photos_url <- "http://ecoengine.berkeley.edu/api/photos/?format=json"
-	args <- as.list(compact(c(page = page, 	
-							page_size = page_size,					 
+	args <- as.list(compact(c(page_size = page_size,					 
 							state_province = state_province, 
 						 	county = county, 
 						 	genus = genus, 
@@ -80,7 +79,8 @@ ee_photos <- function(page = NULL,
 						 	related_type = related_type, 
 						 	related  = related , 
 						 	other_catalog_numbers = other_catalog_numbers)))
-	args$page <- NULL
+	main_args <- args
+	main_args$page <- as.character(page)
 	data_sources <- GET(photos_url, query = args, foptions)
     stop_for_status(data_sources)
     photos <- content(data_sources)
@@ -106,8 +106,7 @@ ee_photos <- function(page = NULL,
 	photos_data <- do.call(rbind.fill, results)
 	photos_data$begin_date <- suppressWarnings(ymd_hms(photos_data$begin_date))
 	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
-	photos[[2]] <- ifelse(is.null(photos[[2]]),"NA", photos[[2]])
-    photos_results <- list(results = photos$count, call = photos[[2]], type = "photos", data = photos_data)
+    photos_results <- list(results = photos$count, call = main_args, type = "photos", data = photos_data)
     class(photos_results) <- "ecoengine"
     return(photos_results)
 }
