@@ -114,11 +114,10 @@ lynx_data
 ## [Call]: 
 ## country = United States 
 ## genus = Lynx 
-## page_size = 25
-```
-
-```
-## Error: argument is of length zero
+## page_size = 25 
+## page = 1 
+## [Type]: observations 
+## [Number of results]: 25
 ```
 
 ```r
