@@ -31,6 +31,7 @@
 #' @export
 #' @return \code{data.frame}
 #' @importFrom httr content GET 
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom plyr compact
 #' @examples \dontrun{
 #' us <- ee_observations(country = "United States")
@@ -55,10 +56,8 @@ required_pages <- ee_paginator(page, obs_data$count)
 
 if(!quiet) {
 message(sprintf("Search contains %s observations (downloading %s of %s pages)", obs_data$count, length(required_pages), max(required_pages)))
+pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 }
-
-# The data are already returned in a nice list that include
-# number of results, the everything in appropriate slots.
 
     results <- list()
     for(i in required_pages) {
@@ -81,6 +80,7 @@ message(sprintf("Search contains %s observations (downloading %s of %s pages)", 
                              cbind(md, geo_data)
                             })
     	results[[i]] <- obs_df_cleaned
+        if(!quiet) setTxtProgressBar(pb, i)
    		if(i %% 25 == 0) Sys.sleep(2) 
     }
     
@@ -89,7 +89,9 @@ message(sprintf("Search contains %s observations (downloading %s of %s pages)", 
 observation_results <- list(results = obs_data$count, call = main_args, type = "observations", data = obs_data_all)
 
 class(observation_results) <- "ecoengine"
-return(observation_results)
+if(!quiet) close(pb)
+
+observation_results
 }
 
 

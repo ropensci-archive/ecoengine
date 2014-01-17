@@ -45,6 +45,7 @@ rbindlist(faceted_search_results)
 #' @keywords search
 #' @seealso \code{\link{ee_search})}
 #' @return data.frame
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @examples \dontrun{
 #' general_lynx_query <- ee_search_obs(query  = "Lynx")
 #' lynx_data <- ee_search_obs(query  = "genus:Lynx")
@@ -62,6 +63,7 @@ required_pages <- ee_paginator(page, obs_results$count)
 
 if(!quiet) {
 message(sprintf("Search contains %s observations (downloading %s of %s pages)", obs_results$count, length(required_pages), max(required_pages)))
+pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 }
 
     results <- list()
@@ -90,12 +92,15 @@ message(sprintf("Search contains %s observations (downloading %s of %s pages)", 
 
 	obs_data <- rbind.fill(with_geojson_df, without_geojson_df) 
 	results[[i]] <- obs_data
+	if(!quiet) setTxtProgressBar(pb, i)
    	if(i %% 25 == 0) Sys.sleep(2) 
     }    	
 
 	all_obs_data <- do.call(rbind.fill, results)
 	all_obs_results <- list(results = obs_results$count, call = main_args, type = "observations", data = all_obs_data)
 	class(all_obs_results) <- "ecoengine"
+
+	if(!quiet) close(pb)
     all_obs_results
 }
 

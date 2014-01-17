@@ -20,6 +20,7 @@
 #' @importFrom httr stop_for_status content GET
 #' @importFrom plyr compact rbind.fill
 #' @importFrom lubridate ymd_hms
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso related: \code{\link{ee_photos}} \code{\link{california_counties}}
 #' @examples \dontrun{
 #' # Request all photos. This request will paginate. Don't use ee_photos_get #' on such a large request
@@ -89,10 +90,10 @@ ee_photos <- function(page = NULL,
     
 
      if(!quiet) {
-    message(sprintf("Search contains %s photos (downloading %s of %s pages)", photos$count, length(required_pages), max(required_pages)))
+    message(sprintf("Search contains %s photos (downloading %s of %s pages \n)", photos$count, length(required_pages), max(required_pages)))
+    pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 	}
 
-    
     results <- list()
     for(i in required_pages) {
     	args$page <- i 
@@ -100,6 +101,7 @@ ee_photos <- function(page = NULL,
     	photos <- content(data_sources)
     	photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
     	results[[i]] <- photos_data
+    	if(!quiet) setTxtProgressBar(pb, i)
     	if(i %% 25 == 0) Sys.sleep(2) 
     }
     
@@ -108,7 +110,9 @@ ee_photos <- function(page = NULL,
 	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
     photos_results <- list(results = photos$count, call = main_args, type = "photos", data = photos_data)
     class(photos_results) <- "ecoengine"
-    return(photos_results)
+    
+    if(!quiet) close(pb)
+    photos_results
 }
 
 

@@ -75,6 +75,7 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
 #' @template pages
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress output.
 #' @template foptions
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
 #' @examples \dontrun{
 #' full_sensor_list <- ee_sensors()
@@ -97,6 +98,7 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
 
     if(!quiet) {
     message(sprintf("Search contains %s records (downloading %s page(s) of %s)", sensor_raw$count, length(required_pages), total_p))
+    pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
     }
     
     results <- list()
@@ -113,12 +115,14 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
         }
         
         results[[i]] <- raw_data
+     if(!quiet) setTxtProgressBar(pb, i)
      if(i %% 25 == 0) Sys.sleep(2) 
     }
 
     results_data <- ldply(compact(results))
     sensor_data <- list(results = sensor_raw$count, call = main_args, type = "sensor", data = results_data)
     class(sensor_data) <- "ecoengine"
+    if(!quiet) close(pb)    
     sensor_data
 }
 

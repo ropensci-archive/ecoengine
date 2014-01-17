@@ -16,6 +16,7 @@
 #' @template foptions
 #' @importFrom plyr llply
 #' @importFrom lubridate ymd_hms
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
 #' @examples \dontrun{
 #' aggregated_data <-  ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
@@ -45,6 +46,7 @@ total_p <- ceiling(sensor_res$count/page_size)
 
 if(!quiet) {
 message(sprintf("Search contains %s records (downloading %s page(s) of %s)", sensor_res$count, length(required_pages), total_p))
+pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 }
 
    results <- list()
@@ -58,12 +60,14 @@ message(sprintf("Search contains %s records (downloading %s page(s) of %s)", sen
 		sensor_data_agg <- do.call(rbind.data.frame, (lapply(sensor_res_list, LinearizeNestedList)))
 		sensor_data_agg$begin_date <- ymd_hms(sensor_data_agg$begin_date)
 		results[[i]] <- sensor_data_agg
+		if(!quiet) setTxtProgressBar(pb, i)
      	if(i %% 25 == 0) Sys.sleep(2) 
     }
 		
 	sensor_data_agg <- do.call(rbind, results)
 	sensor_results <- list(results = sensor_res$count, call = main_args, type = "sensor", data = sensor_data_agg)
     class(sensor_results) <- "ecoengine"
+    if(!quiet) close(pb)    
 	sensor_results
 }
 
