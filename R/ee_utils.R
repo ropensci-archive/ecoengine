@@ -27,7 +27,7 @@ ee_pages <- function(ee, page_size = 25) {
     if(!identical(class(ee), "ecoengine"))
         stop("Object must be of class ecoengine")
 
-   return(ceiling(ee$results/page_size)) 
+   ceiling(ee$results/page_size)
 }
 
 #' Ecoengine paginator

@@ -1,4 +1,4 @@
-#' ee_photos_get
+#' ee_photos
 #'
 #' Search the photos methods in the Holos API. 
 #' @template pages
@@ -34,19 +34,19 @@
 #' ee_photos_get(county = "Merced County")
 #' # The package also contains a full list of counties
 #' data(california_counties)
-#' alameda <- ee_photos_get(county = california_counties[1, 1])
+#' alameda <- ee_photos(county = california_counties[1, 1])
 #' alameda$data
 #' # You can also get all the data for Alameda county with one request
 #' alameda <- ee_photos(county = "Alameda county", page = "all")
 #' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
-#' charles_results <- ee_photos_get(author = "Charles Webber")
+#' charles_results <- ee_photos(author = "Charles Webber", page = 1:2)
 #' # You can also request all pages in a single call by using ee_photos()
 #' # In this example below, there are 6 pages of results (52 result items). 
 #' Function will return all at once.
 #' racoons <- ee_photos(scientific_name = "Procyon lotor", page = "all")
 #'}
-ee_photos_get <- function(page = NULL, 
+ee_photos <- function(page = NULL, 
 						 state_province = NULL, 
 						 county = NULL, 
 						 genus = NULL, 
@@ -63,7 +63,6 @@ ee_photos_get <- function(page = NULL,
 						 quiet = FALSE,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
-
 	photos_url <- "http://ecoengine.berkeley.edu/api/photos/?format=json"
 	args <- as.list(compact(c(page = page, 	
 							page_size = page_size,					 
@@ -80,17 +79,33 @@ ee_photos_get <- function(page = NULL,
 						 	related_type = related_type, 
 						 	related  = related , 
 						 	other_catalog_numbers = other_catalog_numbers)))
+	args$page <- NULL
 	data_sources <- GET(photos_url, query = args, foptions)
     stop_for_status(data_sources)
     photos <- content(data_sources)
-    page_num <- ifelse(is.null(page), 1, page)
-    if(!quiet) {
-    message(sprintf("Search returned %s photos (downloading page %s of %s)", photos$count, page_num, ceiling(photos[[1]]/page_size)))
+    if(is.null(page)) { page <- 1 }
+	required_pages <- ee_paginator(page, photos$count)
+    
+
+     if(!quiet) {
+    message(sprintf("Search contains %s photos (downloading %s of %s pages)", photos$count, length(required_pages), max(required_pages)))
 	}
-	photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
+
+    
+    results <- list()
+    for(i in required_pages) {
+    	args$page <- i 
+    	data_sources <- GET(photos_url, query = args, foptions)
+    	photos <- content(data_sources)
+    	photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
+    	results[[i]] <- photos_data
+    	if(i %% 25 == 0) Sys.sleep(2) 
+    }
+    
+    browser()
+
+	photos_data <- do.call(rbind.fill, results)
 	photos_data$begin_date <- suppressWarnings(ymd_hms(photos_data$begin_date))
-	# photos_data$begin_date <- as.Date(photos_data$begin_date)
-	# photos_data$end_date <- as.Date(photos_data$end_date)
 	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
 	photos[[2]] <- ifelse(is.null(photos[[2]]),"NA", photos[[2]])
     photos_results <- list(results = photos$count, call = photos[[2]], type = "photos", data = photos_data)
@@ -99,40 +114,23 @@ ee_photos_get <- function(page = NULL,
 }
 
 
+    ee_paginator <- function(page, total_obs) {
+    	all_pages <- ceiling(total_obs/25)
+    	if(total_obs < 25) { req_pages <- 1 }
+    	if(identical(page, "all")) { req_pages <- seq_along(1: all_pages)}
+    	if(length(page) == 1 & identical(class(page), "numeric")) { req_pages <- page }
+    	if(identical(class(page), "integer")) {
+    		if(max(page) > all_pages) {
+    			stop("Pages requested outside the range")
+    		} else {
+    			req_pages <- page
+    		}
+    	}
 
-#'ee_photos
-#'
-#'This wrapper around ee_photos(). Allows a user to retrive all data at once for a query rather than request a page at a time.
-#' @param ... All the arguments that go into \code{\link{ee_photos}}
-#'
-#' \itemize{
-#' \item{"page"                   } {Page Number}                                                        
-#' \item{"state_province"        } {Need to describe these parameters}
-#' \item{"county"                } {Package include a full list of counties. To load dataset (california_counties)}
-#' \item{"genus"                  } {Genus           }                                                                   
-#' \item{"scientific_name"       } {Scientific Name }                                                                   
-#' \item{"authors"                } {List of authors }                                                                   
-#' \item{"remote_id"            } {Description     }                                                                   
-#' \item{"collection_code"      } {Description     }                                                                   
-#' \item{"source"                 } {Description     }                                                                   
-#' \item{"min_date"              } {Lower date bound}                                                                   
-#' \item{"max_date"              } {Upper date bound}                                                                   
-#' \item{"related_type"          } {Description     }                                                                   
-#' \item{"related "               } {Description     }                                                                   
-#' \item{"other_catalog_numbers"} {Description     }                                                                   
-#' }
-#'
-#' @export
-#' @importFrom utils txtProgressBar setTxtProgressBar
-#' @seealso  \code{\link{ee_photos_get}}
-#' @examples \dontrun{
-#' all_cdfa <- ee_photos(collection_code = "CDFA", page = "all")
-#' some_cdfa <- ee_photos(collection_code = "CDFA", page = 1:2)
-#' some_other_cdfa <- ee_photos(collection_code = "CDFA", page = c(1,3)) 
-#'}
-ee_photos <- function(...) {
-	ee_get(..., input_fn = ee_photos_get, dtype = "photos")
-}
+  		req_pages
+    }
+
+
 
 
 
