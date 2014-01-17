@@ -30,6 +30,48 @@ ee_pages <- function(ee, page_size = 25) {
    ceiling(ee$results/page_size)
 }
 
+
+#'ecoengine paginator
+#'
+#'Takes a page range and total number of observations to return the right sequence of pages that need to be crawled.
+#' @param page requested page number or page range. Can also be "all"
+#' @param  total_obs Total number of records available for any search query
+#' @export
+#' @examples \dontrun{
+#' ee_paginator(1, 100)
+#' ee_paginator("all", 100)
+#' ee_paginator(1:2, 100)
+#' ee_paginator(1:4, 100)
+#' # This will return an error since there are only 4 pages per 100 observations
+#' ee_paginator(1:5, 100)
+#'}
+ee_paginator <- function(page, total_obs) {
+        all_pages <- ceiling(total_obs/25)
+        if(total_obs < 25) { req_pages <- 1 }
+        if(identical(page, "all")) { req_pages <- seq_along(1: all_pages)}
+        if(length(page) == 1 & identical(class(page), "numeric")) { req_pages <- page }
+        if(identical(class(page), "integer")) {
+            if(max(page) > all_pages) {
+                stop("Pages requested outside the range")
+            } else {
+                req_pages <- page
+            }
+        }
+
+        req_pages
+    }
+
+
+
+#' @noRd
+# Internal function to convert list to data.frame when it contains NULL
+rbindfillnull <- function(x) {
+  x <- unlist(x)
+  x[is.null(x)] <- "none"
+  data.frame(as.list(x), stringsAsFactors = FALSE)
+}
+
+
 #' Ecoengine paginator
 #'
 #' This function allows for paginating through calls that return more observations than the throttling limit. Although the API itself defaults to 10 observations per page, this package default to 25. This request requires an input function (currently supports photos, observations and checklists), a page range (can be a single page, page range, or "all") and a data type for the purposes of constructing a \code{ecoengine} class. The type can be "photos", "observations", "checklists" (more to be added).
