@@ -50,7 +50,7 @@ data_sources <- GET(obs_url, query = args, foptions)
 stop_for_status(data_sources)
 obs_data <- content(data_sources)
 if(!quiet) {
-message(sprintf("%s observations found", obs_data[[1]]))
+message(sprintf("\n %s observations found", obs_data[[1]]))
 }
 # The data are already returned in a nice list that include
 # number of results, the everything in appropriate slots.
@@ -151,7 +151,8 @@ if(!is.null(page)) {
 		}
 		result_data <- do.call(rbind.fill, result_list)
 		x[[2]] <- ifelse(is.null(x[[2]]),"NA", x[[2]])
-		all_obs_results <- list(results = nrow(result_data), call = x[[2]], type = "observations", data = result_data)
+		# all_obs_results <- list(results = nrow(result_data), call = x[[2]], type = "observations", data = result_data)
+				all_obs_results <- list(results = nrow(result_data), call = x[[2]], type = "observations", data = result_data)
 		class(all_obs_results) <- "ecoengine"
 }
 	if(is.null(page)) { 

@@ -1,6 +1,7 @@
 #' Browse photo queries in your default browser.
 #' 
 #' @import whisker
+#' @importFrom assertthat assert_that
 #' @param input Input, usually output from a call to \code{\link[ecoengine]{ee_photos}}
 #' @param output Path and file name for output file. If NULL, a temp file is used.
 #' @param browse Browse file in your default browse immediately after file creation.
@@ -18,6 +19,8 @@ view_photos <- function(input = NULL, output = NULL, browse = TRUE)
 {
   if(is.null(input))
     stop("Please supply some input")
+
+assert_that(identical(input$type, "photos"))
   
 
  photo_list <- apply(input$data, 1, function(x) as.list(x))

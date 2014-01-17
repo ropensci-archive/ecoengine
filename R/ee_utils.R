@@ -6,14 +6,11 @@
 #' @param ... additional arguments
 print.ecoengine <- function(x, ...) {
     value <- NA
-
-	string <- " [Type]: %s\n [Number of results]: %s \n [Call]: %s \n [Output dataset]: %s rows"
+    string <- " [Type]: %s\n [Number of results]: %s \n [Call]: %s \n [Output dataset]: %s rows"
     vals   <- c(x$type, x$results,  x$call, nrow(x$data))
     cat(do.call(sprintf, as.list(c(string, vals))))
     cat("\n")
 }
-
-
 
 #' Plots metrics for an ecoengine object
 #' 

@@ -87,7 +87,13 @@ ee_pages(request)
 
 ### Specimen Observations
 
-The database contains over 2 million records. Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
+
+```
+##   |                                                                         |                                                                 |   0%
+```
+
+
+The database contains over 2 million records (3062744 total). Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
 
 
 ```r
@@ -126,7 +132,8 @@ lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)
 ```
 
 ```
-## 795 observations found
+## 
+##  795 observations found
 ```
 
 ```r
@@ -166,8 +173,27 @@ lynx_data
 ```
 
 
+__Other search examples__
+
+
+```r
+animalia <- ee_observations(kingdom = "Animalia")
+Artemisia <- ee_observations(scientific_name = "Artemisia douglasiana")
+asteraceae <- ee_observationss(family = "asteraceae")
+vulpes <- ee_observations(genus = "vulpes")
+Anas <- ee_observations(scientific_name = "Anas cyanoptera", page = "all")
+loons <- ee_observations(scientific_name = "Gavia immer", page = "all")
+plantae <- ee_observations(kingdom = "plantae")
+chordata <- ee_observations(phylum = "chordata")
+# Class is clss since the former si a reserved keyword in SQL.
+aves <- ee_observations(clss = "aves")
+```
+
 
 ### Photos  
+
+The ecoengine also contains a large number of photos from various sources. It's easy to query the photo database using similar arguments as above. One can search by taxa, location, source, collection and much more.
+
 
 
 ```r

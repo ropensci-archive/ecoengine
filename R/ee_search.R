@@ -80,6 +80,7 @@ ee_search_obs_get <- function(query = NULL, page = NULL, page_size = 25, quiet =
 
 	obs_data <- rbind.fill(with_geojson_df, without_geojson_df)  
 	all_obs_results <- list(results = obs_results$count, call = obs_results[[2]], type = "observations", data = obs_data)
+	# all_obs_results <- list(results = obs_results$count, call = args, type = "observations", data = obs_data)
 	class(all_obs_results) <- "ecoengine"
     all_obs_results
 }
