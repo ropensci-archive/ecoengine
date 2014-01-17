@@ -1,8 +1,8 @@
 # Guide to using the ecoengine R package
 
-The Berkeley Ecoengine ([http://ecoengine.berkeley.edu](http://ecoengine.berkeley.edu)) provides an open API to a wealth of museum data contained in the Berkeley natural history museums. This R package provides a programmatic interface to this rich repository of data allowing for the data to be readily analyzed and visualized in a variety of contexts. This vignette provides a brief overview of the package's capabilities. 
+The Berkeley Ecoengine ([http://ecoengine.berkeley.edu](http://ecoengine.berkeley.edu)) provides an open API to a wealth of museum data contained in the [Berkeley natural history museums](https://bnhm.berkeley.edu/). This R package provides a programmatic interface to this rich repository of data allowing for the data to be easily analyzed and visualized or brought to bear in other contexts. This vignette provides a brief overview of the package's capabilities. 
 
-The API documentation is available at [http://ecoengine.berkeley.edu/developers/](http://ecoengine.berkeley.edu/developers/). As with most APIs all requests return a call that displays all the data endpoints accessible to users. Ecoengine has something similar.
+The API documentation is available at [http://ecoengine.berkeley.edu/developers/](http://ecoengine.berkeley.edu/developers/). As with most APIs it is possible to query all the available endpoints that are accessible through the API itself. Ecoengine has something similar.
 
 
 
@@ -43,17 +43,18 @@ actions   http://ecoengine.berkeley.edu/api/search/
 
 ## The ecoengine class
 
-Most functions in the ecoengine package will return a `S3` object of class `ecoengine`. The class contains 4 items.  
+The data functions in the package include ones that query obervations, checklists, photos, vegetation records, and a variety of measurements from sensors. These data are all formatted as a common `S3` class called `ecoengine`. The class includes 4 slots.
 
-- A total result count (not necessarily the results in this particular object)
-- The call (So a reader can replicate the results)  
+- A total result count (not necessarily the results in this particular object but the total number available for a particlar query)
+- The call (So a reader can replicate the results or rerun the query using other tools.)  
 - The type (`photos`, `observation`, `checklist`, or `sensor`)  
 - The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
 
+The default `print` method for the class will summarize the object.
 
 ## Notes on downloading large data requests
 
-For the sake of speed, results are paginated at `25` results per page. It's possible to request all pages for any query by specifying page = all in any search. However, this should be used if the request is reasonably sized (`1,000` or fewer records). With larger requests, there is a chance that the query might become interrupted and you could lose all the partially downloaded data. Instead, use the returned observations to split the request. You can always check the number of requests you'll need to retreive data for any query by running `ee_pages(obj)` where `obj` is an object of class `ecoengine`.
+For the sake of speed, results are paginated at `25` results per page. It is possible to request all pages for any query by specifying `page = all` in any function that retrieves data. However, this option should be used if the request is reasonably sized (`1,000` or fewer records). With larger requests, there is a chance that the query might become interrupted and you could lose any data that may have been partially downloaded. In such cases the recommended practice is to use the returned observations to split the request. You can always check the number of requests you'll need to retreive data for any query by running `ee_pages(obj)` where `obj` is an object of class `ecoengine`.
 
 
 ```r
@@ -78,7 +79,8 @@ ee_pages(request)
 
 ```r
 # Now it's simple to parallelize this request You can parallelize across
-# number of cores by passing a vector of pages from 1 through total_pages.
+# number of cores by passing a vector of pages from 1 through the total
+# available.
 ```
 
 
@@ -107,20 +109,80 @@ pinus_observations
 ```
 ##  [Type]: observations
 ##  [Number of results]: 25 
-##  [Call]: http://ecoengine.berkeley.edu/api/observations/?country=United+States&page=2&scientific_name_exact=Pinus&page_size=10&format=json 
+##  [Call]: http://ecoengine.berkeley.edu/api/observations/?country=United+States&page=2&scientific_name_exact=Pinus&page_size=25&format=json 
 ##  [Output dataset]: 25 rows
 ```
 
 
 For additional fields upon which to query, simply look through the help for `?ee_observations`. In addition to narrowing data by taxonomic group, it's also possible to add a bounding box (add argument `bbox`) or request only data that have been georeferenced (set `georeferenced = TRUE`). 
 
----
+
+```r
+lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)
+```
+
+```
+##   |                                                                         |                                                                 |   0%
+```
+
+```
+## 795 observations found
+```
+
+```r
+lynx_data
+```
+
+```
+##  [Type]: observations
+##  [Number of results]: 795 
+##  [Call]: http://ecoengine.berkeley.edu/api/observations/?country=United+States&genus=Lynx&page=2&page_size=25&format=json 
+##  [Output dataset]: 25 rows
+```
+
+```r
+# Notice that we only for the first 25 rows.  But since 795 is not a big
+# request, we can obtain this all in one go.
+lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all")
+```
+
+```
+## Retrieving 32 pages (total: 795 records)
+```
+
+```
+##   |                                                                         |                                                                 |   0%  |                                                                         |==                                                               |   3%  |                                                                         |====                                                             |   6%  |                                                                         |======                                                           |   9%  |                                                                         |========                                                         |  12%  |                                                                         |==========                                                       |  16%  |                                                                         |============                                                     |  19%  |                                                                         |==============                                                   |  22%  |                                                                         |================                                                 |  25%  |                                                                         |==================                                               |  28%  |                                                                         |====================                                             |  31%  |                                                                         |======================                                           |  34%  |                                                                         |========================                                         |  38%  |                                                                         |==========================                                       |  41%  |                                                                         |============================                                     |  44%  |                                                                         |==============================                                   |  47%  |                                                                         |================================                                 |  50%  |                                                                         |===================================                              |  53%  |                                                                         |=====================================                            |  56%  |                                                                         |=======================================                          |  59%  |                                                                         |=========================================                        |  62%  |                                                                         |===========================================                      |  66%  |                                                                         |=============================================                    |  69%  |                                                                         |===============================================                  |  72%  |                                                                         |=================================================                |  75%  |                                                                         |===================================================              |  78%  |                                                                         |=====================================================            |  81%  |                                                                         |=======================================================          |  84%  |                                                                         |=========================================================        |  88%  |                                                                         |===========================================================      |  91%  |                                                                         |=============================================================    |  94%  |                                                                         |===============================================================  |  97%  |                                                                         |=================================================================| 100%
+```
+
+```r
+lynx_data
+```
+
+```
+##  [Type]: observations
+##  [Number of results]: 795 
+##  [Call]: http://ecoengine.berkeley.edu/api/observations/?country=United+States&genus=Lynx&page=2&page_size=25&format=json 
+##  [Output dataset]: 795 rows
+```
+
+
 
 ### Photos  
 
 
 ```r
-photos <- ee_photos_get(quiet = TRUE)
+photos <- ee_photos()
+```
+
+```
+##   |                                                                         |                                                                 |   0%
+```
+
+```
+## Search returned 43708 photos (downloading page 1 of 1749)
+```
+
+```r
 photos
 ```
 
@@ -131,7 +193,7 @@ photos
 ##  [Output dataset]: 25 rows
 ```
 
-The database currently holds  photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos_get`.
+The database currently holds 43708 photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos_get`.
 
 
 #### Searching photos by author
@@ -207,9 +269,22 @@ charles_results$data[1:2, ]
 view_photos(charles_results)
 ```
 
-This will launch your default browser and render a page with thumbnails of all images returned by the search query.
+This will launch your default browser and render a page with thumbnails of all images returned by the search query. You can do this with any `ecoengine` object of type `photos`. Suggestions for improving the photo browser are welcome.
+
 
 ![](browse_photos.png)
+
+Other photo search examples
+
+
+
+```r
+# All the photos in the CDGA collection
+all_cdfa <- ee_photos(collection_code = "CDFA", page = "all")
+# All Racoon pictures
+racoons <- ee_photos(scientific_name = "Procyon lotor", quiet = TRUE)
+```
+
 
 ---  
 
@@ -357,8 +432,7 @@ Our resulting dataset now contains 80 unique spider species.
 
 ### Sensors
 
-
-Some notes on the sensors.  
+Sensor data come from the [Keck HydroWatch Center](http://nrs.ucop.edu/research/special_projects/Keck_HydroWatchl.htm). 
 
 You'll need a sensor's id to query the data for that particular metric and location. The `ee_list_sensors()` function will give you a condensed list with the location, metric, binning method and most importantly the `sensor_id`. You'll need this id for the data retrieval. 
 
@@ -370,44 +444,44 @@ head(ee_list_sensors())
 
 
 -------------------------------------------------
-    station_name                 units           
+station_name          units                      
 --------------------- ---------------------------
-    Angelo HQ WS      Kilojoules per square meter
+Angelo HQ WS          Kilojoules per square meter
 
-  Angelo Meadow WS      Watts per square meter   
+Angelo Meadow WS      Watts per square meter     
 
-Angelo HQ SF Eel Gage           Percent          
+Angelo HQ SF Eel Gage Percent                    
 
-    Angelo HQ WS                Degree           
+Angelo HQ WS          Degree                     
 
-    Cahto Peak WS          Meters per second     
+Cahto Peak WS         Meters per second          
 
-  Angelo Meadow WS         Meters per second     
+Angelo Meadow WS      Meters per second          
 -------------------------------------------------
 
 Table: List of stations (continued below)
 
  
 -------------------------------------------------------------
-          variable                 method_name        record 
+variable                     method_name             record  
 ---------------------------- ----------------------- --------
-Solar radiation total kj/m^2 Conversion to 30-minute   1625  
-                                    timesteps                
+Solar radiation total kj/m^2 Conversion to 30-minute 1625    
+                             timesteps                       
 
-Solar radiation total w/m^2  Conversion to 30-minute   1632  
-                                    timesteps                
+Solar radiation total w/m^2  Conversion to 30-minute 1632    
+                             timesteps                       
 
-     Rel humidity perc       Conversion to 30-minute   1641  
-                                    timesteps                
+Rel humidity perc            Conversion to 30-minute 1641    
+                             timesteps                       
 
-   Wind direction degrees    Conversion to 30-minute   1644  
-                                    timesteps                
+Wind direction degrees       Conversion to 30-minute 1644    
+                             timesteps                       
 
-     Wind speed avg ms       Conversion to 30-minute   1651  
-                                    timesteps                
+Wind speed avg ms            Conversion to 30-minute 1651    
+                             timesteps                       
 
-     Wind speed max ms       Conversion to 30-minute   1654  
-                                    timesteps                
+Wind speed max ms            Conversion to 30-minute 1654    
+                             timesteps                       
 -------------------------------------------------------------
 
 
@@ -438,7 +512,7 @@ results
 ```
 
 
-Notice that the query returned 56779 observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request page = "all" but remember that this will make 2271 requests. This could take a while and might make sense to parallelize the request or split the calls so as to avoid hammering the server all at once.
+Notice that the query returned 56779 observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request `page = "all"` but remember that this will make 2271 requests. This could take a while and might make sense to parallelize the request or split the calls so as to avoid hammering the server all at once.
 
 Now we can examine the data itself.
 
@@ -508,7 +582,7 @@ head(sensor_df$data)
 ```
 
 
-As with other functions, the results are paginated. So the full dataset can be retrieved by adding page = all to the query. If you think this might be unusally large, simply request the first page (default action) and look at the number of results. This divided by 25 (the number of observations per request) is how many API calls you will make. if this is less than `30`, it will run very quickly. If this is over a 100, your best course of action would be to parallelize the request or split them up. Since we only need `85` records in this case:
+As with other functions, the results are paginated.  Since we only need `85` records in this case:
 
 
 ```r
@@ -535,16 +609,20 @@ sensor_df
 ```
 
 
+To obtain data 
+
 
 ### Searching the engine  
 
-How to search the engine. Some notes on elastic search.
+How to search the engine. The search is elastic by default. One can search for any field in `ee_observations()` across all available resources. For example, 
+
 
 
 ```r
+# A faceted search through all the resources
 ee_search()
-ee_search_obs_get()
-ee_search()
+# A detailed search of the observations
+ee_search_obs()
 ```
 
 
@@ -554,6 +632,8 @@ ee_search()
 ### Miscellaneous functions
 
 __Footprints__
+
+`ee_footprints()` provides a list of all the footprints.
 
 
 ```r
@@ -579,7 +659,7 @@ id   name
 
 __Data sources__
 
-To obtain a list of data sources for the specimens contained in the museum.
+`ee_sources()` provides a list of data sources for the specimens contained in the museum.
 
 
 ```r

@@ -1,8 +1,8 @@
 # Guide to using the ecoengine R package
 
-The Berkeley Ecoengine ([http://ecoengine.berkeley.edu](http://ecoengine.berkeley.edu)) provides an open API to a wealth of museum data contained in the Berkeley natural history museums. This R package provides a programmatic interface to this rich repository of data allowing for the data to be readily analyzed and visualized in a variety of contexts. This vignette provides a brief overview of the package's capabilities. 
+The Berkeley Ecoengine ([http://ecoengine.berkeley.edu](http://ecoengine.berkeley.edu)) provides an open API to a wealth of museum data contained in the [Berkeley natural history museums](https://bnhm.berkeley.edu/). This R package provides a programmatic interface to this rich repository of data allowing for the data to be easily analyzed and visualized or brought to bear in other contexts. This vignette provides a brief overview of the package's capabilities. 
 
-The API documentation is available at [http://ecoengine.berkeley.edu/developers/](http://ecoengine.berkeley.edu/developers/). As with most APIs all requests return a call that displays all the data endpoints accessible to users. Ecoengine has something similar.
+The API documentation is available at [http://ecoengine.berkeley.edu/developers/](http://ecoengine.berkeley.edu/developers/). As with most APIs it is possible to query all the available endpoints that are accessible through the API itself. Ecoengine has something similar.
 
 ```{r, about, echo = FALSE}
 suppressPackageStartupMessages(library(ecoengine))
@@ -20,23 +20,24 @@ pandoc.table(ee_about(), justify = "left")
 
 ## The ecoengine class
 
-Most functions in the ecoengine package will return a `S3` object of class `ecoengine`. The class contains 4 items.  
+The data functions in the package include ones that query obervations, checklists, photos, vegetation records, and a variety of measurements from sensors. These data are all formatted as a common `S3` class called `ecoengine`. The class includes 4 slots.
 
-- A total result count (not necessarily the results in this particular object)
-- The call (So a reader can replicate the results)  
+- A total result count (not necessarily the results in this particular object but the total number available for a particlar query)
+- The call (So a reader can replicate the results or rerun the query using other tools.)  
 - The type (`photos`, `observation`, `checklist`, or `sensor`)  
 - The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
 
+The default `print` method for the class will summarize the object.
 
 ## Notes on downloading large data requests
 
-For the sake of speed, results are paginated at `25` results per page. It's possible to request all pages for any query by specifying page = all in any search. However, this should be used if the request is reasonably sized (`1,000` or fewer records). With larger requests, there is a chance that the query might become interrupted and you could lose all the partially downloaded data. Instead, use the returned observations to split the request. You can always check the number of requests you'll need to retreive data for any query by running `ee_pages(obj)` where `obj` is an object of class `ecoengine`.
+For the sake of speed, results are paginated at `25` results per page. It is possible to request all pages for any query by specifying `page = all` in any function that retrieves data. However, this option should be used if the request is reasonably sized (`1,000` or fewer records). With larger requests, there is a chance that the query might become interrupted and you could lose any data that may have been partially downloaded. In such cases the recommended practice is to use the returned observations to split the request. You can always check the number of requests you'll need to retreive data for any query by running `ee_pages(obj)` where `obj` is an object of class `ecoengine`.
 
 ```{r, pagination, eval = TRUE}
 request <- ee_photos(county = "Santa Clara County")
 ee_pages(request)
 # Now it's simple to parallelize this request
-# You can parallelize across number of cores by passing a vector of pages from 1 through total_pages.
+# You can parallelize across number of cores by passing a vector of pages from 1 through the total available.
 ```
 
 
@@ -44,22 +45,30 @@ ee_pages(request)
 
 The database contains over 2 million records. Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
 
-```{r}
+```{r, observations_1}
 pinus_observations <- ee_observations(scientific_name_exact = "Pinus", page = 1)
 pinus_observations
 ```
 
 For additional fields upon which to query, simply look through the help for `?ee_observations`. In addition to narrowing data by taxonomic group, it's also possible to add a bounding box (add argument `bbox`) or request only data that have been georeferenced (set `georeferenced = TRUE`). 
 
----
+```{r, lynx_data}
+lynx_data <- ee_observations(genus = "Lynx",georeferenced = TRUE)
+lynx_data
+# Notice that we only for the first 25 rows.
+# But since 795 is not a big request, we can obtain this all in one go.
+lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all")
+lynx_data
+```
+
 
 ### Photos  
 
 ```{r, photo_count}
-photos <- ee_photos_get(quiet = TRUE)
+photos <- ee_photos()
 photos
 ```
-The database currently holds `r photos$count` photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos_get`.
+The database currently holds `r format(photos$results, nsmall = 0)` photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos_get`.
 
 
 #### Searching photos by author
@@ -77,9 +86,20 @@ charles_results$data[1:2, ]
 ```{r, browsing_photos, eval = FALSE}
 view_photos(charles_results)
 ```
-This will launch your default browser and render a page with thumbnails of all images returned by the search query.
+This will launch your default browser and render a page with thumbnails of all images returned by the search query. You can do this with any `ecoengine` object of type `photos`. Suggestions for improving the photo browser are welcome.
+
 
 ![](browse_photos.png)
+
+Other photo search examples
+
+
+```{r, photo_examples, eval = FALSE}
+# All the photos in the CDGA collection
+all_cdfa <- ee_photos(collection_code = "CDFA", page = "all")
+# All Racoon pictures
+racoons <- ee_photos(scientific_name = "Procyon lotor", quiet = TRUE)
+```
 
 ---  
 
@@ -114,22 +134,21 @@ Our resulting dataset now contains `r length(unique(spider_details$scientific_na
 
 ### Sensors
 
-
-Some notes on the sensors.  
+Sensor data come from the [Keck HydroWatch Center](http://nrs.ucop.edu/research/special_projects/Keck_HydroWatchl.htm). 
 
 You'll need a sensor's id to query the data for that particular metric and location. The `ee_list_sensors()` function will give you a condensed list with the location, metric, binning method and most importantly the `sensor_id`. You'll need this id for the data retrieval. 
 
-```{r, eval = FALSE}
+```{r, sensor_list, eval = FALSE}
 head(ee_list_sensors())
 ```
 
 ```{r, echo = FALSE, results = "asis"}
-pandoc.table(head(ee_list_sensors()), caption = "List of stations")
+pandoc.table(head(ee_list_sensors()), caption = "List of stations", justify = "left")
 ```
 
 Let's download solar radiation for the Angelo reserve HQ (sensor_id = `1625`).
 
-```{r}
+```{r, sensor_data}
 # First we can grab the list of sensor ids
 sensor_ids <- ee_list_sensors()$record
 # In this case we just need data for sensor with id 1625
@@ -138,17 +157,17 @@ results <- ee_sensor_data_get(angelo_hq, page = 2)
 results
 ```  
 
-Notice that the query returned `r format(results$results, nsmall = 0)` observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request page = "all" but remember that this will make `r format(ceiling(results$results)/25, nsmall =0)` requests. This could take a while and might make sense to parallelize the request or split the calls so as to avoid hammering the server all at once.
+Notice that the query returned `r format(results$results, nsmall = 0)` observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request `page = "all"` but remember that this will make `r format(ceiling(results$results)/25, nsmall =0)` requests. This could take a while and might make sense to parallelize the request or split the calls so as to avoid hammering the server all at once.
 
 Now we can examine the data itself.
 
-```{r}
+```{r, sensor_results2}
 head(results$data)
 ```
 
 We can also aggregate sensor data for any of the above mentioned sensors. We do this using the `ee_sensor_agg()` function. The function requires a sensor id and how the data should be binned. You can specify hours, minutes, seconds, days, weeks, month, and years. If for example you need the data binned every `15` days, simply add `days = 15` to the call. Once every `10` days and `2` hours would be `ee_sensor_agg(sensor_id = 1625, days = 10, hours = 2)` 
 
-```{r}
+```{r, sensor_aggregations}
 stations <- ee_list_sensors()
 # This gives you a list to choose from
 sensor_df <- ee_sensor_agg(sensor_id = stations[1, c("record")], weeks = 2)
@@ -156,22 +175,27 @@ sensor_df
 head(sensor_df$data)
 ```  
 
-As with other functions, the results are paginated. So the full dataset can be retrieved by adding page = all to the query. If you think this might be unusally large, simply request the first page (default action) and look at the number of results. This divided by 25 (the number of observations per request) is how many API calls you will make. if this is less than `30`, it will run very quickly. If this is over a 100, your best course of action would be to parallelize the request or split them up. Since we only need `85` records in this case:
+As with other functions, the results are paginated.  Since we only need `85` records in this case:
 
-```{r}
+```{r, sensor_agg_2}
 sensor_df <- ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
 sensor_df
 ```
 
+To obtain data 
+
 
 ### Searching the engine  
 
-How to search the engine. Some notes on elastic search.
+How to search the engine. The search is elastic by default. One can search for any field in `ee_observations()` across all available resources. For example, 
 
-```{r, eval = FALSE}
+
+```{r, search, eval = FALSE}
+# A faceted search through all the resources
 ee_search()
-ee_search_obs_get()
-ee_search()
+# A detailed search of the observations
+ee_search_obs()
+
 ```
 
 ---
@@ -180,6 +204,8 @@ ee_search()
 ### Miscellaneous functions
 
 __Footprints__
+
+`ee_footprints()` provides a list of all the footprints.
 
 ```{r, footprints_notrun, results = "asis", eval = FALSE, echo = TRUE}
 footprints <- ee_footprints()
@@ -194,7 +220,7 @@ pandoc.table(footprints[, -3], justify = "left") # To keep the table from spilli
 
 __Data sources__
 
-To obtain a list of data sources for the specimens contained in the museum.
+`ee_sources()` provides a list of data sources for the specimens contained in the museum.
 
 ```{r, results = "asis", eval = FALSE}
 source_list <- ee_sources()
