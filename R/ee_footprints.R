@@ -2,7 +2,7 @@
 
 #' ee_footprints
 #'
-#' List of ecoengine footprints
+#' List of ecoengine footprints.
 #' @template foptions
 #' @export
 #' @return data.frame
