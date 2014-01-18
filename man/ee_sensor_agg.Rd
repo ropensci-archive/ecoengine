@@ -5,7 +5,7 @@
 ee_sensor_agg(sensor_id = NULL, page = NULL, page_size = 25,
   hours = NULL, minutes = NULL, seconds = NULL, days = NULL,
   weeks = NULL, month = NULL, years = NULL, min_date = NULL,
-  max_date = NULL, quiet = FALSE, foptions = list())
+  max_date = NULL, quiet = FALSE, progress = TRUE, foptions = list())
 }
 \arguments{
   \item{page}{Page number}
@@ -42,6 +42,10 @@ ee_sensor_agg(sensor_id = NULL, page = NULL, page_size = 25,
 
   \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
   to suppress messages.}
+
+  \item{progress}{Progress bar is set to \code{TRUE} by
+  default. Use \code{FALSE} especially when calling
+  functions inside documents.}
 
   \item{foptions}{A list of additional arguments for
   \code{httr}. There is no reason to use this argument

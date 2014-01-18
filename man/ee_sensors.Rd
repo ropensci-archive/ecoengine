@@ -41,7 +41,7 @@ Returns UC reserve system sensor data
 \examples{
 \dontrun{
 Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
-ee_sensors_get()
+ee_sensors()
 all_sensors <- ee_sensors()
 }
 }

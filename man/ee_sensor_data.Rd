@@ -3,7 +3,7 @@
 \title{Sensor data}
 \usage{
 ee_sensor_data(sensor_id = NULL, page = NULL, page_size = 25,
-  quiet = FALSE, foptions = list())
+  quiet = FALSE, progress = TRUE, foptions = list())
 }
 \arguments{
   \item{sensor_id}{The id of the sensor.}
@@ -18,6 +18,10 @@ ee_sensor_data(sensor_id = NULL, page = NULL, page_size = 25,
 
   \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
   to suppress output.}
+
+  \item{progress}{Progress bar is set to \code{TRUE} by
+  default. Use \code{FALSE} especially when calling
+  functions inside documents.}
 
   \item{foptions}{A list of additional arguments for
   \code{httr}. There is no reason to use this argument

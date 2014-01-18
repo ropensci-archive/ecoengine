@@ -10,7 +10,7 @@ ee_observations(page = NULL, page_size = 25, country = "United States",
   genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL,
   collection_code = NULL, source = NULL, min_date = NULL,
   max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE,
-  foptions = list())
+  progress = TRUE, foptions = list())
 }
 \arguments{
   \item{page}{Page number}
@@ -40,7 +40,7 @@ ee_observations(page = NULL, page_size = 25, country = "United States",
 
   \item{genus}{genus name.}
 
-  \item{scientific_name}{description needed.}
+  \item{scientific_name}{A full scientific name}
 
   \item{kingdom_exact}{exact kingdom name}
 
@@ -70,8 +70,8 @@ ee_observations(page = NULL, page_size = 25, country = "United States",
   h:m:s. This package uses lubridate's \code{ymd_hms}
   function to format dates.}
 
-  \item{georeferenced}{Default is \code{FALSE}. Set to TRUE
-  to return only georeferenced records.}
+  \item{georeferenced}{Default is \code{FALSE}. Set to
+  \code{TRUE} to return only georeferenced records.}
 
   \item{bbox}{Set a bounding box for your search. Use
   format \code{bbox=-124,32,-114,42}}
@@ -82,6 +82,10 @@ ee_observations(page = NULL, page_size = 25, country = "United States",
   \item{foptions}{A list of additional arguments for
   \code{httr}. There is no reason to use this argument
   except for debugging purposes.}
+
+  \item{progress}{Progress bar is set to \code{TRUE} by
+  default. Use \code{FALSE} especially when calling
+  functions inside documents.}
 }
 \value{
 \code{data.frame}
@@ -96,6 +100,16 @@ pinus <- ee_observations(scientific_name_exact = "Pinus")
 lynx_data <- ee_observations(genus = "Lynx")
 # Georeferenced data only
 lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)
+animalia <- ee_observations(kingdom = "Animalia")
+Artemisia <- ee_observations(scientific_name = "Artemisia douglasiana")
+asteraceae <- ee_observationss(family = "asteraceae")
+vulpes <- ee_observations(genus = "vulpes")
+Anas <- ee_observations(scientific_name = "Anas cyanoptera", page = "all")
+loons <- ee_observations(scientific_name = "Gavia immer", page = "all")
+plantae <- ee_observations(kingdom = "plantae")
+chordata <- ee_observations(phylum = "chordata")
+# Class is clss since the former is a reserved keyword in SQL.
+aves <- ee_observations(clss = "aves")
 }
 }
 

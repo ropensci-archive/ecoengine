@@ -6,8 +6,8 @@ ee_photos(page = NULL, state_province = NULL, county = NULL,
   genus = NULL, scientific_name = NULL, authors = NULL,
   remote_id = NULL, collection_code = NULL, source = NULL,
   min_date = NULL, max_date = NULL, related_type = NULL, related = NULL,
-  page_size = 25, quiet = FALSE, other_catalog_numbers = NULL,
-  foptions = list())
+  page_size = 25, quiet = FALSE, progress = TRUE,
+  other_catalog_numbers = NULL, foptions = list())
 }
 \arguments{
   \item{page}{Page number}
@@ -59,6 +59,10 @@ ee_photos(page = NULL, state_province = NULL, county = NULL,
   \item{foptions}{A list of additional arguments for
   \code{httr}. There is no reason to use this argument
   except for debugging purposes.}
+
+  \item{progress}{Progress bar is set to \code{TRUE} by
+  default. Use \code{FALSE} especially when calling
+  functions inside documents.}
 }
 \description{
 Search the photos methods in the Holos API.

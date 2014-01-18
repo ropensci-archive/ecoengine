@@ -3,7 +3,7 @@
 \title{Search observations}
 \usage{
 ee_search_obs(query = NULL, page = NULL, page_size = 25, quiet = FALSE,
-  foptions = list())
+  progress = TRUE, foptions = list())
 }
 \arguments{
   \item{query}{= The search term}
@@ -22,6 +22,10 @@ ee_search_obs(query = NULL, page = NULL, page_size = 25, quiet = FALSE,
   observations. The API default, however, is \code{10}.
   Setting this number higher will require fewer calls (i.e.
   pages) but a large size may also fail or timeout.}
+
+  \item{progress}{Progress bar is set to \code{TRUE} by
+  default. Use \code{FALSE} especially when calling
+  functions inside documents.}
 }
 \value{
 data.frame
