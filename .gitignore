@@ -5,3 +5,4 @@ engine_notes.R
 .Rapp.history
 inst/Makefile
 TODO
+/inst/cache/
