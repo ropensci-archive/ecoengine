@@ -51,7 +51,7 @@ x <- ee_observations(quiet = TRUE, progress = FALSE)
 The database contains over 2 million records (`r format(x$results, nsmall = 0)` total). Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
 
 ```{r, observations_1}
-pinus_observations <- ee_observations(scientific_name_exact = "Pinus", page = 1, quiet = TRUE, progress = FALSE)
+pinus_observations <- ee_observations(scientific_name = "Pinus", page = 1, quiet = TRUE, progress = FALSE)
 pinus_observations
 ```
 

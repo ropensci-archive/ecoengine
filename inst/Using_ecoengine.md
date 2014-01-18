@@ -85,16 +85,16 @@ The database contains over 2 million records (3062744 total). Many of these have
 
 
 ```r
-pinus_observations <- ee_observations(scientific_name_exact = "Pinus", page = 1, 
-    quiet = TRUE, progress = FALSE)
+pinus_observations <- ee_observations(scientific_name = "Pinus", page = 1, quiet = TRUE, 
+    progress = FALSE)
 pinus_observations
 ```
 
 ```
-## [Total results]: 3062744 
+## [Total results]: 48333 
 ## [Args]: 
 ## country = United States 
-## scientific_name_exact = Pinus 
+## scientific_name = Pinus 
 ## page_size = 25 
 ## page = 1 
 ## [Type]: observations 
@@ -610,7 +610,7 @@ ggplot(sensor_df$data, aes(begin_date, mean)) + geom_line(size = 1, color = "ste
 
 ### Searching the engine  
 
-How to search the engine. The search is elastic by default. One can search for any field in `ee_observations()` across all available resources. For example, 
+The search is elastic by default. One can search for any field in `ee_observations()` across all available resources. For example, 
 
 
 
