@@ -15,13 +15,20 @@ This package provides a R wrapper for the newly available [ecoinformatics engine
 
 ## Installing the package
 
-Install the package with `devtools` until package is submitted to CRAN.
+A stable version can be installed from the central CRAN repository
+
+```coffee
+install.packages("ecoengine", dependencies = TRUE)
+```
+
+
+Install the package with `devtools` to obtain the latest development version.
 
 ```coffee
 # If you don't already have the devtools package installed, run
 # install.packages("devtools")
 # unlike most packages, devtools requires additional non-R dependencies depending on your OS. 
-# See → https://github.com/karthik/dlab-advanced-r/blob/master/installation.md#installation for more information. 
+# See → https://github.com/karthik/dlab-advanced-r/blob/master/installation.md#installation
 library(devtools)
 install_github('ecoengine', 'ropensci')
 ```
