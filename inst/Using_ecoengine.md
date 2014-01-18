@@ -58,8 +58,9 @@ For the sake of speed, results are paginated at `25` results per page. It is pos
 
 
 ```r
-request <- ee_photos(county = "Santa Clara County", quiet = TRUE)
-# Use quiet to suppress messages and progress bars
+request <- ee_photos(county = "Santa Clara County", quiet = TRUE, progress = FALSE)
+# Use quiet to suppress messages. Use progress = FALSE to suppress progress
+# bars which can clutter up documents.
 ee_pages(request)
 ```
 
@@ -85,7 +86,7 @@ The database contains over 2 million records (3062744 total). Many of these have
 
 ```r
 pinus_observations <- ee_observations(scientific_name_exact = "Pinus", page = 1, 
-    quiet = TRUE)
+    quiet = TRUE, progress = FALSE)
 pinus_observations
 ```
 
@@ -105,7 +106,8 @@ For additional fields upon which to query, simply look through the help for `?ee
 
 
 ```r
-lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE)
+lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE, 
+    progress = FALSE)
 lynx_data
 ```
 
@@ -123,15 +125,12 @@ lynx_data
 ```r
 # Notice that we only for the first 25 rows.  But since 795 is not a big
 # request, we can obtain this all in one go.
-lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all")
+lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all", 
+    progress = FALSE)
 ```
 
 ```
 ## Search contains 795 observations (downloading 32 of 32 pages)
-```
-
-```
-##   |                                                                         |                                                                 |   0%  |                                                                         |==                                                               |   3%  |                                                                         |====                                                             |   6%  |                                                                         |======                                                           |   9%  |                                                                         |========                                                         |  12%  |                                                                         |==========                                                       |  16%  |                                                                         |============                                                     |  19%  |                                                                         |==============                                                   |  22%  |                                                                         |================                                                 |  25%  |                                                                         |==================                                               |  28%  |                                                                         |====================                                             |  31%  |                                                                         |======================                                           |  34%  |                                                                         |========================                                         |  38%  |                                                                         |==========================                                       |  41%  |                                                                         |============================                                     |  44%  |                                                                         |==============================                                   |  47%  |                                                                         |================================                                 |  50%  |                                                                         |===================================                              |  53%  |                                                                         |=====================================                            |  56%  |                                                                         |=======================================                          |  59%  |                                                                         |=========================================                        |  62%  |                                                                         |===========================================                      |  66%  |                                                                         |=============================================                    |  69%  |                                                                         |===============================================                  |  72%  |                                                                         |=================================================                |  75%  |                                                                         |===================================================              |  78%  |                                                                         |=====================================================            |  81%  |                                                                         |=======================================================          |  84%  |                                                                         |=========================================================        |  88%  |                                                                         |===========================================================      |  91%  |                                                                         |=============================================================    |  94%  |                                                                         |===============================================================  |  97%  |                                                                         |=================================================================| 100%
 ```
 
 ```r
@@ -162,7 +161,7 @@ Anas <- ee_observations(scientific_name = "Anas cyanoptera", page = "all")
 loons <- ee_observations(scientific_name = "Gavia immer", page = "all")
 plantae <- ee_observations(kingdom = "plantae")
 chordata <- ee_observations(phylum = "chordata")
-# Class is clss since the former si a reserved keyword in SQL.
+# Class is clss since the former is a reserved keyword in SQL.
 aves <- ee_observations(clss = "aves")
 ```
 
@@ -174,7 +173,7 @@ The ecoengine also contains a large number of photos from various sources. It's 
 
 
 ```r
-photos <- ee_photos(quiet = TRUE)
+photos <- ee_photos(quiet = TRUE, progress = FALSE)
 photos
 ```
 
@@ -187,14 +186,14 @@ photos
 ## [Number of results]: 25
 ```
 
-The database currently holds 43708 photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos_get`.
+The database currently holds 43708 photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos`.
 
 
 #### Searching photos by author
 
 
 ```r
-charles_results <- ee_photos(author = "Charles Webber", quiet = TRUE)
+charles_results <- ee_photos(author = "Charles Webber", quiet = TRUE, progress = FALSE)
 charles_results
 ```
 
@@ -266,9 +265,9 @@ Other photo search examples
 
 ```r
 # All the photos in the CDGA collection
-all_cdfa <- ee_photos(collection_code = "CDFA", page = "all")
+all_cdfa <- ee_photos(collection_code = "CDFA", page = "all", progress = FALSE)
 # All Racoon pictures
-racoons <- ee_photos(scientific_name = "Procyon lotor", quiet = TRUE)
+racoons <- ee_photos(scientific_name = "Procyon lotor", quiet = TRUE, progress = FALSE)
 ```
 
 
@@ -479,15 +478,11 @@ Let's download solar radiation for the Angelo reserve HQ (sensor_id = `1625`).
 sensor_ids <- ee_list_sensors()$record
 # In this case we just need data for sensor with id 1625
 angelo_hq <- sensor_ids[1]
-results <- ee_sensor_data(angelo_hq, page = 2)
+results <- ee_sensor_data(angelo_hq, page = 2, progress = FALSE)
 ```
 
 ```
 ## Search contains 56779 records (downloading 1 page(s) of 2272)
-```
-
-```
-##   |                                                                         |                                                                 |   0%
 ```
 
 ```r
@@ -504,9 +499,7 @@ results
 ```
 
 
-Notice that the query returned 56779 observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request `page = "all"` but remember that this will make 2271 requests. This could take a while and might make sense to parallelize the request or split the calls so as to avoid hammering the server all at once.
-
-Now we can examine the data itself.
+Notice that the query returned 56779 observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request `page = "all"` but remember that this will make 2271 requests. Now we can examine the data itself.
 
 
 ```r
@@ -537,15 +530,12 @@ We can also aggregate sensor data for any of the above mentioned sensors. We do 
 ```r
 stations <- ee_list_sensors()
 # This gives you a list to choose from
-sensor_df <- ee_sensor_agg(sensor_id = stations[1, c("record")], weeks = 2)
+sensor_df <- ee_sensor_agg(sensor_id = stations[1, c("record")], weeks = 2, 
+    progress = FALSE)
 ```
 
 ```
 ## Search contains 85 records (downloading 1 page(s) of 4)
-```
-
-```
-##   |                                                                         |                                                                 |   0%  |                                                                         |=================================================================| 100%
 ```
 
 ```r
@@ -581,15 +571,11 @@ As with other functions, the results are paginated.  Since we only need `85` rec
 
 
 ```r
-sensor_df <- ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
+sensor_df <- ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all", progress = FALSE)
 ```
 
 ```
 ## Search contains 85 records (downloading 4 page(s) of 4)
-```
-
-```
-##   |                                                                         |                                                                 |   0%  |                                                                         |================                                                 |  25%  |                                                                         |================================                                 |  50%  |                                                                         |=================================================                |  75%  |                                                                         |=================================================================| 100%
 ```
 
 ```r
@@ -617,10 +603,97 @@ How to search the engine. The search is elastic by default. One can search for a
 
 
 ```r
-# A faceted search through all the resources
-ee_search()
-# A detailed search of the observations
-ee_search_obs()
+# The search function runs an automatic elastic search across all resources
+# available through the engine.
+lynx_results <- ee_search(query = "genus:Lynx")
+lynx_results[, -3]
+# This gives you a breakdown of what's available allowing you dig deeper.
+```
+
+
+
+------------------------------------
+field                      results  
+-------------------------- ---------
+animalia                   929      
+
+California                 485      
+
+Nevada                     105      
+
+Alaska                     82       
+
+British Columbia           47       
+
+Arizona                    36       
+
+Baja California Sur        25       
+
+Baja California            16       
+
+New Mexico                 14       
+
+Oregon                     13       
+
+Zacatecas                  11       
+
+mammalia                   929      
+
+Observations               929      
+
+felidae                    929      
+
+Lynx rufus californicus    398      
+
+Lynx rufus baileyi         137      
+
+Lynx canadensis canadensis 137      
+
+Lynx rufus pallescens      123      
+
+Lynx rufus fasciatus       30       
+
+Lynx rufus peninsularis    27       
+
+Lynx rufus                 27       
+
+Lynx rufus rufus           14       
+
+Lynx rufus escuinapae      13       
+
+Lynx rufus ssp.            4        
+
+chordata                   929      
+
+lynx                       929      
+
+carnivora                  929      
+------------------------------------
+
+
+Similarly it's possible to search through the observations in a detailed manner as well.
+
+
+```r
+all_lynx_data <- ee_search_obs(query = "Lynx", page = "all", progress = FALSE)
+```
+
+```
+## Search contains 929 observations (downloading 38 of 38 pages)
+```
+
+```r
+all_lynx_data
+```
+
+```
+## [Total results]: 929 
+## [Call]: 
+## q = Lynx 
+## page_size = 25 
+## page = all 
+## [Type]: observations 
+## [Number of results]: 929
 ```
 
 
