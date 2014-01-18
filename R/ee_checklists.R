@@ -63,6 +63,7 @@ full_results <- ldply(first_results$url, function(x) {
 				full_checklist <- content(GET(x))
 			    rbindfillnull(full_checklist)
 })
+full_results
 }
 
 
