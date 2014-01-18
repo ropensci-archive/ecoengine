@@ -1,6 +1,6 @@
 #' ee_photos
 #'
-#' Search the photos methods in the Holos API. 
+#' Search the photos methods in the ecoengine API. 
 #' @template pages
 #' @param  state_province Need to describe these parameters
 #' @param  county California counties. Package include a full list of counties. To load dataset \code{data(california_counties)}
