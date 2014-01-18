@@ -50,6 +50,7 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 #' @examples \dontrun{
 #' spiders  <- ee_checklists(subject = "Spiders")
 #' # Now retrieve all the details for each species on both lists
+#' library(plyr) 
 #' spider_details <- ldply(spiders$url, checklist_details)
 #'}
 checklist_details <- function(list_name, ...) {
