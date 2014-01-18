@@ -22,10 +22,10 @@ pandoc.table(ee_about(), justify = "left")
 
 The data functions in the package include ones that query obervations, checklists, photos, vegetation records, and a variety of measurements from sensors. These data are all formatted as a common `S3` class called `ecoengine`. The class includes 4 slots.
 
-- A total result count (not necessarily the results in this particular object but the total number available for a particlar query)
-- The call (So a reader can replicate the results or rerun the query using other tools.)  
-- The type (`photos`, `observation`, `checklist`, or `sensor`)  
-- The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
+- [`Total results`] A total result count (not necessarily the results in this particular object but the total number available for a particlar query)
+- [`Args`] The arguments  (So a reader can replicate the results or rerun the query using other tools.)  
+- [`Type`] The type (`photos`, `observation`, `checklist`, or `sensor`)  
+- [`data`] The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
 
 The default `print` method for the class will summarize the object.
 
@@ -76,6 +76,8 @@ vulpes <- ee_observations(genus = "vulpes")
 Anas <- ee_observations(scientific_name = "Anas cyanoptera", page = "all")
 loons <- ee_observations(scientific_name = "Gavia immer", page = "all")
 plantae <- ee_observations(kingdom = "plantae")
+# grab first 10 pages (250 results)
+plantae <- ee_observations(kingdom = "plantae", page = 1:10)
 chordata <- ee_observations(phylum = "chordata")
 # Class is clss since the former is a reserved keyword in SQL.
 aves <- ee_observations(clss = "aves")
@@ -136,7 +138,7 @@ head(all_lists[, c("footprint", "subject")])
 ```  
 Currently there are `r nrow(all_lists)` lists available. We can drill deeper into any list to get all the available data. We can also narrow our checklist search to groups of interest (see `unique(all_lists$subject)`). For example, to get the list of Spiders:
 
-```{r, checklist_spiders}
+```{r, checklist_spiders, cache = TRUE}
 spiders  <- ee_checklists(subject = "Spiders")
 spiders
 ```  
@@ -202,12 +204,24 @@ sensor_df <- ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all", progress =
 sensor_df
 ```
 
-To obtain data 
+```{r, visualization, echo = TRUE, eval = FALSE}
+library(ggplot2)
+ggplot(sensor_df$data, aes(begin_date, mean)) + 
+geom_line(size = 1, color = "steelblue") + geom_point() + 
+theme_gray() + ylab("Solar radiation total kj/m^2") + 
+xlab("Date") + ggtitle("Data from Angelo HQ") 
+```
 
+```{r, visualization_real, echo = FALSE}
+library(ggplot2)
+sensor_plot <- ggplot(sensor_df$data, aes(begin_date, mean)) + geom_line(size = 1, color = "steelblue") + theme_gray() + ylab("Solar radiation total kj/m^2") + xlab("Date") + ggtitle("Data from Angelo HQ") + geom_point()
+ggsave(sensor_plot, file = "sensor_plot.png", width = 6, height = 4)
+```
+![Mean solar radiation at Angelo HQ](sensor_plot.png)
 
 ### Searching the engine  
 
-How to search the engine. The search is elastic by default. One can search for any field in `ee_observations()` across all available resources. For example, 
+The search is elastic by default. One can search for any field in `ee_observations()` across all available resources. For example, 
 
 
 ```{r, search, eval = FALSE}

@@ -45,10 +45,10 @@ actions   http://ecoengine.berkeley.edu/api/search/
 
 The data functions in the package include ones that query obervations, checklists, photos, vegetation records, and a variety of measurements from sensors. These data are all formatted as a common `S3` class called `ecoengine`. The class includes 4 slots.
 
-- A total result count (not necessarily the results in this particular object but the total number available for a particlar query)
-- The call (So a reader can replicate the results or rerun the query using other tools.)  
-- The type (`photos`, `observation`, `checklist`, or `sensor`)  
-- The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
+- [`Total results`] A total result count (not necessarily the results in this particular object but the total number available for a particlar query)
+- [`Args`] The arguments  (So a reader can replicate the results or rerun the query using other tools.)  
+- [`Type`] The type (`photos`, `observation`, `checklist`, or `sensor`)  
+- [`data`] The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
 
 The default `print` method for the class will summarize the object.
 
@@ -92,7 +92,7 @@ pinus_observations
 
 ```
 ## [Total results]: 3062744 
-## [Call]: 
+## [Args]: 
 ## country = United States 
 ## scientific_name_exact = Pinus 
 ## page_size = 25 
@@ -160,6 +160,8 @@ vulpes <- ee_observations(genus = "vulpes")
 Anas <- ee_observations(scientific_name = "Anas cyanoptera", page = "all")
 loons <- ee_observations(scientific_name = "Gavia immer", page = "all")
 plantae <- ee_observations(kingdom = "plantae")
+# grab first 10 pages (250 results)
+plantae <- ee_observations(kingdom = "plantae", page = 1:10)
 chordata <- ee_observations(phylum = "chordata")
 # Class is clss since the former is a reserved keyword in SQL.
 aves <- ee_observations(clss = "aves")
@@ -179,7 +181,7 @@ photos
 
 ```
 ## [Total results]: 43708 
-## [Call]: 
+## [Args]: 
 ## page_size = 25 
 ## page = 1 
 ## [Type]: photos 
@@ -199,7 +201,7 @@ charles_results
 
 ```
 ## [Total results]: 4012 
-## [Call]: 
+## [Args]: 
 ## page_size = 25 
 ## authors = Charles Webber 
 ## page = 1 
@@ -491,7 +493,7 @@ results
 
 ```
 ## [Total results]: 56779 
-## [Call]: 
+## [Args]: 
 ## page_size = 25 
 ## page = 2 
 ## [Type]: sensor 
@@ -544,7 +546,7 @@ sensor_df
 
 ```
 ## [Total results]: 85 
-## [Call]: 
+## [Args]: 
 ## page_size = 25 
 ## interval = 2W 
 ## page = 1 
@@ -584,7 +586,7 @@ sensor_df
 
 ```
 ## [Total results]: 85 
-## [Call]: 
+## [Args]: 
 ## page_size = 25 
 ## interval = 2W 
 ## page = all 
@@ -593,8 +595,18 @@ sensor_df
 ```
 
 
-To obtain data 
 
+```r
+library(ggplot2)
+ggplot(sensor_df$data, aes(begin_date, mean)) + geom_line(size = 1, color = "steelblue") + 
+    geom_point() + theme_gray() + ylab("Solar radiation total kj/m^2") + xlab("Date") + 
+    ggtitle("Data from Angelo HQ")
+```
+
+
+
+
+![Mean solar radiation at Angelo HQ](sensor_plot.png)
 
 ### Searching the engine  
 
@@ -688,7 +700,7 @@ all_lynx_data
 
 ```
 ## [Total results]: 929 
-## [Call]: 
+## [Args]: 
 ## q = Lynx 
 ## page_size = 25 
 ## page = all 
