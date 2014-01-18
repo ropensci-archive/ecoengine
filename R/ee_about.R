@@ -7,6 +7,7 @@
 #' @export
 #' @importFrom httr GET content stop_for_status
 #' @importFrom plyr ldply 
+#' @importFrom rjson fromJSON
 #' @examples  
 #' ee_about()
 #' # set \code{as.df} = \code{FALSE} to return a \code{list} rather than a \code{data.frame}
