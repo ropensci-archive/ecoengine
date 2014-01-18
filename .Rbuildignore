@@ -5,3 +5,4 @@ test_data.R
 .travis.yml
 .Rapp.history
 inst/doc
+tests/testthat/test-all.R
