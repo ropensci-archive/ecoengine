@@ -22,7 +22,7 @@ cat(sprintf("[Number of results]: %s \n", nrow(x$data)))
 #' @export
 #' @return integer
 #' @examples \dontrun{
-#' page_1_data <- ee_sensor_data_get(1625, page = 2)
+#' page_1_data <- ee_sensor_data(1625, page = 2)
 #' ee_pages(page_1_data)
 #'}
 ee_pages <- function(ee, page_size = 25) {
