@@ -8,7 +8,7 @@
 #' @param ... additional arguments
 print.ecoengine <- function(x, ...) {
 cat(sprintf("[Total results]: %s \n", x$results))
-cat("[Call]: \n")
+cat("[Args]: \n")
 suppressWarnings(print.list.pairs(x$call))
 cat(sprintf("[Type]: %s \n", x$type))
 cat(sprintf("[Number of results]: %s \n", nrow(x$data)))
