@@ -25,7 +25,6 @@
 #' @template dates
 #' @param  georeferenced Default is \code{FALSE}. Set to TRUE to return only georeferenced records.
 #' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}
-
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to supress messages.
 #' @template foptions
 #' @export
