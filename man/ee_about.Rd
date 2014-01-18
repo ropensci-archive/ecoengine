@@ -22,7 +22,6 @@ Returns endpoints and category. Default return is a
 \code{TRUE}.
 }
 \examples{
-\dontrun{
 ee_about()
 # set \\code{as.df} = \\code{FALSE} to return a \\code{list} rather than a \\code{data.frame}
 ee_about(as.df = FALSE)
@@ -30,6 +29,5 @@ ee_about(as.df = FALSE)
 ee_about(type = "data")
 ee_about(type = "meta-data")
 ee_about(type = "actions")
-}
 }
 

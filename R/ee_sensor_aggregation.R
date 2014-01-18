@@ -19,9 +19,9 @@
 #' @importFrom lubridate ymd_hms
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
-#' @examples \dontrun{
+#' @examples 
 #' aggregated_data <-  ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
-#'}
+
 ee_sensor_agg <- function(sensor_id = NULL, page = NULL, page_size = 25, hours = NULL, minutes = NULL, seconds = NULL, days = NULL, weeks = NULL, month = NULL, years = NULL, min_date = NULL, max_date = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
 
 if(is.null(sensor_id)) {

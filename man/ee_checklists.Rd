@@ -20,10 +20,8 @@ data.frame
 Retrieves exisitng checklists from the ecoengine database
 }
 \examples{
-\dontrun{
 all_lists  <- ee_checklists()
 mammals_list  <- ee_checklists(subject = "Mammals")
 spiders  <- ee_checklists(subject = "Spiders")
-}
 }
 

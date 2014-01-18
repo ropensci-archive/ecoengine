@@ -39,10 +39,8 @@ ee_sensors(page = NULL, page_size = 25, remote_id = NULL,
 Returns UC reserve system sensor data
 }
 \examples{
-\dontrun{
-Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
+# Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
 ee_sensors()
 all_sensors <- ee_sensors()
-}
 }
 

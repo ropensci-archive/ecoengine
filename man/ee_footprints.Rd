@@ -16,8 +16,6 @@ data.frame
 List of ecoengine footprints.
 }
 \examples{
-\dontrun{
 footprints <- ee_footprints()
-}
 }
 

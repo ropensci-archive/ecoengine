@@ -47,8 +47,9 @@ data.frame(rbindlist(faceted_search_results))
 #' @seealso \code{\link{ee_search})}
 #' @return data.frame
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#' @examples \dontrun{
+#' @examples
 #' general_lynx_query <- ee_search_obs(query  = "Lynx")
+#'  \dontrun{
 #' lynx_data <- ee_search_obs(query  = "genus:Lynx")
 #' all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all")
 #'}

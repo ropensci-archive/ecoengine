@@ -21,10 +21,9 @@ cat(sprintf("[Number of results]: %s \n", nrow(x$data)))
 #' @param  page_size Default page size. Currently set to \code{25} package wide.
 #' @export
 #' @return integer
-#' @examples \dontrun{
+#' @examples 
 #' page_1_data <- ee_sensor_data(1625, page = 2)
 #' ee_pages(page_1_data)
-#'}
 ee_pages <- function(ee, page_size = 25) {
     if(!identical(class(ee), "ecoengine"))
         stop("Object must be of class ecoengine")
@@ -46,7 +45,7 @@ ee_pages <- function(ee, page_size = 25) {
 #' ee_paginator(1:4, 100)
 #' # This will return an error since there are only 4 pages per 100 observations
 #' ee_paginator(1:5, 100)
-#'}
+#' }
 ee_paginator <- function(page, total_obs) {
         all_pages <- ceiling(total_obs/25)
         if(total_obs < 25) { req_pages <- 1 }

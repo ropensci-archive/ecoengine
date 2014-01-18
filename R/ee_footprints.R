@@ -6,9 +6,9 @@
 #' @template foptions
 #' @export
 #' @return data.frame
-#' @examples \dontrun{
+#' @examples 
 #' footprints <- ee_footprints()
-#'}
+
 ee_footprints <- function(foptions = list()) {
 	footprints_url <- "http://ecoengine.berkeley.edu/api/footprints/?format=json"
 	footprints <- GET(footprints_url, foptions)

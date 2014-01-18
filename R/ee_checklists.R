@@ -10,11 +10,11 @@
 #' @importFrom plyr ldply
 #' @importFrom httr GET content stop_for_status
 #' @return data.frame
-#' @examples \dontrun{
+#' @examples 
 #' all_lists  <- ee_checklists()
 #' mammals_list  <- ee_checklists(subject = "Mammals")
 #' spiders  <- ee_checklists(subject = "Spiders")
-#'}
+
 ee_checklists <- function(subject = NULL, foptions = list()) {
 
 	base_url <- "http://ecoengine.berkeley.edu/api/checklists/?format=json"

@@ -19,12 +19,10 @@ view_photos(input = NULL, output = NULL, browse = TRUE)
 Browse photo queries in your default browser.
 }
 \examples{
-\dontrun{
 view_photos(ee_photos())
 # Pictures of racoons
 view_photos(ee_photos(scientific_name = "Procyon lotor", quiet = TRUE))
 # or the California Condor
 view_photos(ee_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
-}
 }
 

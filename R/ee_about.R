@@ -7,7 +7,7 @@
 #' @export
 #' @importFrom httr GET content stop_for_status
 #' @importFrom plyr ldply 
-#' @examples \dontrun{
+#' @examples  
 #' ee_about()
 #' # set \code{as.df} = \code{FALSE} to return a \code{list} rather than a \code{data.frame}
 #' ee_about(as.df = FALSE)
@@ -15,7 +15,6 @@
 #' ee_about(type = "data")
 #' ee_about(type = "meta-data")
 #' ee_about(type = "actions")
-#'}
 ee_about <- function(as.df = TRUE, type = NA) {
 about_url <- "http://ecoengine.berkeley.edu/api/?format=json" 
 about_call <- GET(about_url)

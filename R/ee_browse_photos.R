@@ -7,13 +7,13 @@
 #' @param browse Browse file in your default browse immediately after file creation.
 #'    If \code{FALSE}, the file is written, but not opened.
 #' @export
-#' @examples \dontrun{
+#' @examples 
 #' view_photos(ee_photos())
 #' # Pictures of racoons
 #' view_photos(ee_photos(scientific_name = "Procyon lotor", quiet = TRUE))
 #' # or the California Condor
 #' view_photos(ee_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
-#' }
+
 
 view_photos <- function(input = NULL, output = NULL, browse = TRUE)
 {
