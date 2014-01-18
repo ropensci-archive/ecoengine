@@ -11,7 +11,7 @@
 #' @param  clss class name
 #' @param  family family name
 #' @param  genus genus name.
-#' @param  scientific_name description needed.
+#' @param  scientific_name A full scientific name
 #' @param  kingdom_exact  exact kingdom name
 #' @param  phylum_exact exact phylum name
 #' @param  order_exact  exact order name
@@ -23,10 +23,11 @@
 #' @param  collection_code collections code
 #' @param  source  data source. See \code{\link{ee_sources}}
 #' @template dates
-#' @param  georeferenced Default is \code{FALSE}. Set to TRUE to return only georeferenced records.
+#' @param  georeferenced Default is \code{FALSE}. Set to \code{TRUE} to return only georeferenced records.
 #' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to supress messages.
 #' @template foptions
+#' @template progress
 #' @export
 #' @return \code{data.frame}
 #' @importFrom httr content GET 
@@ -38,8 +39,18 @@
 #' lynx_data <- ee_observations(genus = "Lynx")
 #' # Georeferenced data only
 #' lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)
+#' animalia <- ee_observations(kingdom = "Animalia")
+#' Artemisia <- ee_observations(scientific_name = "Artemisia douglasiana")
+#' asteraceae <- ee_observationss(family = "asteraceae")
+#' vulpes <- ee_observations(genus = "vulpes")
+#' Anas <- ee_observations(scientific_name = "Anas cyanoptera", page = "all")
+#' loons <- ee_observations(scientific_name = "Gavia immer", page = "all")
+#' plantae <- ee_observations(kingdom = "plantae")
+#' chordata <- ee_observations(phylum = "chordata")
+#' # Class is clss since the former is a reserved keyword in SQL.
+#' aves <- ee_observations(clss = "aves")
 #'}
-ee_observations <- function(page = NULL, page_size = 25, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE, foptions = list()) {
+ee_observations <- function(page = NULL, page_size = 25, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
  obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
 
 
@@ -54,10 +65,9 @@ obs_data <- content(data_sources)
 required_pages <- ee_paginator(page, obs_data$count)
 
 
-if(!quiet) {
-message(sprintf("Search contains %s observations (downloading %s of %s pages)", obs_data$count, length(required_pages), max(required_pages)))
-pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
-}
+if(!quiet)  message(sprintf("Search contains %s observations (downloading %s of %s pages)", obs_data$count, length(required_pages), max(required_pages)))
+if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
+
 
     results <- list()
     for(i in required_pages) {
@@ -80,7 +90,7 @@ pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
                              cbind(md, geo_data)
                             })
     	results[[i]] <- obs_df_cleaned
-        if(!quiet) setTxtProgressBar(pb, i)
+        if(progress) setTxtProgressBar(pb, i)
    		if(i %% 25 == 0) Sys.sleep(2) 
     }
     
@@ -89,7 +99,7 @@ pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 observation_results <- list(results = obs_data$count, call = main_args, type = "observations", data = obs_data_all)
 
 class(observation_results) <- "ecoengine"
-if(!quiet) close(pb)
+if(progress) close(pb)
 
 observation_results
 }

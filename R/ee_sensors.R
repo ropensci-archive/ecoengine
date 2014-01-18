@@ -12,7 +12,7 @@
 #' @export
 #' @examples \dontrun{
 #' Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
-#' ee_sensors_get()
+#' ee_sensors()
 #' all_sensors <- ee_sensors()
 #'}
 ee_sensors <- function(page = NULL, 
@@ -74,6 +74,7 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
 #' @param sensor_id The id of the sensor. 
 #' @template pages
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress output.
+#' @template progress
 #' @template foptions
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
@@ -83,7 +84,7 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
 #' page_1_data <- ee_sensor_data(sensor_id = station[1], page = 1)
 #' page_2_data <- ee_sensor_data(station[1], page = 1:3)
 #'}
-ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet = FALSE, foptions = list()) {
+ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet = FALSE, progress = TRUE, foptions = list()) {
 
     data_url <- paste0("http://ecoengine.berkeley.edu/api/sensors/", sensor_id, "/data?format=json")
     args <- compact(list(page_size = page_size))
@@ -99,8 +100,9 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
 
     if(!quiet) {
     message(sprintf("Search contains %s records (downloading %s page(s) of %s)", sensor_raw$count, length(required_pages), total_p))
-    pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
     }
+
+    if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 
     results <- list()
     for(i in required_pages) {
@@ -116,14 +118,14 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
         }
         
         results[[i]] <- raw_data
-     if(!quiet) setTxtProgressBar(pb, i)
+     if(progress) setTxtProgressBar(pb, i)
      if(i %% 25 == 0) Sys.sleep(2) 
     }
 
     results_data <- ldply(compact(results))
     sensor_data <- list(results = sensor_raw$count, call = main_args, type = "sensor", data = results_data)
     class(sensor_data) <- "ecoengine"
-    if(!quiet) close(pb)    
+    if(progress) close(pb)    
     sensor_data
 }
 

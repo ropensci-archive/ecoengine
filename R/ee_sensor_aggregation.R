@@ -13,6 +13,7 @@
 #' @param month Time interval in months
 #' @param years Time interval in years
 #' @param quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.
+#' @template progress
 #' @template foptions
 #' @importFrom plyr llply
 #' @importFrom lubridate ymd_hms
@@ -21,7 +22,7 @@
 #' @examples \dontrun{
 #' aggregated_data <-  ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
 #'}
-ee_sensor_agg <- function(sensor_id = NULL, page = NULL, page_size = 25, hours = NULL, minutes = NULL, seconds = NULL, days = NULL, weeks = NULL, month = NULL, years = NULL, min_date = NULL, max_date = NULL, quiet = FALSE, foptions = list()) {
+ee_sensor_agg <- function(sensor_id = NULL, page = NULL, page_size = 25, hours = NULL, minutes = NULL, seconds = NULL, days = NULL, weeks = NULL, month = NULL, years = NULL, min_date = NULL, max_date = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
 
 if(is.null(sensor_id)) {
 	stop("Sensor ID required. use ee_list_sensors() to obtain a full list of sensors")
@@ -47,8 +48,9 @@ total_p <- ceiling(sensor_res$count/page_size)
 
 if(!quiet) {
 message(sprintf("Search contains %s records (downloading %s page(s) of %s)", sensor_res$count, length(required_pages), total_p))
-pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 }
+
+if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 
    results <- list()
     for(i in required_pages) {
@@ -61,14 +63,14 @@ pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 		sensor_data_agg <- do.call(rbind.data.frame, (lapply(sensor_res_list, LinearizeNestedList)))
 		sensor_data_agg$begin_date <- ymd_hms(sensor_data_agg$begin_date)
 		results[[i]] <- sensor_data_agg
-		if(!quiet) setTxtProgressBar(pb, i)
+		if(progress) setTxtProgressBar(pb, i)
      	if(i %% 25 == 0) Sys.sleep(2) 
     }
 		
 	sensor_data_agg <- do.call(rbind, results)
 	sensor_results <- list(results = sensor_res$count, call = main_args, type = "sensor", data = sensor_data_agg)
     class(sensor_results) <- "ecoengine"
-    if(!quiet) close(pb)    
+    if(progress) close(pb)    
 	sensor_results
 }
 

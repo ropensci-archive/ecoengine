@@ -16,6 +16,7 @@
 #' @param  other_catalog_numbers Need to describe these parameters
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.
 #' @template foptions
+#' @template progress
 #' @export
 #' @importFrom httr stop_for_status content GET
 #' @importFrom plyr compact rbind.fill
@@ -63,6 +64,7 @@ ee_photos <- function(page = NULL,
 						 related  = NULL,
 						 page_size = 25,
 						 quiet = FALSE,
+						 progress = TRUE,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
 	photos_url <- "http://ecoengine.berkeley.edu/api/photos/?format=json"
@@ -91,9 +93,9 @@ ee_photos <- function(page = NULL,
 
      if(!quiet) {
     message(sprintf("Search contains %s photos (downloading %s of %s pages \n)", photos$count, length(required_pages), max(required_pages)))
-    pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
 	}
-
+	if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
+ 
     results <- list()
     for(i in required_pages) {
     	args$page <- i 
@@ -101,7 +103,7 @@ ee_photos <- function(page = NULL,
     	photos <- content(data_sources)
     	photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
     	results[[i]] <- photos_data
-    	if(!quiet) setTxtProgressBar(pb, i)
+    	if(progress) setTxtProgressBar(pb, i)
     	if(i %% 25 == 0) Sys.sleep(2) 
     }
     
@@ -111,7 +113,7 @@ ee_photos <- function(page = NULL,
     photos_results <- list(results = photos$count, call = main_args, type = "photos", data = photos_data)
     class(photos_results) <- "ecoengine"
     
-    if(!quiet) close(pb)
+    if(progress) close(pb)
     photos_results
 }
 
