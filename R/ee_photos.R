@@ -70,6 +70,8 @@ ee_photos <- function(page = NULL,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
 	photos_url <- "http://ecoengine.berkeley.edu/api/photos/?format=json"
+	if(georeferenced) georeferenced = "True"
+	
 	args <- as.list(compact(c(page_size = page_size,					 
 							state_province = state_province, 
 						 	county = county, 

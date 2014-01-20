@@ -5,9 +5,9 @@
 ee_observations(page = NULL, page_size = 25, country = "United States",
   state_province = NULL, county = NULL, kingdom = NULL, phylum = NULL,
   order = NULL, clss = NULL, family = NULL, genus = NULL,
-  scientific_name = NULL, kingdom_exact = NULL, phylum_exact = NULL,
-  order_exact = NULL, clss_exact = NULL, family_exact = NULL,
-  genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL,
+  scientific_name = NULL, kingdom__exact = NULL, phylum__exact = NULL,
+  order__exact = NULL, clss__exact = NULL, family__exact = NULL,
+  genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL,
   collection_code = NULL, source = NULL, min_date = NULL,
   max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE,
   progress = TRUE, foptions = list())
@@ -42,19 +42,19 @@ ee_observations(page = NULL, page_size = 25, country = "United States",
 
   \item{scientific_name}{A full scientific name}
 
-  \item{kingdom_exact}{exact kingdom name}
+  \item{kingdom__exact}{exact kingdom name}
 
-  \item{phylum_exact}{exact phylum name}
+  \item{phylum__exact}{exact phylum name}
 
-  \item{order_exact}{exact order name}
+  \item{order__exact}{exact order name}
 
-  \item{clss_exact}{class name}
+  \item{clss__exact}{class name}
 
-  \item{family_exact}{exact family name}
+  \item{family__exact}{exact family name}
 
-  \item{genus_exact}{exact genus name}
+  \item{genus__exact}{exact genus name}
 
-  \item{scientific_name_exact}{exact scientific name}
+  \item{scientific_name__exact}{exact scientific name}
 
   \item{remote_id}{remote ID}
 
