@@ -12,13 +12,13 @@
 #' @param  family family name
 #' @param  genus genus name.
 #' @param  scientific_name A full scientific name
-#' @param  kingdom_exact  exact kingdom name
-#' @param  phylum_exact exact phylum name
-#' @param  order_exact  exact order name
-#' @param  clss_exact class name
-#' @param  family_exact exact family name
-#' @param  genus_exact exact genus name
-#' @param  scientific_name_exact exact scientific name
+#' @param  kingdom__exact  exact kingdom name
+#' @param  phylum__exact exact phylum name
+#' @param  order__exact  exact order name
+#' @param  clss__exact class name
+#' @param  family__exact exact family name
+#' @param  genus__exact exact genus name
+#' @param  scientific_name__exact exact scientific name
 #' @param  remote_id remote ID
 #' @param  collection_code collections code
 #' @param  source  data source. See \code{\link{ee_sources}}
@@ -51,11 +51,12 @@
 #' # Class is clss since the former is a reserved keyword in SQL.
 #' aves <- ee_observations(clss = "aves")
 #'}
-ee_observations <- function(page = NULL, page_size = 25, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom_exact = NULL ,phylum_exact = NULL, order_exact = NULL, clss_exact = NULL, family_exact = NULL, genus_exact = NULL, scientific_name_exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
+ee_observations <- function(page = NULL, page_size = 25, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom__exact = NULL ,phylum__exact = NULL, order__exact = NULL, clss__exact = NULL, family__exact = NULL, genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
  obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
 
+if(georeferenced) georeferenced = "True"
 
-args <- as.list(compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom_exact = kingdom_exact, phylum_exact = phylum_exact, order_exact = order_exact, clss_exact = clss_exact ,family_exact = family_exact , genus_exact  = genus_exact, scientific_name_exact = scientific_name_exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, page_size = page_size)))
+args <- as.list(compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, georeferenced = georeferenced, page_size = page_size)))
 if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
