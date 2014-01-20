@@ -51,12 +51,15 @@ test_that("Sensor data are returned correctly", {
 context("Testing observations")
 
 test_that("Observations are correctly retrieved", {
-x <- ee_observations(scientific_name_exact = "Pinus")
-x1 <- ee_observations(scientific_name_exact = "Pinus", page = 1:2)
-expect_error(ee_observations(scientific_name_exact = "Pinus", page = "lol"))
+x <- ee_observations(genus__exact = "Pinus")
+x_geo <- ee_observations(genus__exact = "Pinus", georeferenced = TRUE)
+x1 <- ee_observations(genus__exact = "Pinus", page = 1:2)
+expect_error(ee_observations(genus__exact = "Pinus", page = "lol"))
 expect_is(x, "ecoengine")
 expect_is(x1, "ecoengine")
 expect_is(x$data, "data.frame")
+difference <- x$results - x_geo$results
+expect_true(difference > 0)
 })
 
 context("Testing search")
