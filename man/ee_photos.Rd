@@ -6,7 +6,7 @@ ee_photos(page = NULL, state_province = NULL, county = NULL,
   genus = NULL, scientific_name = NULL, authors = NULL,
   remote_id = NULL, collection_code = NULL, source = NULL,
   min_date = NULL, max_date = NULL, related_type = NULL, related = NULL,
-  page_size = 25, quiet = FALSE, progress = TRUE,
+  page_size = 25, quiet = FALSE, georeferenced = FALSE, progress = TRUE,
   other_catalog_numbers = NULL, foptions = list())
 }
 \arguments{
@@ -56,6 +56,9 @@ ee_photos(page = NULL, state_province = NULL, county = NULL,
   \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
   to suppress messages.}
 
+  \item{georeferenced}{Default is \code{FALSE}. Set to
+  \code{TRUE} to filter by photos that have geo data.}
+
   \item{foptions}{A list of additional arguments for
   \code{httr}. There is no reason to use this argument
   except for debugging purposes.}
@@ -65,7 +68,7 @@ ee_photos(page = NULL, state_province = NULL, county = NULL,
   functions inside documents.}
 }
 \description{
-Search the photos methods in the Holos API.
+Search the photos methods in the ecoengine API.
 }
 \examples{
 # Request all photos. This request will paginate.

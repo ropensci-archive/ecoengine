@@ -15,6 +15,7 @@
 #' @param  related  Need to describe these parameters
 #' @param  other_catalog_numbers Need to describe these parameters
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.
+#' @param  georeferenced  Default is \code{FALSE}. Set to \code{TRUE} to filter by photos that have geo data.
 #' @template foptions
 #' @template progress
 #' @export
@@ -64,6 +65,7 @@ ee_photos <- function(page = NULL,
 						 related  = NULL,
 						 page_size = 25,
 						 quiet = FALSE,
+						 georeferenced = FALSE,
 						 progress = TRUE,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
@@ -81,6 +83,7 @@ ee_photos <- function(page = NULL,
 						 	max_date = max_date, 
 						 	related_type = related_type, 
 						 	related  = related , 
+						 	georeferenced = georeferenced,
 						 	other_catalog_numbers = other_catalog_numbers)))
 	main_args <- args
 	if(is.null(page)) { page <- 1 }
@@ -110,6 +113,8 @@ ee_photos <- function(page = NULL,
 	photos_data <- do.call(rbind.fill, results)
 	photos_data$begin_date <- suppressWarnings(ymd_hms(photos_data$begin_date))
 	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
+	names(photos_data)[which(names(photos_data)=="geojson.coordinates1")] <- "latitude"
+    names(photos_data)[which(names(photos_data)=="geojson.coordinates2")] <- "longitude"
     photos_results <- list(results = photos$count, call = main_args, type = "photos", data = photos_data)
     class(photos_results) <- "ecoengine"
     
