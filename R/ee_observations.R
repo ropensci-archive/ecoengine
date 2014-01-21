@@ -34,7 +34,7 @@
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom plyr compact
 #' @examples 
-#' us <- ee_observations(country = "United States")
+#' vulpes <- ee_observations(genus = "vulpes")
 #' \dontrun{
 #' pinus <- ee_observations(scientific_name = "Pinus")
 #' lynx_data <- ee_observations(genus = "Lynx")

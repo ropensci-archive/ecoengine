@@ -94,7 +94,7 @@ ee_observations(page = NULL, page_size = 25, country = "United States",
 API endpoint that represents a list of observations.
 }
 \examples{
-us <- ee_observations(country = "United States")
+vulpes <- ee_observations(genus = "vulpes")
 \dontrun{
 pinus <- ee_observations(scientific_name = "Pinus")
 lynx_data <- ee_observations(genus = "Lynx")
