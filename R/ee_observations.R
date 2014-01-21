@@ -35,10 +35,10 @@
 #' @importFrom plyr compact
 #' @examples 
 #' us <- ee_observations(country = "United States")
+#' \dontrun{
 #' pinus <- ee_observations(scientific_name = "Pinus")
 #' lynx_data <- ee_observations(genus = "Lynx")
 #' # Georeferenced data only
-#' \dontrun{
 #' lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)
 #' animalia <- ee_observations(kingdom = "Animalia")
 #' Artemisia <- ee_observations(scientific_name = "Artemisia douglasiana")

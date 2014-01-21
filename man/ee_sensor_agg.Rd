@@ -55,6 +55,7 @@ ee_sensor_agg(sensor_id = NULL, page = NULL, page_size = 25,
 Aggregated sensor data for any station.
 }
 \examples{
-aggregated_data <-  ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
+aggregated_data <-  ee_sensor_agg(sensor_id = 1625, weeks = 2, page = 1)
+# aggregated_data <-  ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
 }
 
