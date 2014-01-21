@@ -117,6 +117,8 @@ ee_photos <- function(page = NULL,
 	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
 	names(photos_data)[which(names(photos_data)=="geojson.coordinates1")] <- "longitude"
     names(photos_data)[which(names(photos_data)=="geojson.coordinates2")] <- "latitude"
+    photos_data$latitude <- suppressWarnings(as.numeric(photos_data$latitude)) 
+    photos_data$longitude <- suppressWarnings(as.numeric(photos_data$longitude))
     photos_results <- list(results = photos$count, call = main_args, type = "photos", data = photos_data)
     class(photos_results) <- "ecoengine"
     
