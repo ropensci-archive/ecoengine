@@ -6,7 +6,7 @@
 #' @importFrom httr GET content stop_for_status
 #' @importFrom lubridate ymd_hms
 #' @return \code{data.frame}
-#' @examples \dontrun{
+#' @examples 
 #' source_list <- ee_sources()
 #'}
 ee_sources <- function(foptions = list()) {
