@@ -17,8 +17,6 @@ Returns a full list of data sources supported by the
 ecoengine
 }
 \examples{
-\dontrun{
 source_list <- ee_sources()
-}
 }
 
