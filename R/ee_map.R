@@ -19,7 +19,6 @@ ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map") {
 	dest <- ifelse(is.null(dest), tempdir(), dest)
 	species_data <- ee_obj$data
 	ee_geo <- toGeoJSON(data = species_data, name = name, dest = dest, lat.lon=c(12, 11))	
-	browser()
 	num_species <- length(unique(species_data$scientific_name))
 	if(num_species > 12) {
 		stop("Can't create a color scale for more than 12 species", call. = FALSE)
