@@ -99,12 +99,3 @@ sensor_df <- ee_sensor_agg(page = "all", sensor_id = 1625, weeks = 2)
 expect_is(sensor_df$data, "data.frame")
 })
 
-
-context("GeoJSON")
-
-test_that("We can write geoJSON files correctly", {
-lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE, progress = FALSE)
-ee_geojson(lynx_data, dest = ".", name = "foo")
-expect_true(file.exists("foo.geojson"))
-unlink("foo.geojson")
-})
