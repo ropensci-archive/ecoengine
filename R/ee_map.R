@@ -11,7 +11,10 @@
 #' @importFrom RColorBrewer brewer.pal
 #' @examples \dontrun{
 #' lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all", quiet = TRUE)
-#' ee_map(lynx_data)
+#' ee_map(lynx_data, title = "Lynx distribution map")
+#' # Now let's map out foxes
+#' vulpes <- ee_observations(genus = "vulpes", georeferenced = TRUE, quiet = TRUE)
+#' ee_map(vulpes, title = "Fox distributions")
 #'}
 ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map") {
 	assert_that(ee_obj$type == "observations")
@@ -23,9 +26,9 @@ ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map") {
 		stop("Can't create a color scale for more than 12 species", call. = FALSE)
 	}
 	pal <- brewer.pal(num_species,  "Set3")
-	# sty <- styleSingle(col= NA, fill= "#DA5453", fill.alpha = 1, alpha = 1, rad = 5)
 	sty <- styleCat(prop = "scientific_name", val = unique(species_data$scientific_name), style.val = pal, fill.alpha = 1, alpha = 1, rad = 6)
 	map <- leaflet(ee_geo, base.map="tls", style = sty, popup = "scientific_name", dest = dest, title = title)
+	message("Map will not render on Google Chrome due to the browser's security restrictions. Please use Firefox/Safari until this issue is resolved \n")
 	browseURL(map)
 }
 
