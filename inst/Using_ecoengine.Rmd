@@ -83,6 +83,19 @@ chordata <- ee_observations(phylum = "chordata")
 aves <- ee_observations(clss = "aves")
 ```
 
+__Mapping observations__
+
+The development version of the package includes a new function `ee_map()` that allows users to generate interactive maps from observation queries using Leaflet.js. 
+
+```{r, eval = FALSE}
+lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all", quiet = TRUE)
+ee_map(lynx_data)
+```
+
+![Map of Lynx observations across North America](map.png)
+
+_Note: Map works on all browsers except Google Chrome (for now) since security limitations prevent local geoJSON files from being rendered._
+
 ### Photos  
 
 The ecoengine also contains a large number of photos from various sources. It's easy to query the photo database using similar arguments as above. One can search by taxa, location, source, collection and much more.

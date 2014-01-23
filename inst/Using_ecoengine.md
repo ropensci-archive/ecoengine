@@ -95,6 +95,7 @@ pinus_observations
 ## [Args]: 
 ## country = United States 
 ## scientific_name = Pinus 
+## georeferenced = FALSE 
 ## page_size = 25 
 ## page = 1 
 ## [Type]: observations 
@@ -168,6 +169,22 @@ aves <- ee_observations(clss = "aves")
 ```
 
 
+__Mapping observations__
+
+The development version of the package includes a new function `ee_map()` that allows users to generate interactive maps from observation queries using Leaflet.js. 
+
+
+```r
+lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all", 
+    quiet = TRUE)
+ee_map(lynx_data)
+```
+
+
+![Map of Lynx observations across North America](map.png)
+
+_Note: Map works on all browsers except Google Chrome (for now) since security limitations prevent local geoJSON files from being rendered._
+
 ### Photos  
 
 The ecoengine also contains a large number of photos from various sources. It's easy to query the photo database using similar arguments as above. One can search by taxa, location, source, collection and much more.
@@ -183,6 +200,7 @@ photos
 ## [Total results]: 43708 
 ## [Args]: 
 ## page_size = 25 
+## georeferenced = 0 
 ## page = 1 
 ## [Type]: photos 
 ## [Number of results]: 25
@@ -204,6 +222,7 @@ charles_results
 ## [Args]: 
 ## page_size = 25 
 ## authors = Charles Webber 
+## georeferenced = FALSE 
 ## page = 1 
 ## [Type]: photos 
 ## [Number of results]: 25
@@ -239,12 +258,12 @@ charles_results$data[1:2, ]
 ##                                                             media_url
 ## 1 http://calphotos.berkeley.edu/imgs/512x768/8076_3101/2933/0025.jpeg
 ## 2 http://calphotos.berkeley.edu/imgs/512x768/8076_3101/0667/0107.jpeg
-##                                         source geojson.type
-## 1 http://ecoengine.berkeley.edu/api/sources/9/         <NA>
-## 2 http://ecoengine.berkeley.edu/api/sources/9/         <NA>
-##   geojson.coordinates1 geojson.coordinates2
-## 1                 <NA>                 <NA>
-## 2                 <NA>                 <NA>
+##                                         source geojson.type longitude
+## 1 http://ecoengine.berkeley.edu/api/sources/9/         <NA>      <NA>
+## 2 http://ecoengine.berkeley.edu/api/sources/9/         <NA>      <NA>
+##   latitude
+## 1     <NA>
+## 2     <NA>
 ```
 
 ---  
