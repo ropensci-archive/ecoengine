@@ -13,7 +13,7 @@
 #' @importFrom rgdal writeOGR
 #' @importFrom lubridate now
 #' @examples \dontrun{
-#' lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE)
+#' lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE, progress = FALSE)
 #' ee_geojson(lynx_data, location = "~/Desktop", file = "foo")
 #' # Now import this file into services like MapBox, or GitHub.
 #'}
@@ -32,8 +32,7 @@ ee_geojson <- function(ee_obj, location = NULL, file = NULL) {
 	species_data <- ee_obj$data
 	species_data$latitude  <- as.numeric(species_data$latitude)
 	species_data$longitude  <- as.numeric(species_data$longitude)
-	speciesMap.SP  <- SpatialPointsDataFrame(species_data[,c(12,11)],species_data[,-c(12,11)])
-	path <- paste0(location, "/", file)
+	speciesMap.SP  <- SpatialPointsDataFrame(species_data[,c(11,12)],species_data[,-c(11,12)])
 	unlink(file)
 	writeOGR(speciesMap.SP, dsn = file, layer = "speciesMap", driver='GeoJSON')
 }

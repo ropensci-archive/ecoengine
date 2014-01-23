@@ -22,7 +22,7 @@ filename
 }
 \examples{
 \dontrun{
-lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE)
+lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE, progress = FALSE)
 ee_geojson(lynx_data, location = "~/Desktop", file = "foo")
 # Now import this file into services like MapBox, or GitHub.
 }
