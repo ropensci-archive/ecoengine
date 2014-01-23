@@ -10,7 +10,7 @@
 #' @importFrom rjson fromJSON
 #' @examples  
 #' ee_about()
-#' # set \code{as.df} = \code{FALSE} to return a \code{list} rather than a \code{data.frame}
+#' # set as.df = FALSE to return a list rather than a data.frame
 #' ee_about(as.df = FALSE)
 #' # You can also filter by methods by data, meta-data, and actions.
 #' ee_about(type = "data")
