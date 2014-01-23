@@ -104,7 +104,7 @@ context("GeoJSON")
 
 test_that("We can write geoJSON files correctly", {
 lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE, progress = FALSE)
-ee_geojson(lynx_data, location = NULL, file = "foo")
+ee_geojson(lynx_data, dest = ".", name = "foo")
 expect_true(file.exists("foo.geojson"))
 unlink("foo.geojson")
 })

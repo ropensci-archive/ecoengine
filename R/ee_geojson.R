@@ -5,36 +5,22 @@
 #'
 #' This function writes out a geojson file that can easily be imported into many maps applications or directly rendered on services like GitHub. Warning: Current behavior is to overwrite existing files in the same folder that match the filename
 #' @param ee_obj object of class ecoengine
-#' @param location Location where geojson file should be saved
-#' @param file Name of file to be saved. Otherwise file will be named Species_map-(current_date)
+#' @param dest Location where geojson file should be saved
+#' @param name Name of file to be saved. Otherwise file will be named Species_map-(current_date)
 #' @export
 #' @importFrom assertthat assert_that
-#' @importFrom sp SpatialPointsDataFrame
-#' @importFrom rgdal writeOGR
-#' @importFrom lubridate now
+#' @importFrom leafletR toGeoJSON
 #' @examples \dontrun{
 #' lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE, progress = FALSE)
-#' ee_geojson(lynx_data, location = "~/Desktop", file = "foo")
+#' ee_geojson(lynx_data, dest = "~/Desktop", name = "foo")
+#' ee_geojson(lynx_data,  name = "foo")
 #' # Now import this file into services like MapBox, or GitHub.
 #'}
-ee_geojson <- function(ee_obj, location = NULL, file = NULL) {
+ee_geojson <- function(ee_obj, dest = NULL, name = NULL) {
 	assert_that(ee_obj$type == "observations")
-
-	if(is.null(file)) {
-		file <- paste0("Species_map-", ".geojson")
-	} else {
-		file <- paste0(file, ".geojson")
-	}
-
-	if(is.null(location)) {
-		location <- tempdir()
-	}
+	name <- ifelse(is.null(name), "ee_geojson", name)
+	dest <- ifelse(is.null(dest), tempdir(), dest)
 	species_data <- ee_obj$data
-	species_data$latitude  <- as.numeric(species_data$latitude)
-	species_data$longitude  <- as.numeric(species_data$longitude)
-	speciesMap.SP  <- SpatialPointsDataFrame(species_data[,c(11,12)],species_data[,-c(11,12)])
-	unlink(file)
-	writeOGR(speciesMap.SP, dsn = file, layer = "speciesMap", driver='GeoJSON')
+	toGeoJSON(data = species_data, name = name, dest = dest, lat.lon=c(12, 11))	
 }
-# [BUG]: Can't seem to specify a path correctly.
-#  Also can't seem to set the option to overwrite files.
+

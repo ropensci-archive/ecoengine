@@ -24,8 +24,7 @@ Imports:
     DBI,
     rjson,
     lubridate,
-    sp,
-    rgdal
+    leafletR
 Suggests:
     testthat,
     knitr,

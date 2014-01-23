@@ -2,15 +2,14 @@
 \alias{ee_geojson}
 \title{Created geojson from an ecoengine object of type observation}
 \usage{
-ee_geojson(ee_obj, location = NULL, file = NULL)
+ee_geojson(ee_obj, dest = NULL, name = NULL)
 }
 \arguments{
   \item{ee_obj}{object of class ecoengine}
 
-  \item{location}{Location where geojson file should be
-  saved}
+  \item{dest}{Location where geojson file should be saved}
 
-  \item{file}{Name of file to be saved. Otherwise file will
+  \item{name}{Name of file to be saved. Otherwise file will
   be named Species_map-(current_date)}
 }
 \description{
@@ -23,7 +22,8 @@ filename
 \examples{
 \dontrun{
 lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, quiet = TRUE, progress = FALSE)
-ee_geojson(lynx_data, location = "~/Desktop", file = "foo")
+ee_geojson(lynx_data, dest = "~/Desktop", name = "foo")
+ee_geojson(lynx_data,  name = "foo")
 # Now import this file into services like MapBox, or GitHub.
 }
 }
