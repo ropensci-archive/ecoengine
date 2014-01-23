@@ -15,17 +15,16 @@
 #'}
 ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map") {
 	assert_that(ee_obj$type == "observations")
-	name <- "temp"
 	dest <- ifelse(is.null(dest), tempdir(), dest)
 	species_data <- ee_obj$data
-	ee_geo <- toGeoJSON(data = species_data, name = name, dest = dest, lat.lon=c(12, 11))	
+	ee_geo <- toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon=c(12, 11))	
 	num_species <- length(unique(species_data$scientific_name))
 	if(num_species > 12) {
 		stop("Can't create a color scale for more than 12 species", call. = FALSE)
 	}
 	pal <- brewer.pal(num_species,  "Set3")
 	# sty <- styleSingle(col= NA, fill= "#DA5453", fill.alpha = 1, alpha = 1, rad = 5)
-	sty <- styleCat(prop = "scientific_name", val = unique(species_data$scientific_name), style.val = pal, fill.alpha = 1, alpha = 1,)
+	sty <- styleCat(prop = "scientific_name", val = unique(species_data$scientific_name), style.val = pal, fill.alpha = 1, alpha = 1, rad = 6)
 	map <- leaflet(ee_geo, base.map="tls", style = sty, popup = "scientific_name", dest = dest, title = title)
 	browseURL(map)
 }
