@@ -21,7 +21,7 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 	full_checklist <- GET(base_url, foptions)
 	stop_for_status(full_checklist)
 	checklist_data <- content(full_checklist)
-	args <- as.list(compact(c(page_size = checklist_data$count)))
+	args <- as.list(ee_compact(c(page_size = checklist_data$count)))
 	all_data <- GET(base_url, query = args, foptions)
 	stop_for_status(all_data)
 	all_checklists <- content(all_data)

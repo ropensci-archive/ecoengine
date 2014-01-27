@@ -24,7 +24,7 @@ ee_sensors <- function(page = NULL,
 						foptions = list()) {
 
 sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
-    args <- as.list(compact(c(page = page,
+    args <- as.list(ee_compactc(page = page,
                               page_size = page_size,                       
                             remote_id = remote_id, 
                             collection_code = collection_code, 
@@ -86,7 +86,7 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
 ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet = FALSE, progress = TRUE, foptions = list()) {
 
     data_url <- paste0("http://ecoengine.berkeley.edu/api/sensors/", sensor_id, "/data?format=json")
-    args <- compact(list(page_size = page_size))
+    args <- ee_compactlist(page_size = page_size))
     main_args <- args
     if(is.null(page)) { page <- 1 }
     main_args$page <- as.character(page)
@@ -121,7 +121,7 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
      if(i %% 25 == 0) Sys.sleep(2) 
     }
 
-    results_data <- ldply(compact(results))
+    results_data <- ldply(ee_compactresults))
     sensor_data <- list(results = sensor_raw$count, call = main_args, type = "sensor", data = results_data)
     class(sensor_data) <- "ecoengine"
     if(progress) close(pb)    

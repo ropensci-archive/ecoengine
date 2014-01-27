@@ -15,7 +15,6 @@
 #' @param quiet Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.
 #' @template progress
 #' @template foptions
-#' @importFrom plyr llply
 #' @importFrom lubridate ymd_hms
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
@@ -30,10 +29,10 @@ if(is.null(sensor_id)) {
 }
 
 sensor_agg_url <- paste0("http://ecoengine.berkeley.edu/api/sensors/", sensor_id, "/aggregate/?format=json")
-interval <- as.list(compact(c(H = hours,  T = minutes, S = seconds, D = days, W = weeks, M = month, Y = years)))
+interval <- as.list(ee_compact(c(H = hours,  T = minutes, S = seconds, D = days, W = weeks, M = month, Y = years)))
 paste_names <- function(interval_name, value) { paste(interval_name, value, collapse = "", sep = "") }
 interval <- llply(interval, paste_names, names(interval))
-args <- as.list(compact(c(page_size = 25, min_date = min_date,  interval = interval[[1]], max_date = max_date)))
+args <- as.list(ee_compact(c(page_size = 25, min_date = min_date,  interval = interval[[1]], max_date = max_date)))
 if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
@@ -58,7 +57,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
         args$page <- i 
         temp_data <- GET(sensor_agg_url, query = args)
         sensor_aggs <- content(temp_data)$results	
-		sensor_res_list <- llply(sensor_aggs, function(x) {
+		sensor_res_list <- lapply(sensor_aggs, function(x) {
 			 lapply(x, function(z) { ifelse(is.null(z),"NA", z) })
 		})
 		sensor_data_agg <- do.call(rbind.data.frame, (lapply(sensor_res_list, LinearizeNestedList)))

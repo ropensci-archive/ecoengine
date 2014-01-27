@@ -4,7 +4,7 @@
 #' @S3method print ecoengine
 #' @param x An object of class \code{ecoengine}
 #' @importFrom DBI print.list.pairs
-#' @importFrom plyr compact
+#'   
 #' @param ... additional arguments
 print.ecoengine <- function(x, ...) {
 cat(sprintf("[Total results]: %s \n", x$results))
@@ -63,6 +63,8 @@ ee_paginator <- function(page, total_obs) {
     }
 
 
+#' @noRd
+ee_compact <- function(l) Filter(Negate(is.null), l)
 
 #' @noRd
 # Internal function to convert list to data.frame when it contains NULL

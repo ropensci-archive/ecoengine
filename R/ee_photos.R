@@ -72,7 +72,7 @@ ee_photos <- function(page = NULL,
 	photos_url <- "http://ecoengine.berkeley.edu/api/photos/?format=json"
 	if(georeferenced) georeferenced = "True"
 	
-	args <- as.list(compact(c(page_size = page_size,					 
+	args <- as.list(ee_compact(c(page_size = page_size,					 
 							state_province = state_province, 
 						 	county = county, 
 						 	genus = genus, 

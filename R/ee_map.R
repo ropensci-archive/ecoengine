@@ -20,6 +20,7 @@
 #' # Google Chrome currently does not render the maps because of security restrictions
 #' # If Firefox or Safari aren't your default browser, you can specify that in your path.
 #' # options(browser = "/Applications/Firefox.app/Contents/MacOS/firefox") 
+#' # options(browser = "/Applications/Safari.app/Contents/MacOS/safari") 
 #' # or passing it inline
 #' # ee_map(vulpes, title = "Fox distributions", browser = "/Applications/Firefox.app/Contents/MacOS/firefox")
 #' # Obviously your path will vary depending on your OS.

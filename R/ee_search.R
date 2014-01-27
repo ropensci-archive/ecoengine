@@ -14,7 +14,7 @@
 ee_search <- function(query = NULL, foptions = list()) {
 
 search_url <- "http://ecoengine.berkeley.edu/api/search/?format=json"
-args <- as.list(compact(c(q = query)))
+args <- as.list(ee_compact(c(q = query)))
 result <- GET(search_url, query = args, foptions)
 es_results <- content(result)
 fields <- es_results$fields
@@ -55,7 +55,7 @@ data.frame(rbindlist(faceted_search_results))
 #'}
 ee_search_obs <- function(query = NULL, page = NULL, page_size = 25, quiet = FALSE, progress = TRUE, foptions = list()) {
 	obs_search_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"	
-	args <- compact(as.list(c(q = query, page_size = 25)))
+	args <- ee_compact(as.list(c(q = query, page_size = 25)))
     main_args <- args
     main_args$page <- as.character(page)
 	obs_search <- GET(obs_search_url, query = args, foptions)

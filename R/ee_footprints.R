@@ -15,7 +15,7 @@ ee_footprints <- function(foptions = list()) {
 	footprints <- GET(footprints_url, foptions)
 	 stop_for_status(footprints)
 	 res <- content(footprints)
-	 x <- llply(res$results, function(x) x[-4])
+	 x <- lapply(res$results, function(x) x[-4])
 	 rbind_all(x)
 }
 
