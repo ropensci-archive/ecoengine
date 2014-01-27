@@ -7,14 +7,13 @@
 #' @template foptions
 #' @export
 #' @importFrom assertthat assert_that
-#' @importFrom plyr ldply
+#' @importFrom dplyr rbind_all
 #' @importFrom httr GET content stop_for_status
 #' @return data.frame
 #' @examples 
 #' all_lists  <- ee_checklists()
 #' mammals_list  <- ee_checklists(subject = "Mammals")
 #' spiders  <- ee_checklists(subject = "Spiders")
-
 ee_checklists <- function(subject = NULL, foptions = list()) {
 
 	base_url <- "http://ecoengine.berkeley.edu/api/checklists/?format=json"
@@ -25,7 +24,7 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 	all_data <- GET(base_url, query = args, foptions)
 	stop_for_status(all_data)
 	all_checklists <- content(all_data)
-	all_checklists_df <- ldply(all_checklists$results, function(x) data.frame(x))
+	all_checklists_df <- rbind_all(all_checklists$results)
 	if(!is.null(subject)) {
 	subject <- eco_capwords(subject)
 	sub_result <- all_checklists_df[grep(subject, all_checklists_df$subject), ]
@@ -44,6 +43,7 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 #' Will return details on any checklist 
 #' @param list_name URL of a checklist
 #' @param  ... Additional arguments (currently not implemented)
+#' @importFrom dplyr rbind_all
 #' @export
 #' @seealso \code{\link{ee_checklists}}
 #' @return \code{data.frame}
@@ -54,16 +54,17 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 #' spider_details <- ldply(spiders$url, checklist_details)
 #'}
 checklist_details <- function(list_name, ...) {
+
 details <- GET(paste0(list_name, "?format=json"))
 details_data <- content(details)
-first_results <- ldply(details_data$observations, function(x) data.frame(x))
+first_results <- rbind_all(details_data$observations)
 first_results$url <- paste0(first_results$url, "?format=json")
 # Now fetch all the results from the URL (2nd column)
-full_results <- ldply(first_results$url, function(x) {
+full_results <- lapply(first_results$url, function(x) {
 				full_checklist <- content(GET(x))
 			    rbindfillnull(full_checklist)
 })
-full_results
+rbind_all(full_results)
 }
 
 
