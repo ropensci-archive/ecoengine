@@ -5,6 +5,7 @@
 #' @export
 #' @importFrom httr GET content stop_for_status
 #' @importFrom lubridate ymd_hms
+#' @importFrom dplyr rbind_all
 #' @return \code{data.frame}
 #' @examples 
 #' source_list <- ee_sources()
@@ -13,7 +14,7 @@ ee_sources <- function(foptions = list()) {
     data_sources <- GET(base_url, foptions)
     stop_for_status(data_sources)
     ds <- content(data_sources)
-    sources <- as.data.frame(do.call(rbind.data.frame, ds$results))
+    sources <- rbind_all(ds$results)
     sources$retrieved <- ymd_hms(sources$retrieved)
     sources
 }
