@@ -5,7 +5,7 @@
 #' Search across the entire ecoengine database. 
 #' @param query search term
 #' @template foptions
-#' @importFrom data.table rbindlist
+#' @importFrom dplyr rbind_all
 #' @export
 #' @keywords search
 #' @examples \dontrun{
@@ -25,11 +25,10 @@ ee_filter <- function(i) {
 fields_compacted <- Filter(ee_filter, fields)
 faceted_search_results <- lapply(fields_compacted, function(y) { 
 	temp_fields <- do.call(rbind.data.frame, lapply(y, LinearizeNestedList))
-	# temp_fields <- as.data.frame(t(unlist(y))) 
 	names(temp_fields) <- c("field", "results", "search_url")
 	temp_fields
 })
-data.frame(rbindlist(faceted_search_results))
+rbind_all(faceted_search_results)
 }
 
 

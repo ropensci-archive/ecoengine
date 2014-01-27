@@ -18,14 +18,11 @@ Depends:
 Imports:
     httr,
     plyr,
-    data.table,
     assertthat,
     whisker,
-    DBI,
     rjson,
     dplyr,
     lubridate,
-    RColorBrewer,
     leafletR
 Suggests:
     testthat,

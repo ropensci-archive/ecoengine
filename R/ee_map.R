@@ -10,7 +10,6 @@
 #' @export
 #' @keywords map
 #' @import leafletR
-#' @importFrom RColorBrewer brewer.pal
 #' @examples \dontrun{
 #' lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all", quiet = TRUE)
 #' ee_map(lynx_data, title = "Lynx distribution map")
