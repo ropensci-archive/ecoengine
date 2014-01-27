@@ -33,6 +33,7 @@
 #' @importFrom httr content GET 
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom plyr compact
+#' @importFrom dplyr rbind_all
 #' @examples 
 #' vulpes <- ee_observations(genus = "vulpes")
 #' \dontrun{
@@ -56,7 +57,7 @@ ee_observations <- function(page = NULL, page_size = 25, country = "United State
 
 if(georeferenced) georeferenced = "True"
 
-args <- as.list(compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, georeferenced = georeferenced, page_size = page_size)))
+args <- as.list(ee_compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, georeferenced = georeferenced, page_size = page_size)))
 if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
@@ -96,7 +97,8 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
    		if(i %% 25 == 0) Sys.sleep(2) 
     }
     
-	obs_data_all <- do.call(rbind, results)
+	# obs_data_all <- do.call(rbind, results)
+    obs_data_all <- rbind_all(results)
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates1")] <- "longitude"
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates2")] <- "latitude"
     obs_data_all$latitude <- suppressWarnings(as.numeric(obs_data_all$latitude)) 
