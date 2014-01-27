@@ -31,7 +31,7 @@ if(is.null(sensor_id)) {
 sensor_agg_url <- paste0("http://ecoengine.berkeley.edu/api/sensors/", sensor_id, "/aggregate/?format=json")
 interval <- as.list(ee_compact(c(H = hours,  T = minutes, S = seconds, D = days, W = weeks, M = month, Y = years)))
 paste_names <- function(interval_name, value) { paste(interval_name, value, collapse = "", sep = "") }
-interval <- llply(interval, paste_names, names(interval))
+interval <- lapply(interval, paste_names, names(interval))
 args <- as.list(ee_compact(c(page_size = 25, min_date = min_date,  interval = interval[[1]], max_date = max_date)))
 if(is.null(page)) { page <- 1 }
 main_args <- args
