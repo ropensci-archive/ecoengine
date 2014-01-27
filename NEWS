@@ -1,4 +1,5 @@
 * Added geojson support
+* Removed plyr imports and replaced with faster dplyr operations.
 
 ecoengine 1.1
 =======================
