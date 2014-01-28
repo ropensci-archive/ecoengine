@@ -33,7 +33,6 @@
 #' @importFrom httr content GET 
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom plyr compact
-#' @importFrom dplyr rbind_all
 #' @examples 
 #' vulpes <- ee_observations(genus = "vulpes")
 #' \dontrun{
@@ -97,8 +96,8 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
    		if(i %% 25 == 0) Sys.sleep(2) 
     }
     
-	# obs_data_all <- do.call(rbind, results)
-    obs_data_all <- rbind_all(results)
+	obs_data_all <- do.call(rbind, results)
+    # obs_data_all <- rbind_all(results)
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates1")] <- "longitude"
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates2")] <- "latitude"
     obs_data_all$latitude <- suppressWarnings(as.numeric(obs_data_all$latitude)) 
