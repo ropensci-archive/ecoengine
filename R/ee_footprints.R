@@ -4,7 +4,6 @@
 #'
 #' List of ecoengine footprints.
 #' @template foptions
-#' @importFrom dplyr rbind_all
 #' @export
 #' @return data.frame
 #' @examples 
@@ -15,9 +14,7 @@ ee_footprints <- function(foptions = list()) {
 	footprints <- GET(footprints_url, foptions)
 	 stop_for_status(footprints)
 	 res <- content(footprints)
-	 x <- lapply(res$results, function(x) x[-4])
-	 rbind_all(x)
+	 results <- do.call(rbind, res$results)
+	 res <- ldply(res$results, function(x) { data.frame(t(unlist(x[-4])))  })
+	 res[, -1]
 }
-
-
-
