@@ -3,7 +3,7 @@
 \title{LeafletJS Map}
 \usage{
 ee_map(ee_obj, dest = tempdir(), title = "Ecoengine species map",
-  overwrite = TRUE, browser = getOption("browser"))
+  incl.data = TRUE)
 }
 \arguments{
   \item{ee_obj}{A ecoengine object of type
@@ -15,20 +15,10 @@ ee_map(ee_obj, dest = tempdir(), title = "Ecoengine species map",
 
   \item{title}{Title of the map.}
 
-  \item{overwrite}{Default is \code{TRUE}. Set to
-  \code{FALSE} to avoid overwriting previously created html
-  files. NOT YET FUNCTIONAL. Waiting on leafletR update.}
-
-  \item{browser}{Maps currently don't render in Google
-  Chrome. The problem is the security restriction of
-  Chrome. Local file access is denied, even in the same
-  directory. Thus the JavaScript in the HTML file cannot
-  load the data from the GeoJSONfile. It only works if the
-  files are uploaded on a server. To get around this, you
-  can specify a different browser to use just for this
-  function. You can also set one for R in your options.
-  (e.g. \code{options(browser =
-  "/Applications/Firefox.app/Contents/MacOS/firefox") }).}
+  \item{incl.data}{Default is \code{TRUE}. Writes geoJSON
+  data into the html file to get around security
+  restrictions in browsers like Google Chrome. Set to
+  \code{FALSE} to read from a separate local geoJSON file.}
 }
 \description{
 Builds an interactive map of locations for any species
@@ -40,13 +30,6 @@ ee_map(lynx_data, title = "Lynx distribution map")
 # Now let's map out foxes
 vulpes <- ee_observations(genus = "vulpes", georeferenced = TRUE, quiet = TRUE)
 ee_map(vulpes, title = "Fox distributions")
-# Google Chrome currently does not render the maps because of security restrictions
-# If Firefox or Safari aren't your default browser, you can specify that in your path.
-# options(browser = "/Applications/Firefox.app/Contents/MacOS/firefox")
-# options(browser = "/Applications/Safari.app/Contents/MacOS/safari")
-# or passing it inline
-# ee_map(vulpes, title = "Fox distributions", browser = "/Applications/Firefox.app/Contents/MacOS/firefox")
-# Obviously your path will vary depending on your OS.
 }
 }
 \keyword{map}
