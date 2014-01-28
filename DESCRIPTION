@@ -23,7 +23,7 @@ Imports:
     rjson,
     dplyr,
     lubridate,
-    leafletR
+    leafletR (>= 0.1-1)
 Suggests:
     testthat,
     knitr,
