@@ -8,6 +8,7 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr rbind_all
+#' @importFrom plyr ldply
 #' @importFrom httr GET content stop_for_status
 #' @return data.frame
 #' @examples 
@@ -24,7 +25,8 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 	all_data <- GET(base_url, query = args, foptions)
 	stop_for_status(all_data)
 	all_checklists <- content(all_data)
-	all_checklists_df <- rbind_all(all_checklists$results)
+	# all_checklists_df <- rbind_all(all_checklists$results)
+	all_checklists_df <- ldply(all_checklists$results, function(x) data.frame(x))
 	if(!is.null(subject)) {
 	subject <- eco_capwords(subject)
 	sub_result <- all_checklists_df[grep(subject, all_checklists_df$subject), ]
