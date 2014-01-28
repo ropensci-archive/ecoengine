@@ -7,7 +7,6 @@
 #' @template foptions
 #' @export
 #' @importFrom assertthat assert_that
-#' @importFrom dplyr rbind_all
 #' @importFrom plyr ldply
 #' @importFrom httr GET content stop_for_status
 #' @return data.frame
