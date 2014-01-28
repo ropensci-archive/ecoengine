@@ -27,7 +27,7 @@ ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map", in
 "#0C3D8A","#9E4CD3","#195C7B","#9F8450","#7A0666","#BBA3C5","#F064B4","#108223","#553502",
 "#17ADE7","#83C445","#C52817","#626302","#9F9215","#6CCD78","#BF3704")
 	pal <- cols[1:num_species]
-	sty <- styleCat(prop = "scientific_name", val = unique(species_data$scientific_name), style.val = pal, fill.alpha = 1, alpha = 1, rad = 4)
+	sty <- styleCat(prop = "scientific_name", val = unique(species_data$scientific_name), style.val = pal, fill.alpha = 1, alpha = 1, rad = 4, leg = "Scientific Name")
 	map <- leaflet(ee_geo, base.map="tls", style = sty, popup = "scientific_name", dest = dest, title = title, incl.data = incl.data)
 	browseURL(map)
 }
