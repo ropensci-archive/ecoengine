@@ -99,8 +99,8 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
     obs_data_all <- do.call(rbind, results)
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates1")] <- "longitude"
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates2")] <- "latitude"
-    obs_data_all$latitude <- suppressWarnings(as.numeric(obs_data_all$latitude)) 
-    obs_data_all$longitude <- suppressWarnings(as.numeric(obs_data_all$longitude))
+    obs_data_all$latitude <- suppressWarnings(as.numeric(as.character(obs_data_all$latitude)))
+    obs_data_all$longitude <- suppressWarnings(as.numeric(as.character(obs_data_all$longitude)))
     obs_data_all$begin_date <- suppressWarnings(ymd_hms(obs_data_all$begin_date))
     obs_data_all$end_date <- suppressWarnings(ymd_hms(obs_data_all$end_date))
 

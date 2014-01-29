@@ -9,7 +9,7 @@ ecoengine
 \details{
 \href{http://ecoengine.berkeley.edu}{The Berkeley
 Ecoengine} provides an open API to a wealth of museum data
-contained in the \href{https://bnhm.berkeley.edu/}{Berkeley
+contained in the \href{http://bnhm.berkeley.edu/}{Berkeley
 natural history museums}. This R package provides a
 programmatic interface to this rich repository of data
 allowing for the data to be easily analyzed and visualized
