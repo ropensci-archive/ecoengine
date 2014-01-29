@@ -5,7 +5,7 @@
 #' Search across the entire ecoengine database. 
 #' @param query search term
 #' @template foptions
-#' @importFrom dplyr rbind_all
+#' @importFrom data.table rbindlist
 #' @export
 #' @keywords search
 #' @examples \dontrun{
@@ -14,21 +14,22 @@
 ee_search <- function(query = NULL, foptions = list()) {
 
 search_url <- "http://ecoengine.berkeley.edu/api/search/?format=json"
-args <- as.list(ee_compact(c(q = query)))
+args <- as.list(compact(c(q = query)))
 result <- GET(search_url, query = args, foptions)
 es_results <- content(result)
 fields <- es_results$fields
 # This removes list items with nothing nested. 
 ee_filter <- function(i) {
-	length(i) > 0
+        length(i) > 0
 }
 fields_compacted <- Filter(ee_filter, fields)
 faceted_search_results <- lapply(fields_compacted, function(y) { 
-	temp_fields <- do.call(rbind.data.frame, lapply(y, LinearizeNestedList))
-	names(temp_fields) <- c("field", "results", "search_url")
-	temp_fields
+        temp_fields <- do.call(rbind.data.frame, lapply(y, LinearizeNestedList))
+        # temp_fields <- as.data.frame(t(unlist(y))) 
+        names(temp_fields) <- c("field", "results", "search_url")
+        temp_fields
 })
-rbind_all(faceted_search_results)
+data.frame(rbindlist(faceted_search_results))
 }
 
 

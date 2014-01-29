@@ -44,7 +44,6 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 #' Will return details on any checklist 
 #' @param list_name URL of a checklist
 #' @param  ... Additional arguments (currently not implemented)
-#' @importFrom dplyr rbind_all
 #' @export
 #' @seealso \code{\link{ee_checklists}}
 #' @return \code{data.frame}
@@ -55,18 +54,18 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 #' spider_details <- ldply(spiders$url, checklist_details)
 #'}
 checklist_details <- function(list_name, ...) {
-
 details <- GET(paste0(list_name, "?format=json"))
 details_data <- content(details)
-first_results <- rbind_all(details_data$observations)
+first_results <- ldply(details_data$observations, function(x) data.frame(x))
 first_results$url <- paste0(first_results$url, "?format=json")
 # Now fetch all the results from the URL (2nd column)
-full_results <- lapply(first_results$url, function(x) {
+full_results <- ldply(first_results$url, function(x) {
 				full_checklist <- content(GET(x))
 			    rbindfillnull(full_checklist)
 })
-rbind_all(full_results)
+full_results
 }
+
 
 
 # Function to capitalize words

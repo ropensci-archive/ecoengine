@@ -56,7 +56,7 @@ ee_observations <- function(page = NULL, page_size = 25, country = "United State
 
 if(georeferenced) georeferenced = "True"
 
-args <- as.list(ee_compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, georeferenced = georeferenced, page_size = page_size)))
+args <- as.list(compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, georeferenced = georeferenced, page_size = page_size)))
 if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
@@ -73,17 +73,17 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
 
     results <- list()
     for(i in required_pages) {
-    	args$page <- i 
-    	data_sources <- GET(obs_url, query = args, foptions)
-    	obs_data <- content(data_sources)
-    	obs_results <- obs_data$results
-    	obs_df_cleaned <- ldply(obs_results, function(x) {
-							 x$begin_date <- ifelse(is.null(x$begin_date), "NA", x$begin_date)
-							 x$end_date <- ifelse(is.null(x$end_date), "NA", x$end_date)
+        args$page <- i 
+        data_sources <- GET(obs_url, query = args, foptions)
+        obs_data <- content(data_sources)
+        obs_results <- obs_data$results
+        obs_df_cleaned <- ldply(obs_results, function(x) {
+                             x$begin_date <- ifelse(is.null(x$begin_date), "NA", x$begin_date)
+                             x$end_date <- ifelse(is.null(x$end_date), "NA", x$end_date)
 
-							 if(is.null(x[[10]])) { 
-							 geo_data <- data.frame(geojson.type ="NA", geojson.coordinates1 ="NA", geojson.coordinates2 ="NA")	
-							 } else {
+                             if(is.null(x[[10]])) { 
+                             geo_data <- data.frame(geojson.type ="NA", geojson.coordinates1 ="NA", geojson.coordinates2 ="NA") 
+                             } else {
                              geo_data <- data.frame(t(unlist(x[10])))
                              }
                              main_data <- (x[-10])
@@ -91,13 +91,12 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
                              md <-(data.frame((main_data)))
                              cbind(md, geo_data)
                             })
-    	results[[i]] <- obs_df_cleaned
+        results[[i]] <- obs_df_cleaned
         if(progress) setTxtProgressBar(pb, i)
-   		if(i %% 25 == 0) Sys.sleep(2) 
+        if(i %% 25 == 0) Sys.sleep(2) 
     }
     
-	obs_data_all <- do.call(rbind, results)
-    # obs_data_all <- rbind_all(results)
+    obs_data_all <- do.call(rbind, results)
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates1")] <- "longitude"
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates2")] <- "latitude"
     obs_data_all$latitude <- suppressWarnings(as.numeric(obs_data_all$latitude)) 
