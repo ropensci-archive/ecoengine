@@ -29,6 +29,7 @@ if(!as.df) {
             } )
         about_df <- ldply(about_df)
         names(about_df) <- c("type", "endpoint")
+        about_df$endpoint <- unlist(about_df$endpoint)
         if(!is.na(type)) {
                 about_df <- switch(type, 
                         data = subset(about_df, type == "data"),
