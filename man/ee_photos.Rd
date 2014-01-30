@@ -72,10 +72,10 @@ Search the photos methods in the ecoengine API.
 }
 \examples{
 # Request all photos. This request will paginate.
-merced <- ee_photos(county = "Merced County")
+# merced <- ee_photos(county = "Merced County")
 # ee_photos()
 # Search by collection code. See notes above on options
-# ee_photos(collection_code = "CalAcademy")
+ ee_photos(collection_code = "CalAcademy")
 # ee_photos(collection_code = "VTM")
 # ee_photos(collection_code = "CalFlora")
 # ee_photos(collection_code = "CDFA")
