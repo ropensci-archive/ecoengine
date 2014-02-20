@@ -183,8 +183,6 @@ ee_map(lynx_data)
 
 ![Map of Lynx observations across North America](map.png)
 
-_Note: Map works on all browsers except Google Chrome (for now) since security limitations prevent local geoJSON files from being rendered._
-
 ### Photos  
 
 The ecoengine also contains a large number of photos from various sources. It's easy to query the photo database using similar arguments as above. One can search by taxa, location, source, collection and much more.
