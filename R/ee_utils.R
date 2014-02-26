@@ -6,11 +6,11 @@
 #'   
 #' @param ... additional arguments
 print.ecoengine <- function(x, ...) {
-cat(sprintf("[Total results]: %s \n", x$results))
+cat(sprintf("[Total results on the server]: %s \n", x$results))
 cat("[Args]: \n")
 suppressWarnings(pretty_lists(x$call))
 cat(sprintf("[Type]: %s \n", x$type))
-cat(sprintf("[Number of results]: %s \n", nrow(x$data)))
+cat(sprintf("[Number of results retrieved]: %s \n", nrow(x$data)))
 }
 
 
@@ -36,6 +36,7 @@ ee_pages <- function(ee, page_size = 25) {
 #'Takes a page range and total number of observations to return the right sequence of pages that need to be crawled.
 #' @param page requested page number or page range. Can also be "all"
 #' @param  total_obs Total number of records available for any search query
+#' @param  page_size Default is \code{25}. Set higher if needed.
 #' @export
 #' @examples \dontrun{
 #' ee_paginator(1, 100)
@@ -45,9 +46,9 @@ ee_pages <- function(ee, page_size = 25) {
 #' # This will return an error since there are only 4 pages per 100 observations
 #' ee_paginator(1:5, 100)
 #' }
-ee_paginator <- function(page, total_obs) {
-        all_pages <- ceiling(total_obs/25)
-        if(total_obs < 25) { req_pages <- 1 }
+ee_paginator <- function(page, total_obs, page_size = 25) {
+        all_pages <- ceiling(total_obs/page_size)
+        if(total_obs < page_size) { req_pages <- 1 }
         if(identical(page, "all")) { req_pages <- seq_along(1: all_pages)}
         if(length(page) == 1 & identical(class(page), "numeric")) { req_pages <- page }
         if(identical(class(page), "integer")) {
