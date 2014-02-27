@@ -1,6 +1,7 @@
 S3method(print,ecoengine)
 export(checklist_details)
 export(ee_about)
+export(ee_cbind)
 export(ee_checklists)
 export(ee_footprints)
 export(ee_list_sensors)

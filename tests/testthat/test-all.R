@@ -99,3 +99,13 @@ sensor_df <- ee_sensor_agg(page = "all", sensor_id = 1625, weeks = 2)
 expect_is(sensor_df$data, "data.frame")
 })
 
+context("eebind works correctly")
+
+test_that("We can combine multiple calls into one", {
+	x1 <- ee_observations(genus = "Lynx", page = 1)
+	x2 <- ee_observations(genus = "Lynx", page = 2)
+	x12 <- ee_cbind(list(x1, x2))
+	expect_is(x12, "ecoengine")
+	expect_is(x12$data, "data.frame")
+
+})
