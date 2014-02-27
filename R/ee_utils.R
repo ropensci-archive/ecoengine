@@ -1,4 +1,36 @@
 
+#' ee_cbind
+#'
+#' Allows for combining split ecoengine calls (e.g. paginated calls) back into one single result object
+#' @param results <what param does>
+#' @export
+#' @importFrom assertthat assert_that
+#' @examples \dontrun{
+#' x1 <- ee_observations(genus = "Lynx", page = 1)
+#' x2 <- ee_observations(genus = "Lynx", page = 2)
+#' x12 <- ee_cbind(list(x1, x2))
+#'}
+ee_cbind <- function(results) {
+    assert_that(class(results) == "list")
+    res2 <- ldply(results, function(x) {
+        y <- x[-4]
+        data.frame(LinearizeNestedList(y))
+    })
+res2$call.page <- NULL
+res2 <- res2[!duplicated(res2), ]
+    if(nrow(res2) == 1) {
+        data <- ldply(results, function(x) x[[4]])
+        res <- results[[1]]
+        res$data <- data
+        res
+    } else {
+        stop("Cannot combine results from unidentical calls")
+    }
+
+}
+
+
+
 #' Print a summary for an ecoengine object
 #' @method print ecoengine
 #' @S3method print ecoengine
