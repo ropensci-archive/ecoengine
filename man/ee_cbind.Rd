@@ -1,0 +1,21 @@
+\name{ee_cbind}
+\alias{ee_cbind}
+\title{ee_cbind}
+\usage{
+ee_cbind(results)
+}
+\arguments{
+  \item{results}{<what param does>}
+}
+\description{
+Allows for combining split ecoengine calls (e.g. paginated
+calls) back into one single result object
+}
+\examples{
+\dontrun{
+x1 <- ee_observations(genus = "Lynx", page = 1)
+x2 <- ee_observations(genus = "Lynx", page = 2)
+x12 <- ee_cbind(list(x1, x2))
+}
+}
+
