@@ -17,8 +17,7 @@ ee_cbind <- function(results) {
         data.frame(LinearizeNestedList(y))
     })
 res2$call.page <- NULL
-res2 <- res2[!duplicated(res2), ]
-    if(nrow(res2) == 1) {
+    if(nrow(res2[!duplicated(res2), ]) == 1) {
         data <- ldply(results, function(x) x[[4]])
         res <- results[[1]]
         res$data <- data

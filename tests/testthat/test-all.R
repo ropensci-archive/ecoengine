@@ -107,5 +107,7 @@ test_that("We can combine multiple calls into one", {
 	x12 <- ee_cbind(list(x1, x2))
 	expect_is(x12, "ecoengine")
 	expect_is(x12$data, "data.frame")
+	x3 <- ee_observations(genus = "Helianthus", page = 2)
+	expect_error(ee_cbind(list(x1, x2, x3)))
 
 })
