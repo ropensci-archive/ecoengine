@@ -6,3 +6,4 @@ test_data.R
 .Rapp.history
 inst/doc
 tests/testthat/test-all.R
+Makefile
