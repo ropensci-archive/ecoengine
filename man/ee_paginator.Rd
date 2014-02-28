@@ -2,7 +2,7 @@
 \alias{ee_paginator}
 \title{ecoengine paginator}
 \usage{
-ee_paginator(page, total_obs)
+ee_paginator(page, total_obs, page_size = 25)
 }
 \arguments{
   \item{page}{requested page number or page range. Can also
@@ -10,6 +10,9 @@ ee_paginator(page, total_obs)
 
   \item{total_obs}{Total number of records available for
   any search query}
+
+  \item{page_size}{Default is \code{25}. Set higher if
+  needed.}
 }
 \description{
 Takes a page range and total number of observations to
