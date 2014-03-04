@@ -16,11 +16,15 @@ ee_cbind <- function(results) {
         y <- x[-4]
         data.frame(LinearizeNestedList(y))
     })
-res2$call.page <- NULL
-    if(nrow(res2[!duplicated(res2), ]) == 1) {
+
+    page_loc <- which(names(res2) == "call.page")
+    if(nrow(res2[!duplicated(res2[, -page_loc]), ]) == 1) {
         data <- ldply(results, function(x) x[[4]])
         res <- results[[1]]
         res$data <- data
+        # Next two lines add pages back. Combines all pages, sorts, then adds.
+        pages <- res2$call.page
+        res$call$page <- paste0(pages[order(pages)], collapse = " ")
         res
     } else {
         stop("Cannot combine results from unidentical calls")
