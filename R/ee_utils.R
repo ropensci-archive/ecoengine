@@ -2,7 +2,7 @@
 #' ee_cbind
 #'
 #' Allows for combining split ecoengine calls (e.g. paginated calls) back into one single result object
-#' @param results <what param does>
+#' @param results A list of objects of class \code{ecoengine}
 #' @export
 #' @importFrom assertthat assert_that
 #' @examples \dontrun{

@@ -5,7 +5,8 @@
 ee_cbind(results)
 }
 \arguments{
-  \item{results}{<what param does>}
+  \item{results}{A list of objects of class
+  \code{ecoengine}}
 }
 \description{
 Allows for combining split ecoengine calls (e.g. paginated
