@@ -1,11 +1,17 @@
+ecoengine 1.2
+================
+* Minor improvements to print method. Now less ambiguous  (now https://github.com/ropensci/ecoengine/pull/42)
+* Added ee_cbind to bind calls that have been split up.  (https://github.com/ropensci/ecoengine/pull/41)
+
+
 ecoengine 1.1.2
+================
 * Important bugfix. Lat/Long type conversion issue results in a string of integers. Now returns location data correctly.
 * Added geojson support
 
 ecoengine 1.1
 =======================
 * Minor bug fixes
-
 
 
 ecoengine 0.8
