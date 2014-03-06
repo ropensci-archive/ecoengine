@@ -17,6 +17,10 @@ test_that("Metadata is returned as expected", {
 	 expect_true(nrow(ee_sources()) == 10)
 	 expect_true(ncol(ee_sources()) == 4)
 	 expect_is(ee_footprints(), "data.frame")
+	 aves1 <- ee_observations(clss = "aves", county = "Alameda county", georeferenced = TRUE)
+	 aves2 <- ee_observations(clss = "aves",  georeferenced = TRUE)
+	 expect_more_than(aves2$results, aves1$results)
+
 })
 
 

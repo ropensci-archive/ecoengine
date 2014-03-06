@@ -24,7 +24,7 @@
 #' @param  source  data source. See \code{\link{ee_sources}}
 #' @template dates
 #' @param  georeferenced Default is \code{FALSE}. Set to \code{TRUE} to return only georeferenced records.
-#' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}
+#' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}. Order is min Longitude , min Latitude , max Longitude , max Latitude 
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to supress messages.
 #' @template foptions
 #' @template progress
@@ -50,13 +50,15 @@
 #' chordata <- ee_observations(phylum = "chordata")
 #' # Class is clss since the former is a reserved keyword in SQL.
 #' aves <- ee_observations(clss = "aves")
+#' aves <- ee_observations(clss = "aves", bbox = '-124,32,-114,42')
+#' aves <- ee_observations(clss = "aves", county = "Alameda county")
 #'}
 ee_observations <- function(page = NULL, page_size = 25, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom__exact = NULL ,phylum__exact = NULL, order__exact = NULL, clss__exact = NULL, family__exact = NULL, genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
  obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
 
 if(georeferenced) georeferenced = "True"
 
-args <- as.list(ee_compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, georeferenced = georeferenced, page_size = page_size)))
+args <- as.list(ee_compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, county = county, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, bbox = bbox, georeferenced = georeferenced, page_size = page_size)))
 if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
