@@ -74,7 +74,8 @@ ee_observations(page = NULL, page_size = 25, country = "United States",
   \code{TRUE} to return only georeferenced records.}
 
   \item{bbox}{Set a bounding box for your search. Use
-  format \code{bbox=-124,32,-114,42}}
+  format \code{bbox=-124,32,-114,42}. Order is min
+  Longitude , min Latitude , max Longitude , max Latitude}
 
   \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE}
   to supress messages.}
@@ -110,6 +111,8 @@ plantae <- ee_observations(kingdom = "plantae")
 chordata <- ee_observations(phylum = "chordata")
 # Class is clss since the former is a reserved keyword in SQL.
 aves <- ee_observations(clss = "aves")
+aves <- ee_observations(clss = "aves", bbox = '-124,32,-114,42')
+aves <- ee_observations(clss = "aves", county = "Alameda county")
 }
 }
 
