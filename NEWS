@@ -1,3 +1,7 @@
+ecoengine 1.2.2
+=================
+* Fixed bug where bounding box and county were not properly passed onto ee_observations (https://github.com/ropensci/ecoengine/pull/45)
+
 ecoengine 1.2
 ================
 * Minor improvements to print method. Now less ambiguous  (now https://github.com/ropensci/ecoengine/pull/42)
