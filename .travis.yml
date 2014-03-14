@@ -7,4 +7,4 @@ before_script:
 - ./travis-tool.sh install_deps
  - ./travis-tool.sh install_r rjson lubridate leafletR
 notifications:
-  slack: ropensci:GQJuD2zwNuvLDQU6PMvX7tgz
+ slack: ropensci:wh30e1MP9Am3wXb2wJx1ZRFi
