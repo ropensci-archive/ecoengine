@@ -21,7 +21,7 @@ Imports:
     assertthat,
     whisker,
     data.table,
-    rjson,
+    RJSONIO,
     lubridate,
     leafletR (>= 0.1-1)
 Suggests:
