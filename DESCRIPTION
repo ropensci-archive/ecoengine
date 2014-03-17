@@ -16,7 +16,7 @@ LazyData: yes
 Depends:
     R (>= 3.0.0)
 Imports:
-    httr,
+    httr (>= 0.3),
     plyr,
     assertthat,
     whisker,
