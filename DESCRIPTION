@@ -27,4 +27,5 @@ Imports:
 Suggests:
     testthat,
     knitr,
-    ggplot2
+    ggplot2,
+    jsonlite
