@@ -1,3 +1,8 @@
+ecoengine 1.2.3
+================
+* Package is now updated for httr 0.3
+* ee_map works now works even when there are missing values (filters those out)
+
 ecoengine 1.2.2
 =================
 * Fixed bug where bounding box and county were not properly passed onto ee_observations (https://github.com/ropensci/ecoengine/pull/45)

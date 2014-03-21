@@ -15,12 +15,21 @@
 #' # Now let's map out foxes
 #' vulpes <- ee_observations(genus = "vulpes", georeferenced = TRUE, quiet = TRUE)
 #' ee_map(vulpes, title = "Fox distributions")
+#' # You can also map photos
+#' ee_map(ee_photos(georeferenced = TRUE))
 #'}
 ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map", incl.data = TRUE) {
-	assert_that(ee_obj$type == "observations")
+	assert_that(ee_obj$type == "observations" | ee_obj$type == "photos")
+
+
 	dest <- ifelse(is.null(dest), tempdir(), dest)
 	species_data <- ee_obj$data
-	ee_geo <- toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon=c(12, 11))	
+	species_data <- species_data[complete.cases(species_data[, 11:12]), ]
+
+	assert_that(nrow(species_data) > 0)
+
+if(ee_obj$type == "observations") {	
+ee_geo <- toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon=c(12, 11))	
 	num_species <- length(unique(species_data$scientific_name))
 	cols <- c("#8D5C00", "#2F5CD7","#E91974", "#3CB619","#7EAFCC",
 "#4F2755","#F5450E","#264C44","#3EA262","#FA43C9","#6E8604","#631D0E","#EE8099","#E5B25A",
@@ -29,6 +38,12 @@ ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map", in
 	pal <- cols[1:num_species]
 	sty <- styleCat(prop = "scientific_name", val = unique(species_data$scientific_name), style.val = pal, fill.alpha = 1, alpha = 1, rad = 4, leg = "Scientific Name")
 	map <- leaflet(ee_geo, base.map="tls", style = sty, popup = "scientific_name", dest = dest, title = title, incl.data = incl.data)
+	}
+	else {
+	ee_geo <- toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon=c(9, 8))	
+	map <- leaflet(ee_geo, base.map="tls", popup = "url", dest = dest, title = title, incl.data = incl.data)
+
+	}
 	browseURL(map)
 }
 
