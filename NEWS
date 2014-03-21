@@ -1,4 +1,4 @@
-ecoengine 1.2.3
+ecoengine 1.2.4
 ================
 * Package is now updated for httr 0.3
 * ee_map works now works even when there are missing values (filters those out)
