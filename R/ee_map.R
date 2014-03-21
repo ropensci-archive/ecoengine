@@ -26,6 +26,8 @@ ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map", in
 	species_data <- ee_obj$data
 	species_data <- species_data[complete.cases(species_data[, 11:12]), ]
 
+	assert_that(nrow(species_data) > 0)
+
 if(ee_obj$type == "observations") {	
 ee_geo <- toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon=c(12, 11))	
 	num_species <- length(unique(species_data$scientific_name))
