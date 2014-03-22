@@ -69,7 +69,7 @@ assert_that(identical(input$type, "photos"))
               <tbody>
         {{#photo_list}}
           <tr><td>
-          <a href="{{media_url}}"><img src="{{media_url}}" height = 250></a></td>
+          <a href="{{remote_resource}}"><img src="{{media_url}}" height = 250></a></td>
           <td>{{authors}}</td>
           <td>{{locality}}, {{county}}</td>
           <td>{{photog_notes}}</td>
