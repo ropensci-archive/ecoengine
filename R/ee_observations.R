@@ -67,7 +67,7 @@ data_sources <- GET(obs_url, query = args, foptions)
 stop_for_status(data_sources)
 obs_data <- content(data_sources)
 
-required_pages <- ee_paginator(page, obs_data$count)
+required_pages <- ee_paginator(page, obs_data$count, page_size = page_size)
 all_the_pages <- ceiling(obs_data$count/page_size)
 
 if(!quiet)  message(sprintf("Search contains %s observations (downloading %s of %s pages)", obs_data$count, length(required_pages), all_the_pages))
@@ -100,7 +100,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
     }
     
     # obs_data_all <- do.call(rbind, results)
-    obs_data_all <- rbind_list(results)
+    obs_data_all <- rbind_all(results)
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates1")] <- "longitude"
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates2")] <- "latitude"
     obs_data_all$latitude <- suppressWarnings(as.numeric(as.character(obs_data_all$latitude)))
