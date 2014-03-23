@@ -36,7 +36,7 @@ ee_cbind <- function(results) {
 
 #' Print a summary for an ecoengine object
 #' @method print ecoengine
-#' @S3method print ecoengine
+#' @export  
 #' @param x An object of class \code{ecoengine}
 #'   
 #' @param ... additional arguments
