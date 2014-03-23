@@ -31,7 +31,6 @@
 #' @export
 #' @return \code{data.frame}
 #' @importFrom httr content GET 
-#' @importFrom dplyr rbind_all
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom plyr compact
 #' @examples 
@@ -99,8 +98,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
         if(i %% 25 == 0) Sys.sleep(2) 
     }
     
-    # obs_data_all <- do.call(rbind, results)
-    obs_data_all <- rbind_all(results)
+    obs_data_all <- do.call(rbind, results)
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates1")] <- "longitude"
     names(obs_data_all)[which(names(obs_data_all)=="geojson.coordinates2")] <- "latitude"
     obs_data_all$latitude <- suppressWarnings(as.numeric(as.character(obs_data_all$latitude)))

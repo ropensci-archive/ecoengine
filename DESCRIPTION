@@ -18,7 +18,6 @@ Depends:
 Imports:
     httr (>= 0.3),
     plyr,
-    dplyr,
     assertthat,
     whisker,
     data.table,

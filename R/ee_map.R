@@ -24,12 +24,16 @@ ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map", in
 
 	dest <- ifelse(is.null(dest), tempdir(), dest)
 	species_data <- ee_obj$data
-	species_data <- species_data[complete.cases(species_data[, 11:12]), ]
+	lat_location <- which(names(species_data) == "latitude")
+	lon_location <- which(names(species_data) == "longitude")
+
+	species_data <- species_data[complete.cases(species_data[, lat_location:lon_location]), ]
+
 
 	assert_that(nrow(species_data) > 0)
 
-		lat_location <- which(names(species_data) == "decimal_latitude")
-	lon_location <- which(names(species_data) == "decimal_longitude")
+
+
 if(ee_obj$type == "observations") {	
 ee_geo <- toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon=c(lat_location, lon_location))	
 	num_species <- length(unique(species_data$scientific_name))
