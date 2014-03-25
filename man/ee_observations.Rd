@@ -64,7 +64,7 @@ ee_observations(page = NULL, page_size = 25, country = "United States",
 
 \item{georeferenced}{Default is \code{FALSE}. Set to \code{TRUE} to return only georeferenced records.}
 
-\item{bbox}{Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}. Order is min Longitude , min Latitude , max Longitude , max Latitude}
+\item{bbox}{Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}. Order is min Longitude , min Latitude , max Longitude , max Latitude. Use \code{http://boundingbox.klokantech.com/} this website to quickly grab a bounding box (set format to csv on lower right)}
 
 \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE} to supress messages.}
 
