@@ -95,7 +95,6 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
                             })
         results[[i]] <- obs_df_cleaned
         if(progress) setTxtProgressBar(pb, i)
-        if(i %% 25 == 0) Sys.sleep(2) 
     }
     
     obs_data_all <- do.call(rbind, results)
