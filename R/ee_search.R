@@ -96,7 +96,6 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
 	obs_data <- rbind.fill(with_geojson_df, without_geojson_df) 
 	results[[i]] <- obs_data
 	if(progress) setTxtProgressBar(pb, i)
-   	if(i %% 25 == 0) Sys.sleep(2) 
     }    	
 
 	all_obs_data <- do.call(rbind.fill, results)

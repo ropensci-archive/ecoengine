@@ -64,7 +64,6 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
 		sensor_data_agg$begin_date <- ymd_hms(sensor_data_agg$begin_date)
 		results[[i]] <- sensor_data_agg
 		if(progress) setTxtProgressBar(pb, i)
-     	if(i %% 25 == 0) Sys.sleep(2) 
     }
 		
 	sensor_data_agg <- do.call(rbind, results)

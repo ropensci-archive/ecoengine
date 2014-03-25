@@ -51,7 +51,6 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
                             })
 
         results[[i]] <- basic_sensor_data
-        if(i %% 25 == 0) Sys.sleep(2) 
     }
 
     res <- do.call(rbind, results)

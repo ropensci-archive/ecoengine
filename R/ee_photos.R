@@ -109,7 +109,6 @@ ee_photos <- function(page = NULL,
     	photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
     	results[[i]] <- photos_data
     	if(progress) setTxtProgressBar(pb, i)
-    	if(i %% 25 == 0) Sys.sleep(2) 
     }
     
 	photos_data <- do.call(rbind.fill, results)
