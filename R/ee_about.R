@@ -17,7 +17,7 @@
 #' ee_about(type = "meta-data")
 #' ee_about(type = "actions")
 ee_about <- function(as.df = TRUE, type = NA) {
-about_url <- "http://ecoengine.berkeley.edu/api/?format=json" 
+about_url <- "http://dev-ecoengine.berkeley.edu/api/?format=json" 
 about_call <- GET(about_url)
 stop_for_status(about_call)
 about <- content(about_call)
