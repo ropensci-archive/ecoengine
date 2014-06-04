@@ -69,7 +69,7 @@ ee_photos <- function(page = NULL,
 						 progress = TRUE,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
-	photos_url <- "http://dev-ecoengine.berkeley.edu/api/photos/?format=json"
+	photos_url <- paste0(ee_base_url(), "photos/?format=json")
 	if(georeferenced) georeferenced = "True"
 	
 	args <- as.list(ee_compact(c(page_size = page_size,					 

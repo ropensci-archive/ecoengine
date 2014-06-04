@@ -22,7 +22,7 @@ ee_sensors <- function(page = NULL,
 						min_date = NULL, 
 						max_date = NULL,
 						foptions = list()) {
-sensor_url <- "http://dev-ecoengine.berkeley.edu/api/sensors/?format=json"
+sensor_url <- paste0(ee_base_url(), "sensors/?format=json")
     args <- ee_compact(list(page = page,
                               page_size = page_size,                       
                             remote_id = remote_id, 
@@ -83,7 +83,7 @@ sensor_url <- "http://dev-ecoengine.berkeley.edu/api/sensors/?format=json"
 #'}
 ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet = FALSE, progress = TRUE, foptions = list()) {
 
-    data_url <- paste0("http://dev-ecoengine.berkeley.edu/api/sensors/", sensor_id, "/data?format=json")
+    data_url <- paste0(ee_base_url(), "/sensors/", sensor_id, "/data?format=json")
     args <- ee_compact(list(page_size = page_size))
     main_args <- args
     if(is.null(page)) { page <- 1 }
