@@ -63,7 +63,7 @@ if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
 data_sources <- GET(obs_url, query = args, foptions)
-stop_for_status(data_sources)
+warn_for_status(data_sources)
 obs_data <- content(data_sources)
 
 required_pages <- ee_paginator(page, obs_data$count, page_size = page_size)

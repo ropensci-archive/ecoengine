@@ -33,7 +33,7 @@ sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
    							))
     args$page <- NULL
     sensor_data <- GET(sensor_url, query = args, foptions)
-    stop_for_status(sensor_data)
+    warn_for_status(sensor_data)
     sensor_results <- content(sensor_data)
     if(is.null(page)) { page <- 1 }
     required_pages <- ee_paginator(page, sensor_results$count)
@@ -89,7 +89,7 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
     if(is.null(page)) { page <- 1 }
     main_args$page <- as.character(page)
     temp_data <- GET(data_url, query = args)
-    stop_for_status(temp_data)
+    warn_for_status(temp_data)
     sensor_raw <- content(temp_data)
 
     required_pages <- ee_paginator(page, sensor_raw$count)

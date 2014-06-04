@@ -19,7 +19,7 @@
 #' @template foptions
 #' @template progress
 #' @export
-#' @importFrom httr stop_for_status content GET
+#' @importFrom httr warn_for_status content GET
 #' @importFrom plyr compact rbind.fill
 #' @importFrom lubridate ymd_hms
 #' @importFrom utils txtProgressBar setTxtProgressBar
@@ -91,7 +91,7 @@ ee_photos <- function(page = NULL,
 	if(is.null(page)) { page <- 1 }
 	main_args$page <- as.character(page)
 	data_sources <- GET(photos_url, query = args, foptions)
-    stop_for_status(data_sources)
+    warn_for_status(data_sources)
     photos <- content(data_sources)
 	required_pages <- ee_paginator(page, photos$count)
     

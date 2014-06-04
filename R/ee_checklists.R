@@ -8,7 +8,7 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom plyr ldply
-#' @importFrom httr GET content stop_for_status
+#' @importFrom httr GET content warn_for_status
 #' @return data.frame
 #' @examples 
 #' all_lists  <- ee_checklists()
@@ -18,11 +18,11 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 
 	base_url <- "http://ecoengine.berkeley.edu/api/checklists/?format=json"
 	full_checklist <- GET(base_url, foptions)
-	stop_for_status(full_checklist)
+	warn_for_status(full_checklist)
 	checklist_data <- content(full_checklist)
 	args <- as.list(ee_compact(c(page_size = checklist_data$count)))
 	all_data <- GET(base_url, query = args, foptions)
-	stop_for_status(all_data)
+	warn_for_status(all_data)
 	all_checklists <- content(all_data)
 	# all_checklists_df <- rbind_all(all_checklists$results)
 	all_checklists_df <- ldply(all_checklists$results, function(x) data.frame(x))
