@@ -54,7 +54,8 @@
 #' aves <- ee_observations(clss = "aves", county = "Alameda county")
 #'}
 ee_observations <- function(page = NULL, page_size = 25, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom__exact = NULL ,phylum__exact = NULL, order__exact = NULL, clss__exact = NULL, family__exact = NULL, genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
- obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
+ # obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
+ obs_url <- paste0(ee_base_url(), "observations/?format=json")
 
 if(georeferenced) georeferenced = "True"
 
