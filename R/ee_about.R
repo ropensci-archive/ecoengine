@@ -5,7 +5,7 @@
 #' @param type  The type of end point. Options include \code{data}, \code{meta-data}, and \code{actions}
 #' @return \code{list}
 #' @export
-#' @importFrom httr GET content stop_for_status
+#' @importFrom httr GET content warn_for_status
 #' @importFrom plyr ldply 
 #' @importFrom RJSONIO fromJSON
 #' @examples  
@@ -19,7 +19,7 @@
 ee_about <- function(as.df = TRUE, type = NA) {
 about_url <- "http://dev-ecoengine.berkeley.edu/api/?format=json" 
 about_call <- GET(about_url)
-stop_for_status(about_call)
+warn_for_status(about_call)
 about <- content(about_call)
 if(!as.df) {
     return(about)

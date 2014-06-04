@@ -28,3 +28,4 @@ NULL
 #' @format A data table with 40 rows and 13 variables. Contains units, variable, data_url, source, record, site_code,   method_name, begin_date, end_date, station_name, geojson.type, geojson.coordinates1, geojson.coordinates2
 NULL
 
+
