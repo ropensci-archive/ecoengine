@@ -1,3 +1,7 @@
+#' @noRd
+ee_base_url <- function() {
+    "http://ecoengine.berkeley.edu/api/" 
+}
 
 #' ee_cbind
 #'
