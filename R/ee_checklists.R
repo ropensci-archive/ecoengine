@@ -16,7 +16,8 @@
 #' spiders  <- ee_checklists(subject = "Spiders")
 ee_checklists <- function(subject = NULL, foptions = list()) {
 
-	base_url <- "http://ecoengine.berkeley.edu/api/checklists/?format=json"
+	# base_url <- "http://ecoengine.berkeley.edu/api/checklists/?format=json"
+	base_url <- paste0(ee_base_url(), "checklists/?format=json")
 	full_checklist <- GET(base_url, foptions)
 	warn_for_status(full_checklist)
 	checklist_data <- content(full_checklist)

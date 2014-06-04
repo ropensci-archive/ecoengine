@@ -9,7 +9,8 @@
 #' @examples 
 #' source_list <- ee_sources()
 ee_sources <- function(foptions = list()) {
-	base_url <- "http://ecoengine.berkeley.edu/api/sources/?format=json"
+	# base_url <- "http://ecoengine.berkeley.edu/api/sources/?format=json"
+	base_url <-  paste0(ee_base_url(), "sources/?format=json")
     data_sources <- GET(base_url, foptions)
     warn_for_status(data_sources)
     ds <- content(data_sources)
