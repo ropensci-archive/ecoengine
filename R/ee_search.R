@@ -5,7 +5,7 @@
 #' Search across the entire ecoengine database. 
 #' @param query search term
 #' @template foptions
-#' @importFrom data.table rbindlist
+#' @importFrom dplyr rbind_all
 #' @export
 #' @keywords search
 #' @examples \dontrun{
@@ -29,7 +29,8 @@ faceted_search_results <- lapply(fields_compacted, function(y) {
         names(temp_fields) <- c("field", "results", "search_url")
         temp_fields
 })
-data.frame(rbindlist(faceted_search_results))
+# data.frame(rbindlist(faceted_search_results))
+rbind_all(faceted_search_results)
 }
 
 
@@ -110,3 +111,4 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
 
 
 
+# @importFrom data.table rbindlist

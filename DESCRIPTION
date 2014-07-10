@@ -20,7 +20,7 @@ Imports:
     plyr,
     assertthat,
     whisker,
-    data.table,
+    dplyr (>= 0.2),
     RJSONIO,
     lubridate,
     leafletR (>= 0.1-1)

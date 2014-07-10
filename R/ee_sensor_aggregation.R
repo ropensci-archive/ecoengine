@@ -1,5 +1,5 @@
 
-#'sensor aggregation
+#'Sensor aggregation
 #'
 #' Aggregated sensor data for any station.
 #' @template pages
@@ -16,6 +16,7 @@
 #' @template progress
 #' @template foptions
 #' @importFrom lubridate ymd_hms
+#' @importFrom dplyr rbind_all
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
 #' @examples 
@@ -29,7 +30,6 @@ if(is.null(sensor_id)) {
 }
 
 sensor_agg_url <- paste0(ee_base_url(), "sensors/", sensor_id, "/aggregate/?format=geojson")
-# sensor_agg_url <- paste0("http://dev-ecoengine.berkeley.edu/api/sensors/", sensor_id, "/aggregate/?format=json")
 
 interval <- as.list(ee_compact(c(H = hours,  T = minutes, S = seconds, D = days, W = weeks, M = month, Y = years)))
 paste_names <- function(interval_name, value) { paste(interval_name, value, collapse = "", sep = "") }
@@ -68,7 +68,9 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
 		if(progress) setTxtProgressBar(pb, i)
     }
 		
-	sensor_data_agg <- do.call(rbind, results)
+	# sensor_data_agg <- do.call(rbind, results)
+	# FIX
+	sensor_data_agg <- dplyr::rbind_all(results)
 	sensor_results <- list(results = sensor_res$count, call = main_args, type = "sensor", data = sensor_data_agg)
     class(sensor_results) <- "ecoengine"
     if(progress) close(pb)    
