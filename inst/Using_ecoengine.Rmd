@@ -288,7 +288,9 @@ source_list <- ee_sources()
 pandoc.table(data.frame(name = unique(source_list$name)), justify = "left")
 ```
 
-
+```{r, version}
+sessionInfo()
+```
 
 Please send any comments, questions, or ideas for new functionality or improvements to <[karthik.ram@berkeley.edu](karthik.ram@berkeley.edu)>. The code lives on GitHub [under the rOpenSci account](https://github.com/ropensci/ecoengine). Pull requests and [bug reports](https://github.com/ropensci/ecoengine/issues?state=open) are most welcome.
 
