@@ -118,7 +118,7 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
      if(progress) setTxtProgressBar(pb, i)
      if(i %% 25 == 0) Sys.sleep(2) 
     }
-
+    # Fix to remove ldply
     results_data <- ldply(ee_compact(results))
     sensor_data <- list(results = sensor_raw$count, call = main_args, type = "sensor", data = results_data)
     class(sensor_data) <- "ecoengine"

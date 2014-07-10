@@ -16,6 +16,7 @@ ee_base_url <- function() {
 #'}
 ee_cbind <- function(results) {
     assert_that(class(results) == "list")
+    # Fix to remove ldply
     res2 <- ldply(results, function(x) {
         y <- x[-4]
         data.frame(LinearizeNestedList(y))

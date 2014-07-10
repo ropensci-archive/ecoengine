@@ -25,6 +25,7 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 	stop_for_status(all_data)
 	all_checklists <- content(all_data)
 	# all_checklists_df <- rbind_all(all_checklists$results)
+	# TO FIX. Remove ldply and see how the speed difference is.
 	all_checklists_df <- ldply(all_checklists$results, function(x) data.frame(x))
 	if(!is.null(subject)) {
 	subject <- eco_capwords(subject)

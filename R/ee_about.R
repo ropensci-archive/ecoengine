@@ -27,6 +27,7 @@ if(!as.df) {
         about_df <- lapply(about, function(f) {
              res <- data.frame(cbind(f))
             } )
+        # TO FIX. Remove ldply and see how the speed difference is.
         about_df <- ldply(about_df)
         names(about_df) <- c("type", "endpoint")
         about_df$endpoint <- unlist(about_df$endpoint)

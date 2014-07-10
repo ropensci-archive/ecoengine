@@ -15,7 +15,7 @@ ee_footprints <- function(foptions = list()) {
 	 stop_for_status(footprints)
 	 res <- content(footprints)
 	 results <- do.call(rbind, res$results)
-	 res <- ldply(res$results, function(x) { data.frame(t(unlist(x[-4])))  })
 	 # TO FIX. Remove ldply and see how the speed difference is.
+	 res <- ldply(res$results, function(x) { data.frame(t(unlist(x[-4])))  })
 	 res[, -1]
 }

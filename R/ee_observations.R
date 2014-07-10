@@ -79,6 +79,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
         data_sources <- GET(obs_url, query = args, foptions)
         obs_data <- content(data_sources)
         obs_results <- obs_data$results
+        # Remove ldply
         obs_df_cleaned <- ldply(obs_results, function(x) {
                              x$begin_date <- ifelse(is.null(x$begin_date), "NA", x$begin_date)
                              x$end_date <- ifelse(is.null(x$end_date), "NA", x$end_date)
