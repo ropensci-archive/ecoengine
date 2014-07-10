@@ -28,7 +28,7 @@ if(is.null(sensor_id)) {
 	stop("Sensor ID required. use ee_list_sensors() to obtain a full list of sensors")
 }
 
-sensor_agg_url <- paste0(ee_base_url(), "sensors/", sensor_id, "/aggregate/?format=json")
+sensor_agg_url <- paste0(ee_base_url(), "sensors/", sensor_id, "/aggregate/?format=geojson")
 # sensor_agg_url <- paste0("http://dev-ecoengine.berkeley.edu/api/sensors/", sensor_id, "/aggregate/?format=json")
 
 interval <- as.list(ee_compact(c(H = hours,  T = minutes, S = seconds, D = days, W = weeks, M = month, Y = years)))

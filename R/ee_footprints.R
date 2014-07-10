@@ -10,11 +10,12 @@
 #' footprints <- ee_footprints()
 
 ee_footprints <- function(foptions = list()) {
-	footprints_url <- paste0(ee_base_url(), "footprints/?format=json")
+	footprints_url <- paste0(ee_base_url(), "footprints/?format=geojson")
 	footprints <- GET(footprints_url, foptions)
 	 stop_for_status(footprints)
 	 res <- content(footprints)
 	 results <- do.call(rbind, res$results)
 	 res <- ldply(res$results, function(x) { data.frame(t(unlist(x[-4])))  })
+	 # TO FIX. Remove ldply and see how the speed difference is.
 	 res[, -1]
 }

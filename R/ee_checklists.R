@@ -16,7 +16,7 @@
 #' spiders  <- ee_checklists(subject = "Spiders")
 ee_checklists <- function(subject = NULL, foptions = list()) {
 
-	base_url <- paste0(ee_base_url(), "checklists/?format=json")
+	base_url <- paste0(ee_base_url(), "checklists/?format=geojson")
 	full_checklist <- GET(base_url, foptions)
 	stop_for_status(full_checklist)
 	checklist_data <- content(full_checklist)
@@ -57,7 +57,7 @@ checklist_details <- function(list_name, ...) {
 details <- GET(paste0(list_name, "?format=json"))
 details_data <- content(details)
 first_results <- ldply(details_data$observations, function(x) data.frame(x))
-first_results$url <- paste0(first_results$url, "?format=json")
+first_results$url <- paste0(first_results$url, "?format=geojson")
 # Now fetch all the results from the URL (2nd column)
 full_results <- ldply(first_results$url, function(x) {
 				full_checklist <- content(GET(x))
