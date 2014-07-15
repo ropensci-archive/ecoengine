@@ -54,7 +54,7 @@
 #' aves <- ee_observations(clss = "aves", county = "Alameda county")
 #'}
 ee_observations <- function(page = NULL, page_size = 25, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom__exact = NULL ,phylum__exact = NULL, order__exact = NULL, clss__exact = NULL, family__exact = NULL, genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
- obs_url <- paste0(ee_base_url(), "observations/?format=geojson")
+ obs_url <- paste0(ee_base_url(), "observations/?format=json")
 
 if(georeferenced) georeferenced = "True"
 
@@ -64,7 +64,7 @@ main_args <- args
 main_args$page <- as.character(page)
 data_sources <- GET(obs_url, query = args, foptions)
 stop_for_status(data_sources)
-obs_data <- content(data_sources)
+obs_data <- content(data_sources, type = "application/json")
 
 required_pages <- ee_paginator(page, obs_data$count, page_size = page_size)
 all_the_pages <- ceiling(obs_data$count/page_size)
@@ -77,8 +77,12 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
     for(i in required_pages) {
         args$page <- i 
         data_sources <- GET(obs_url, query = args, foptions)
-        obs_data <- content(data_sources)
-        obs_results <- obs_data$results
+        obs_data <- content(data_sources, type = "application/json")
+        obs_results <- obs_data$features
+        # This is the fix
+        obs_results <- lapply(obs_data$features, LinearizeNestedList)
+        x <- do.call(rbind, obs_results)
+        browser()
         # Remove ldply
         obs_df_cleaned <- ldply(obs_results, function(x) {
                              x$begin_date <- ifelse(is.null(x$begin_date), "NA", x$begin_date)
@@ -106,7 +110,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
     obs_data_all$begin_date <- suppressWarnings(ymd_hms(as.character(obs_data_all$begin_date)))
     obs_data_all$end_date <- suppressWarnings(ymd_hms(as.character(obs_data_all$end_date)))
 
-observation_results <- list(results = obs_data$count, call = main_args, type = "observations", data = obs_data_all)
+observation_results <- list(results = obs_data$count, call = main_args, type = "FeatureCollection", data = obs_data_all)
 
 class(observation_results) <- "ecoengine"
 if(progress) close(pb)

@@ -17,7 +17,7 @@
 #' ee_about(type = "meta-data")
 #' ee_about(type = "actions")
 ee_about <- function(as.df = TRUE, type = NA) {
-about_url <- paste0(ee_base_url(), "?format=geojson")
+about_url <- paste0(ee_base_url(), "?format=json")
 about_call <- GET(about_url)
 warn_for_status(about_call)
 about <- content(about_call)
@@ -27,7 +27,6 @@ if(!as.df) {
         about_df <- lapply(about, function(f) {
              res <- data.frame(cbind(f))
             } )
-        # TO FIX. Remove ldply and see how the speed difference is.
         about_df <- ldply(about_df)
         names(about_df) <- c("type", "endpoint")
         about_df$endpoint <- unlist(about_df$endpoint)
@@ -41,5 +40,4 @@ if(!as.df) {
         return(about_df)
 
 }
-
 } 
