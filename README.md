@@ -30,7 +30,7 @@ Install the package with `devtools` to obtain the latest development version.
 # unlike most packages, devtools requires additional non-R dependencies depending on your OS. 
 # See → https://github.com/karthik/dlab-advanced-r/blob/master/installation.md#installation
 library(devtools)
-install_github('ecoengine', 'ropensci')
+install_github('ecoengine', 'ropensci', ref = "dev")
 ```
 
 ## Documentation
