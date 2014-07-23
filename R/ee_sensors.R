@@ -15,7 +15,7 @@
 #' ee_sensors()
 #' all_sensors <- ee_sensors()
 ee_sensors <- function(page = NULL, 
-                        page_size = 25,
+                        page_size = 1000,
 						remote_id = NULL, 
 						collection_code = NULL, 
 						source = NULL, 
@@ -23,7 +23,7 @@ ee_sensors <- function(page = NULL,
 						max_date = NULL,
 						foptions = list()) {
 # sensor_url <- "http://ecoengine.berkeley.edu/api/sensors/?format=json"
-sensor_url <-  paste0(ee_base_url(), "sensors/?format=json")
+sensor_url <- paste0(ee_base_url(), "sensors/?format=geojson")
 
     args <- ee_compact(list(page = page,
                               page_size = page_size,                       
@@ -36,34 +36,16 @@ sensor_url <-  paste0(ee_base_url(), "sensors/?format=json")
     args$page <- NULL
     sensor_data <- GET(sensor_url, query = args, foptions)
     warn_for_status(sensor_data)
-    sensor_results <- content(sensor_data)
-    if(is.null(page)) { page <- 1 }
-    required_pages <- ee_paginator(page, sensor_results$count)
-    
-
-      results <- list()
-    for(i in required_pages) {
-        args$page <- i 
-            basic_sensor_data <- ldply(sensor_results$results, function(x) {
-                             geo_data <- data.frame(t(unlist(x[5])))
-                             main_data <- (x[-5])
-                             main_data$end_date <- ifelse(is.null(main_data$end_date), "NA", main_data$end_date)
-                             md <-(data.frame(as.list(main_data)))        
-                             cbind(md, geo_data)
+    sensor_results <- content(sensor_data, type = "application/json")
+    res <- ldply(sensor_results$features, function(x) {
+                             geo_data <- data.frame(t(unlist(x)))
                             })
 
-        results[[i]] <- basic_sensor_data
-    }
-
-    res <- do.call(rbind, results)
-    res$record <- as.integer(res$record)
-    res$geojson.coordinates1 <- as.numeric(res$geojson.coordinates1)
-    res$geojson.coordinates2 <- as.numeric(res$geojson.coordinates2)
-    res$begin_date <- ymd_hms(res$begin_date)
-    # Suppressing warnings here because we can't coerce NULLs into Date format
-    res$end_date <- suppressWarnings(ymd_hms(res$end_date))
+    res$record <- as.integer(res$properties.record)
+    res$geometry.coordinates1 <- as.numeric(res$geometry.coordinates1)
+    res$geometry.coordinates2 <- as.numeric(res$geometry.coordinates2)
+    res$properties.end_date <- ymd(res$properties.end_date)
     res
-  
 }
 
 
@@ -79,22 +61,20 @@ sensor_url <-  paste0(ee_base_url(), "sensors/?format=json")
 #' @export
 #' @examples \dontrun{
 #' full_sensor_list <- ee_sensors()
-#' station <- ee_list_sensors()$record
+#' station <- full_sensor_list$record
 #' page_1_data <- ee_sensor_data(sensor_id = station[1], page = 1)
 #' page_2_data <- ee_sensor_data(station[1], page = 1:3)
 #'}
-ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet = FALSE, progress = TRUE, foptions = list()) {
-
-    # data_url <- paste0("http://ecoengine.berkeley.edu/api/sensors/", sensor_id, "/data?format=json")
-    data_url <- paste0(ee_base_url(), "sensors/", sensor_id, "/data?format=json")
+ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 1000, quiet = FALSE, progress = TRUE, foptions = list()) {
+    data_url <- paste0(ee_base_url(), "/sensors/", sensor_id, "/data?format=json")
      
-    args <- ee_compact(list(page_size = page_size))
+    args <- ee_compact(list(page_size = page_size, sensor_id = sensor_id))
     main_args <- args
     if(is.null(page)) { page <- 1 }
-    main_args$page <- as.character(page)
+    main_args$page <- page
     temp_data <- GET(data_url, query = args)
     warn_for_status(temp_data)
-    sensor_raw <- content(temp_data)
+    sensor_raw <- content(temp_data, type = "application/json")
 
     required_pages <- ee_paginator(page, sensor_raw$count)
     total_p <- ceiling(sensor_raw$count/page_size)
@@ -109,10 +89,12 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
     for(i in required_pages) {
         args$page <- i 
         temp_data <- GET(data_url, query = args)
-        sensor_iterate <- content(temp_data)$results
+        sensor_iterate <- content(temp_data, type = "application/json")$results
         if(!is.null(sensor_iterate)) {
         raw_data <- do.call(rbind.data.frame, lapply(sensor_iterate, LinearizeNestedList))
-        names(raw_data) <- c("local_date", "value", "data_quality_qualifierid", "data_quality_qualifier_description", "data_quality_valid")
+        # names(raw_data) <- c("local_date", "value", "data_quality_qualifierid", "data_quality_qualifier_description", "data_quality_valid")
+        names(raw_data) <- c("local_date", "value")
+        raw_data$local_date <- gsub("T", " ", raw_data$local_date)
         raw_data$local_date <- suppressWarnings(ymd_hms(raw_data$local_date))
         } else {
             raw_data <- NULL
@@ -120,9 +102,9 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
         
         results[[i]] <- raw_data
      if(progress) setTxtProgressBar(pb, i)
-     if(i %% 25 == 0) Sys.sleep(2) 
+     if(i %% 10000 == 0) Sys.sleep(2) 
     }
-
+    # Fix to remove ldply
     results_data <- ldply(ee_compact(results))
     sensor_data <- list(results = sensor_raw$count, call = main_args, type = "sensor", data = results_data)
     class(sensor_data) <- "ecoengine"
@@ -140,7 +122,7 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 25, quiet 
 #' ee_list_sensors()
 #'}
 ee_list_sensors <- function() {
-full_sensor_list[, c("station_name", "units", "variable", "method_name", "record")] 
+full_sensor_list[, c("properties.station_name", "properties.units", "properties.variable", "properties.method_name", "record")] 
 }
 
 

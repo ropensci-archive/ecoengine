@@ -21,15 +21,15 @@
 #' @export
 #' @importFrom httr warn_for_status content GET
 #' @importFrom plyr compact rbind.fill
-#' @importFrom lubridate ymd_hms
+#' @importFrom lubridate ymd
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso related: \code{\link{ee_photos}} \code{\link{california_counties}}
 #' @examples
 #' # Request all photos. This request will paginate. 
 #' # merced <- ee_photos(county = "Merced County")
-#' # ee_photos()
+#'  ee_photos(page_size = 10)
 #' # Search by collection code. See notes above on options
-#'  ee_photos(collection_code = "CalAcademy")
+#' # ee_photos(collection_code = "CalAcademy")
 #' # ee_photos(collection_code = "VTM")
 #' # ee_photos(collection_code = "CalFlora")
 #' # ee_photos(collection_code = "CDFA")
@@ -45,11 +45,11 @@
 #' # alameda <- ee_photos(county = "Alameda county", page = "all")
 #' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
-#' charles_results <- ee_photos(author = "Charles Webber", page = 1:2)
+#' # charles_results <- ee_photos(author = "Charles Webber", page = 1:2)
 #' # You can also request all pages in a single call by using ee_photos()
 #' # In this example below, there are 6 pages of results (52 result items). 
 #' # Function will return all at once.
-#' racoons <- ee_photos(scientific_name = "Procyon lotor", page = "all")
+#' # racoons <- ee_photos(scientific_name = "Procyon lotor", page = "all")
 ee_photos <- function(page = NULL, 
 						 state_province = NULL, 
 						 county = NULL, 
@@ -63,14 +63,14 @@ ee_photos <- function(page = NULL,
 						 max_date = NULL, 
 						 related_type = NULL, 
 						 related  = NULL,
-						 page_size = 25,
+						 page_size = 1000,
 						 quiet = FALSE,
 						 georeferenced = FALSE,
 						 progress = TRUE,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
 	# photos_url <- "http://ecoengine.berkeley.edu/api/photos/?format=json"
-	photos_url <-  paste0(ee_base_url(), "photos/?format=json")
+	photos_url <- paste0(ee_base_url(), "photos/?format=json")
 
 	if(georeferenced) georeferenced = "True"
 	
@@ -93,29 +93,29 @@ ee_photos <- function(page = NULL,
 	if(is.null(page)) { page <- 1 }
 	main_args$page <- as.character(page)
 	data_sources <- GET(photos_url, query = args, foptions)
-    warn_for_status(data_sources)
-    photos <- content(data_sources)
-	required_pages <- ee_paginator(page, photos$count)
+    stop_for_status(data_sources)
+    photos <- content(data_sources, type = "application/json")
+	required_pages <- ee_paginator(page = page, total_obs = photos$count, page_size)
     
 
      if(!quiet) {
     message(sprintf("Search contains %s photos (downloading %s of %s pages \n)", photos$count, length(required_pages), max(required_pages)))
 	}
 	if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
- 
-    results <- list()
+	    results <- list()
     for(i in required_pages) {
     	args$page <- i 
     	data_sources <- GET(photos_url, query = args, foptions)
-    	photos <- content(data_sources)
+    	photos <- content(data_sources, type = "application/json")
     	photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
     	results[[i]] <- photos_data
     	if(progress) setTxtProgressBar(pb, i)
     }
     
-	photos_data <- do.call(rbind.fill, results)
-	photos_data$begin_date <- suppressWarnings(ymd_hms(photos_data$begin_date))
-	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
+	photos_data <- do.call(rbind, results)
+	names(photos_data) <- gsub("observations.", "", names(photos_data))
+	photos_data$begin_date <- suppressWarnings(ymd(photos_data$begin_date))
+	photos_data$end_date <- suppressWarnings(ymd(photos_data$end_date))
 	names(photos_data)[which(names(photos_data) == "geojson.coordinates1")] <- "longitude"
     names(photos_data)[which(names(photos_data) == "geojson.coordinates2")] <- "latitude"
     names(photos_data)[which(names(photos_data) == "decimal_longitude")] <- "longitude"

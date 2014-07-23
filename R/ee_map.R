@@ -19,7 +19,7 @@
 #' ee_map(ee_photos(georeferenced = TRUE))
 #'}
 ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map", incl.data = TRUE) {
-	assert_that(ee_obj$type == "observations" | ee_obj$type == "photos")
+	assert_that(ee_obj$type == "observations" | ee_obj$type == "photos" | ee_obj$type == "FeatureCollection")
 
 
 	dest <- ifelse(is.null(dest), tempdir(), dest)
@@ -34,7 +34,7 @@ ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map", in
 
 
 
-if(ee_obj$type == "observations") {	
+if(ee_obj$type == "FeatureCollection") {	
 ee_geo <- toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon = c(lat_location, lon_location))	
 	num_species <- length(unique(species_data$scientific_name))
 	cols <- c("#8D5C00", "#2F5CD7","#E91974", "#3CB619","#7EAFCC",

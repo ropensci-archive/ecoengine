@@ -3,7 +3,7 @@
 \alias{ee_sensor_data}
 \title{Sensor data}
 \usage{
-ee_sensor_data(sensor_id = NULL, page = NULL, page_size = 25,
+ee_sensor_data(sensor_id = NULL, page = NULL, page_size = 1000,
   quiet = FALSE, progress = TRUE, foptions = list())
 }
 \arguments{
@@ -25,7 +25,7 @@ Retrieves data for any sensor returned by \code{\link{ee_list_sensors}}.
 \examples{
 \dontrun{
 full_sensor_list <- ee_sensors()
-station <- ee_list_sensors()$record
+station <- full_sensor_list$record
 page_1_data <- ee_sensor_data(sensor_id = station[1], page = 1)
 page_2_data <- ee_sensor_data(station[1], page = 1:3)
 }

@@ -3,7 +3,7 @@
 \alias{ee_paginator}
 \title{ecoengine paginator}
 \usage{
-ee_paginator(page, total_obs, page_size = 25)
+ee_paginator(page, total_obs, page_size = 1000)
 }
 \arguments{
 \item{page}{requested page number or page range. Can also be "all"}
@@ -19,10 +19,10 @@ Takes a page range and total number of observations to return the right sequence
 \dontrun{
 ee_paginator(1, 100)
 ee_paginator("all", 100)
-ee_paginator(1:2, 100)
-ee_paginator(1:4, 100)
+ee_paginator(1:2, 1000)
+ee_paginator(1:4, 3800)
 # This will return an error since there are only 4 pages per 100 observations
-ee_paginator(1:5, 100)
+ee_paginator(1:5, 10000)
 }
 }
 

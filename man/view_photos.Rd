@@ -17,10 +17,10 @@ If \code{FALSE}, the file is written, but not opened.}
 Browse photo queries in your default browser.
 }
 \examples{
-view_photos(ee_photos())
+# view_photos(ee_photos())
 # Pictures of racoons
 view_photos(ee_photos(scientific_name = "Procyon lotor", quiet = TRUE))
 # or the California Condor
-view_photos(ee_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
+# view_photos(ee_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
 }
 

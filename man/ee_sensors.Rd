@@ -3,7 +3,7 @@
 \alias{ee_sensors}
 \title{ee_sensors}
 \usage{
-ee_sensors(page = NULL, page_size = 25, remote_id = NULL,
+ee_sensors(page = NULL, page_size = 1000, remote_id = NULL,
   collection_code = NULL, source = NULL, min_date = NULL,
   max_date = NULL, foptions = list())
 }

@@ -3,7 +3,7 @@
 #' @title ecoengine
 #' @name ecoengine
 #' @docType package
-#' @details \href{http://ecoengine.berkeley.edu}{The Berkeley Ecoengine} provides an open API to a wealth of museum data contained in the  \href{http://bnhm.berkeley.edu/}{Berkeley natural history museums}. This R package provides a programmatic interface to this rich repository of data allowing for the data to be easily analyzed and visualized or brought to bear in other contexts. This vignette provides a brief overview of the package's capabilities. 
+#' @details \href{http://ecoengine.berkeley.edu}{The Berkeley Ecoengine} provides an open API to a wealth of museum data contained in the  \href{http://bnhm.berkeley.edu/}{Berkeley natural history museums}. This R package provides a programmatic interface to this rich repository of data allowing for the data to be easily analyzed and visualized or brought to bear in other contexts. This vignette provides a brief overview of the package's capabilities. The current version of the package works with API version 0.0.3
 NULL
 
 
@@ -27,4 +27,5 @@ NULL
 #' @usage data(full_sensor_list)
 #' @format A data table with 40 rows and 13 variables. Contains units, variable, data_url, source, record, site_code,   method_name, begin_date, end_date, station_name, geojson.type, geojson.coordinates1, geojson.coordinates2
 NULL
+
 
