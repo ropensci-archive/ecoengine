@@ -21,7 +21,7 @@
 #' @export
 #' @importFrom httr stop_for_status content GET
 #' @importFrom plyr compact rbind.fill
-#' @importFrom lubridate ymd_hms
+#' @importFrom lubridate ymd
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso related: \code{\link{ee_photos}} \code{\link{california_counties}}
 #' @examples
@@ -63,13 +63,13 @@ ee_photos <- function(page = NULL,
 						 max_date = NULL, 
 						 related_type = NULL, 
 						 related  = NULL,
-						 page_size = 25,
+						 page_size = 1000,
 						 quiet = FALSE,
 						 georeferenced = FALSE,
 						 progress = TRUE,
 						 other_catalog_numbers = NULL, 
 						 foptions = list()) {
-	photos_url <- paste0(ee_base_url(), "photos/?format=geojson")
+	photos_url <- paste0(ee_base_url(), "photos/?format=json")
 	if(georeferenced) georeferenced = "True"
 	
 	args <- as.list(ee_compact(c(page_size = page_size,					 
@@ -92,28 +92,27 @@ ee_photos <- function(page = NULL,
 	main_args$page <- as.character(page)
 	data_sources <- GET(photos_url, query = args, foptions)
     stop_for_status(data_sources)
-    photos <- content(data_sources)
-	required_pages <- ee_paginator(page, photos$count)
+    photos <- content(data_sources, type = "application/json")
+	required_pages <- ee_paginator(page = page, total_obs = photos$count, page_size)
     
 
      if(!quiet) {
     message(sprintf("Search contains %s photos (downloading %s of %s pages \n)", photos$count, length(required_pages), max(required_pages)))
 	}
 	if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style = 3)
- 
-    results <- list()
+	    results <- list()
     for(i in required_pages) {
     	args$page <- i 
     	data_sources <- GET(photos_url, query = args, foptions)
-    	photos <- content(data_sources)
+    	photos <- content(data_sources, type = "application/json")
     	photos_data <- do.call(rbind.fill, lapply(photos[[4]], rbindfillnull))
     	results[[i]] <- photos_data
     	if(progress) setTxtProgressBar(pb, i)
     }
     
-	photos_data <- do.call(rbind.fill, results)
-	photos_data$begin_date <- suppressWarnings(ymd_hms(photos_data$begin_date))
-	photos_data$end_date <- suppressWarnings(ymd_hms(photos_data$end_date))
+	photos_data <- do.call(rbind, results)
+	photos_data$begin_date <- suppressWarnings(ymd(photos_data$begin_date))
+	photos_data$end_date <- suppressWarnings(ymd(photos_data$end_date))
 	names(photos_data)[which(names(photos_data) == "geojson.coordinates1")] <- "longitude"
     names(photos_data)[which(names(photos_data) == "geojson.coordinates2")] <- "latitude"
     names(photos_data)[which(names(photos_data) == "decimal_longitude")] <- "longitude"
