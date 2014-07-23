@@ -15,15 +15,14 @@
 #' mammals_list  <- ee_checklists(subject = "Mammals")
 #' spiders  <- ee_checklists(subject = "Spiders")
 ee_checklists <- function(subject = NULL, foptions = list()) {
-
-	base_url <- paste0(ee_base_url(), "checklists/?format=geojson")
+	base_url <- paste0(ee_base_url(), "checklists/?format=json")
 	full_checklist <- GET(base_url, foptions)
 	stop_for_status(full_checklist)
-	checklist_data <- content(full_checklist)
+	checklist_data <- content(full_checklist, type = "application/json")
 	args <- as.list(ee_compact(c(page_size = checklist_data$count)))
 	all_data <- GET(base_url, query = args, foptions)
 	stop_for_status(all_data)
-	all_checklists <- content(all_data)
+	all_checklists <- content(all_data, type = "application/json")
 	# all_checklists_df <- rbind_all(all_checklists$results)
 	# TO FIX. Remove ldply and see how the speed difference is.
 	all_checklists_df <- ldply(all_checklists$results, function(x) data.frame(x))
@@ -56,9 +55,9 @@ ee_checklists <- function(subject = NULL, foptions = list()) {
 #'}
 checklist_details <- function(list_name, ...) {
 details <- GET(paste0(list_name, "?format=json"))
-details_data <- content(details)
+details_data <- content(details, type = "application/json")
 first_results <- ldply(details_data$observations, function(x) data.frame(x))
-first_results$url <- paste0(first_results$url, "?format=geojson")
+first_results$url <- paste0(first_results$url, "?format=json")
 # Now fetch all the results from the URL (2nd column)
 full_results <- ldply(first_results$url, function(x) {
 				full_checklist <- content(GET(x))
