@@ -23,24 +23,24 @@
 #' aggregated_data <-  ee_sensor_agg(sensor_id = 1625, weeks = 2, page = 1)
 #' # aggregated_data <-  ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all")
 
-ee_sensor_agg <- function(sensor_id = NULL, page = NULL, page_size = 25, hours = NULL, minutes = NULL, seconds = NULL, days = NULL, weeks = NULL, month = NULL, years = NULL, min_date = NULL, max_date = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
+ee_sensor_agg <- function(sensor_id = NULL, page = NULL, page_size = 1000, hours = NULL, minutes = NULL, seconds = NULL, days = NULL, weeks = NULL, month = NULL, years = NULL, min_date = NULL, max_date = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
 
 if(is.null(sensor_id)) {
 	stop("Sensor ID required. use ee_list_sensors() to obtain a full list of sensors")
 }
 
-sensor_agg_url <- paste0(ee_base_url(), "sensors/", sensor_id, "/aggregate/?format=geojson")
+sensor_agg_url <- paste0(ee_base_url(), "sensors/", sensor_id, "/aggregate/?format=json")
 
 interval <- as.list(ee_compact(c(H = hours,  T = minutes, S = seconds, D = days, W = weeks, M = month, Y = years)))
 paste_names <- function(interval_name, value) { paste(interval_name, value, collapse = "", sep = "") }
 interval <- lapply(interval, paste_names, names(interval))
-args <- as.list(ee_compact(c(page_size = 25, min_date = min_date,  interval = interval[[1]], max_date = max_date)))
+args <- as.list(ee_compact(c(page_size = 1000, min_date = min_date,  interval = interval[[1]], max_date = max_date)))
 if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
 sensor_call <- GET(sensor_agg_url, query = args, foptions)
 warn_for_status(sensor_call)
-sensor_res <- content(sensor_call)
+sensor_res <- content(sensor_call, type = "application/json")
 
 if(sensor_res$count == 0) {
 	return(NULL)
@@ -58,7 +58,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
     for(i in required_pages) {
         args$page <- i 
         temp_data <- GET(sensor_agg_url, query = args)
-        sensor_aggs <- content(temp_data)$results	
+        sensor_aggs <- content(temp_data, type = "application/json")$results	
 		sensor_res_list <- lapply(sensor_aggs, function(x) {
 			 lapply(x, function(z) { ifelse(is.null(z),"NA", z) })
 		})
