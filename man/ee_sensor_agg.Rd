@@ -3,7 +3,7 @@
 \alias{ee_sensor_agg}
 \title{Sensor aggregation}
 \usage{
-ee_sensor_agg(sensor_id = NULL, page = NULL, page_size = 25,
+ee_sensor_agg(sensor_id = NULL, page = NULL, page_size = 1000,
   hours = NULL, minutes = NULL, seconds = NULL, days = NULL,
   weeks = NULL, month = NULL, years = NULL, min_date = NULL,
   max_date = NULL, quiet = FALSE, progress = TRUE, foptions = list())
