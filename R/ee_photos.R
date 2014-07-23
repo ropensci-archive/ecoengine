@@ -111,6 +111,7 @@ ee_photos <- function(page = NULL,
     }
     
 	photos_data <- do.call(rbind, results)
+	names(photos_data) <- gsub("observations.", "", names(photos_data))
 	photos_data$begin_date <- suppressWarnings(ymd(photos_data$begin_date))
 	photos_data$end_date <- suppressWarnings(ymd(photos_data$end_date))
 	names(photos_data)[which(names(photos_data) == "geojson.coordinates1")] <- "longitude"

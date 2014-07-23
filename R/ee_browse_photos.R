@@ -21,7 +21,6 @@ view_photos <- function(input = NULL, output = NULL, browse = TRUE)
     stop("Please supply some input")
 
 assert_that(identical(input$type, "photos"))
-  
 
  photo_list <- apply(input$data, 1, function(x) as.list(x))
   template <-
