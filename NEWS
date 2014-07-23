@@ -1,3 +1,10 @@
+ecoengine 1.4
+==============
+* Migrated package to new API
+* Default limit is now set to 1000 records (previously 25)
+* New rate limits kick in after 300 calls within a minute
+
+
 ecoengine 1.3
 ===============
 * Considerable speed improvements. zoom zoom.
