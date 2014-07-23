@@ -9,10 +9,10 @@
 #' @examples 
 #' source_list <- ee_sources()
 ee_sources <- function(foptions = list()) {
-	base_url <- paste0(ee_base_url(), "sources/?format=geojson")
+	base_url <- paste0(ee_base_url(), "sources/?format=json")
     data_sources <- GET(base_url, foptions)
     stop_for_status(data_sources)
-    ds <- content(data_sources)
+    ds <- content(data_sources, type = "application/json")
     # sources <- rbind_all(ds$results)
     # Fix to remove ldply
     sources <- ldply(ds$results, function(x) data.frame(x))
