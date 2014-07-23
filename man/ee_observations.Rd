@@ -79,24 +79,24 @@ ee_observations(page = NULL, page_size = 1000, country = "United States",
 API endpoint that represents a list of observations.
 }
 \examples{
-vulpes <- ee_observations(genus = "vulpes")
+# vulpes <- ee_observations(genus = "vulpes")
 \dontrun{
-pinus <- ee_observations(scientific_name = "Pinus")
-lynx_data <- ee_observations(genus = "Lynx")
+pinus <- ee_observations(scientific_name = "Pinus", page_size = 100)
+# lynx_data <- ee_observations(genus = "Lynx")
 # Georeferenced data only
-lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)
-animalia <- ee_observations(kingdom = "Animalia")
-Artemisia <- ee_observations(scientific_name = "Artemisia douglasiana")
-asteraceae <- ee_observationss(family = "asteraceae")
-vulpes <- ee_observations(genus = "vulpes")
-Anas <- ee_observations(scientific_name = "Anas cyanoptera", page = "all")
-loons <- ee_observations(scientific_name = "Gavia immer", page = "all")
-plantae <- ee_observations(kingdom = "plantae")
-chordata <- ee_observations(phylum = "chordata")
+# lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)
+# animalia <- ee_observations(kingdom = "Animalia")
+# Artemisia <- ee_observations(scientific_name = "Artemisia douglasiana")
+# asteraceae <- ee_observationss(family = "asteraceae")
+# vulpes <- ee_observations(genus = "vulpes")
+# Anas <- ee_observations(scientific_name = "Anas cyanoptera", page = "all")
+# loons <- ee_observations(scientific_name = "Gavia immer", page = "all")
+# plantae <- ee_observations(kingdom = "plantae")
+# chordata <- ee_observations(phylum = "chordata")
 # Class is clss since the former is a reserved keyword in SQL.
-aves <- ee_observations(clss = "aves")
-aves <- ee_observations(clss = "aves", bbox = '-124,32,-114,42')
-aves <- ee_observations(clss = "aves", county = "Alameda county")
+# aves <- ee_observations(clss = "aves")
+# aves <- ee_observations(clss = "aves", bbox = '-124,32,-114,42')
+# aves <- ee_observations(clss = "aves", county = "Alameda county")
 }
 }
 

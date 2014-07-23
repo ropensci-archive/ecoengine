@@ -35,10 +35,10 @@
 #' @importFrom plyr compact
 #' @importFrom lubridate ymd
 #' @examples 
-#' vulpes <- ee_observations(genus = "vulpes")
+#' # vulpes <- ee_observations(genus = "vulpes")
 #' \dontrun{
 #' pinus <- ee_observations(scientific_name = "Pinus", page_size = 100)
-#' lynx_data <- ee_observations(genus = "Lynx")
+#' # lynx_data <- ee_observations(genus = "Lynx")
 #' # Georeferenced data only
 #' # lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)
 #' # animalia <- ee_observations(kingdom = "Animalia")
@@ -89,22 +89,23 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
                              x
                             })
         # bug is here
-        obs_df_cleaned2 <- lapply(obs_df_cleaned, function(x) {
+        obs_df <- lapply(obs_df_cleaned, function(x) {
             data.frame(t(unlist(x)))
         })
-        obs_cleaned_df <- do.call(rbind.fill, obs_df_cleaned2)
+        obs_cleaned_df <- do.call(rbind.fill, obs_df)
 
         results[[i]] <- obs_cleaned_df
         if(progress) setTxtProgressBar(pb, i)
     }
     obs_data_all <- do.call(rbind, results)
     obs_data_all$geometry.type  <- NULL
+    names(obs_data_all) <- gsub("properties.", "", names(obs_data_all))
     names(obs_data_all)[which(names(obs_data_all)=="geometry.coordinates.1")] <- "longitude"
     names(obs_data_all)[which(names(obs_data_all)=="geometry.coordinates.2")] <- "latitude"
     obs_data_all$latitude <- suppressWarnings(as.numeric(as.character(obs_data_all$latitude)))
     obs_data_all$longitude <- suppressWarnings(as.numeric(as.character(obs_data_all$longitude)))
-    obs_data_all$properties.begin_date <- suppressWarnings(ymd(as.character(obs_data_all$properties.begin_date)))
-    obs_data_all$properties.end_date <- suppressWarnings(ymd(as.character(obs_data_all$properties.end_date)))
+    obs_data_all$begin_date <- suppressWarnings(ymd(as.character(obs_data_all$begin_date)))
+    obs_data_all$end_date <- suppressWarnings(ymd(as.character(obs_data_all$end_date)))
 
 observation_results <- list(results = obs_data$count, call = main_args, type = "FeatureCollection", data = obs_data_all)
 
