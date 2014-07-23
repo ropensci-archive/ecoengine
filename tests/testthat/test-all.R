@@ -13,10 +13,9 @@ test_that("Metadata is returned as expected", {
 	 expect_is(ee_about(type = "data", as.df = FALSE), "list")
 	 expect_is(ee_about(type = "meta-data", as.df = FALSE), "list")
 	 expect_is(ee_about(type = "actions", as.df = FALSE), "list")
-	 # expect_is(ee_sources(), "data.frame")
-	 # expect_true(nrow(ee_sources()) == 10)
-	 # expect_true(ncol(ee_sources()) == 4)
-	 # expect_is(ee_footprints(), "data.frame")
+	 expect_is(ee_sources(), "data.frame")
+	 expect_true(ncol(ee_sources()) == 6)
+	# expect_is(ee_footprints(), "data.frame")
 	 aves1 <- ee_observations(clss = "aves", county = "Alameda county", georeferenced = TRUE)
 	 aves2 <- ee_observations(clss = "aves",  georeferenced = TRUE)
 	 expect_more_than(aves2$results, aves1$results)
@@ -35,20 +34,7 @@ test_that("Photos function returns results as expected", {
 	expect_more_than(nrow(all_cdfa$data), nrow(some_cdfa$data))
 })
 
-context("Testing checklists")
 
-test_that("Checklists work correctly", {
-	expect_is(ee_checklists(), "data.frame")
-	spiders  <- ee_checklists(subject = "Spiders")
-	expect_is(checklist_details(spiders$url[1]), "data.frame")
-})
-
-
-context("Testing sensors")
-
-test_that("Sensor data are returned correctly", {
-	expect_is(ee_sensors(), "data.frame")
-})
 
 context("Testing observations")
 
@@ -63,6 +49,35 @@ expect_is(x$data, "data.frame")
 difference <- x$results - x_geo$results
 expect_true(difference > 0)
 })
+
+
+context("eebind works correctly")
+
+test_that("We can combine multiple calls into one", {
+	x1 <- ee_observations(genus = "Lynx", page = 1, page_size = 50)
+	x2 <- ee_observations(genus = "Lynx", page = 2, page_size = 50)
+	x12 <- ee_cbind(list(x1, x2))
+	expect_is(x12, "ecoengine")
+	expect_is(x12$data, "data.frame")
+	x3 <- ee_observations(genus = "Helianthus", page = 2, page_size = 100)
+	expect_error(ee_cbind(list(x1, x2, x3)))
+
+})
+
+context("Testing checklists")
+
+test_that("Checklists work correctly", {
+	expect_is(ee_checklists(), "data.frame")
+	spiders  <- ee_checklists(subject = "Spiders")
+	expect_is(checklist_details(spiders$url[1]), "data.frame")
+})
+
+context("Testing sensors")
+
+test_that("Sensor data are returned correctly", {
+	expect_is(ee_sensors(), "data.frame")
+})
+
 
 context("Testing search")
 test_that("Elastic search works correctly", {
@@ -85,6 +100,10 @@ expect_is(sensor_data, "ecoengine")
 expect_is(sensor_data$data, "data.frame")
 })
 
+
+# FAIL ---------------------
+
+
 context("Testing sensor intervals")
 
 test_that("Sensors work correctly", {
@@ -101,15 +120,4 @@ sensor_df <- ee_sensor_agg(page = "all", sensor_id = 1625, weeks = 2)
 expect_is(sensor_df$data, "data.frame")
 })
 
-context("eebind works correctly")
 
-test_that("We can combine multiple calls into one", {
-	x1 <- ee_observations(genus = "Lynx", page = 1)
-	x2 <- ee_observations(genus = "Lynx", page = 2)
-	x12 <- ee_cbind(list(x1, x2))
-	expect_is(x12, "ecoengine")
-	expect_is(x12$data, "data.frame")
-	x3 <- ee_observations(genus = "Helianthus", page = 2)
-	expect_error(ee_cbind(list(x1, x2, x3)))
-
-})
