@@ -1,6 +1,7 @@
 #' @noRd
 ee_base_url <- function() {
-    "https://dev-ecoengine.berkeley.edu/api/" 
+    "https://ecoengine.berkeley.edu/api/" 
+    # "https://54.215.216.86/" # This is the current URL
 }
 
 #' ee_cbind
@@ -57,13 +58,13 @@ cat(sprintf("[Number of results retrieved]: %s \n", nrow(x$data)))
 #' ee_pages - Returns total number of pages for any ecoengine request
 #'
 #' @param ee Object of class \code{ecoengine}
-#' @param  page_size Default page size. Currently set to \code{25} package wide.
+#' @param  page_size Default page size. Currently set to \code{1000} package wide.
 #' @export
 #' @return integer
 #' @examples 
 #' page_1_data <- ee_sensor_data(1625, page = 2)
 #' ee_pages(page_1_data)
-ee_pages <- function(ee, page_size = 25) {
+ee_pages <- function(ee, page_size = 1000) {
     if(!identical(class(ee), "ecoengine"))
         stop("Object must be of class ecoengine")
 
@@ -81,12 +82,12 @@ ee_pages <- function(ee, page_size = 25) {
 #' @examples \dontrun{
 #' ee_paginator(1, 100)
 #' ee_paginator("all", 100)
-#' ee_paginator(1:2, 100)
-#' ee_paginator(1:4, 100)
+#' ee_paginator(1:2, 1000)
+#' ee_paginator(1:4, 3800)
 #' # This will return an error since there are only 4 pages per 100 observations
-#' ee_paginator(1:5, 100)
+#' ee_paginator(1:5, 10000)
 #' }
-ee_paginator <- function(page, total_obs, page_size = 25) {
+ee_paginator <- function(page, total_obs, page_size = 1000) {
         all_pages <- ceiling(total_obs/page_size)
         if(total_obs < page_size) { req_pages <- 1 }
         if(identical(page, "all")) { req_pages <- seq_along(1: all_pages)}
