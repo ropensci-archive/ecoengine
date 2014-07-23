@@ -3,7 +3,7 @@
 \alias{ee_observations}
 \title{Observations List}
 \usage{
-ee_observations(page = NULL, page_size = 25, country = "United States",
+ee_observations(page = NULL, page_size = 1000, country = "United States",
   state_province = NULL, county = NULL, kingdom = NULL, phylum = NULL,
   order = NULL, clss = NULL, family = NULL, genus = NULL,
   scientific_name = NULL, kingdom__exact = NULL, phylum__exact = NULL,
