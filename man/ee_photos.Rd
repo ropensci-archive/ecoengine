@@ -7,8 +7,8 @@ ee_photos(page = NULL, state_province = NULL, county = NULL,
   genus = NULL, scientific_name = NULL, authors = NULL,
   remote_id = NULL, collection_code = NULL, source = NULL,
   min_date = NULL, max_date = NULL, related_type = NULL, related = NULL,
-  page_size = 25, quiet = FALSE, georeferenced = FALSE, progress = TRUE,
-  other_catalog_numbers = NULL, foptions = list())
+  page_size = 1000, quiet = FALSE, georeferenced = FALSE,
+  progress = TRUE, other_catalog_numbers = NULL, foptions = list())
 }
 \arguments{
 \item{page}{Page number}

@@ -3,12 +3,12 @@
 \alias{ee_pages}
 \title{ee_pages - Returns total number of pages for any ecoengine request}
 \usage{
-ee_pages(ee, page_size = 25)
+ee_pages(ee, page_size = 1000)
 }
 \arguments{
 \item{ee}{Object of class \code{ecoengine}}
 
-\item{page_size}{Default page size. Currently set to \code{25} package wide.}
+\item{page_size}{Default page size. Currently set to \code{1000} package wide.}
 }
 \value{
 integer
