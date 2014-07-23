@@ -45,11 +45,11 @@
 #' # alameda <- ee_photos(county = "Alameda county", page = "all")
 #' # Spidering through the rest of the counties can easily be automated.
 #' # Or by author
-#' charles_results <- ee_photos(author = "Charles Webber", page = 1:2)
+#' # charles_results <- ee_photos(author = "Charles Webber", page = 1:2)
 #' # You can also request all pages in a single call by using ee_photos()
 #' # In this example below, there are 6 pages of results (52 result items). 
 #' # Function will return all at once.
-#' racoons <- ee_photos(scientific_name = "Procyon lotor", page = "all")
+#' # racoons <- ee_photos(scientific_name = "Procyon lotor", page = "all")
 ee_photos <- function(page = NULL, 
 						 state_province = NULL, 
 						 county = NULL, 
