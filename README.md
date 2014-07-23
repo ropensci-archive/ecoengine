@@ -43,7 +43,7 @@ A quick start guide is available both as [markdown](https://github.com/ropensci/
 To cite package ‘ecoengine’ in publications use:
 
   Karthik Ram (2014). ecoengine: Programmatic interface to the API
-  serving UC Berkeley's Natural History Data. R package version 1.3.
+  serving UC Berkeley's Natural History Data. R package version 1.4.
   https://github.com/ropensci/ecoengine
 
 A BibTeX entry for LaTeX users is
@@ -53,7 +53,7 @@ A BibTeX entry for LaTeX users is
 Data},
     author = {Karthik Ram},
     year = {2014},
-    note = {R package version 1.3},
+    note = {R package version 1.4},
     url = {https://github.com/ropensci/ecoengine},
   }
 ```
