@@ -8,11 +8,11 @@
 #'    If \code{FALSE}, the file is written, but not opened.
 #' @export
 #' @examples 
-#' view_photos(ee_photos())
+#' # view_photos(ee_photos())
 #' # Pictures of racoons
 #' view_photos(ee_photos(scientific_name = "Procyon lotor", quiet = TRUE))
 #' # or the California Condor
-#' view_photos(ee_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
+#' # view_photos(ee_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
 
 
 view_photos <- function(input = NULL, output = NULL, browse = TRUE)
@@ -21,8 +21,8 @@ view_photos <- function(input = NULL, output = NULL, browse = TRUE)
     stop("Please supply some input")
 
 assert_that(identical(input$type, "photos"))
-
  photo_list <- apply(input$data, 1, function(x) as.list(x))
+ photo_list <- unname(photo_list)
   template <-
     '<!DOCTYPE html>
       <head>
