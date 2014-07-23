@@ -93,7 +93,7 @@ ee_photos <- function(page = NULL,
 	if(is.null(page)) { page <- 1 }
 	main_args$page <- as.character(page)
 	data_sources <- GET(photos_url, query = args, foptions)
-    stop_for_status(data_sources)
+    warn_for_status(data_sources)
     photos <- content(data_sources, type = "application/json")
 	required_pages <- ee_paginator(page = page, total_obs = photos$count, page_size)
     
