@@ -19,7 +19,7 @@
 #' ee_map(ee_photos(georeferenced = TRUE))
 #'}
 ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map", incl.data = TRUE) {
-	assert_that(ee_obj$type == "observations" | ee_obj$type == "photos")
+	assert_that(ee_obj$type == "observations" | ee_obj$type == "photos" | ee_obj$type == "FeatureCollection")
 
 
 	dest <- ifelse(is.null(dest), tempdir(), dest)
