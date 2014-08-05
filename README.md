@@ -1,5 +1,5 @@
 
-![](https://travis-ci.org/ropensci/ecoengine.png?branch=master)
+![travis shield](https://travis-ci.org/ropensci/ecoengine.png?branch=master)
 
 
 # R interface to the Berkeley Ecoinformatics Engine
@@ -70,4 +70,4 @@ Data},
 
 ---
 
-[![](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
+[![ropensci footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
