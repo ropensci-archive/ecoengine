@@ -1,3 +1,7 @@
+ecoengine 1.4.1
+================
+* Fixed bug with `ee_sources()` (issue #66)
+
 ecoengine 1.4
 ==============
 * Migrated package to new API
