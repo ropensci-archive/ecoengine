@@ -107,9 +107,11 @@ expect_is(sensor_data$data, "data.frame")
 context("Testing sensor intervals")
 
 test_that("Sensors work correctly", {
+
 test <- ee_sensor_agg(sensor_id = 1625, weeks = 2)
 test1 <- ee_sensor_agg(sensor_id = 1625, month = 1)
 test2 <- ee_sensor_agg(sensor_id = 1629, hours = 2, minutes = 3, seconds = 4)
+expect_is(ee_sensors(), "data.frame")
 expect_is(test$data, "data.frame")
 expect_is(test1$data, "data.frame")
 expect_is(test2$data, "data.frame")
