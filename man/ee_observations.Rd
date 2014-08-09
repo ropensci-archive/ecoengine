@@ -10,8 +10,8 @@ ee_observations(page = NULL, page_size = 1000, country = "United States",
   order__exact = NULL, clss__exact = NULL, family__exact = NULL,
   genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL,
   collection_code = NULL, source = NULL, min_date = NULL,
-  max_date = NULL, georeferenced = FALSE, bbox = NULL, quiet = FALSE,
-  progress = TRUE, foptions = list())
+  max_date = NULL, georeferenced = FALSE, bbox = NULL, exclude = NULL,
+  quiet = FALSE, progress = TRUE, foptions = list())
 }
 \arguments{
 \item{page}{Page number}
@@ -65,6 +65,8 @@ ee_observations(page = NULL, page_size = 1000, country = "United States",
 \item{georeferenced}{Default is \code{FALSE}. Set to \code{TRUE} to return only georeferenced records.}
 
 \item{bbox}{Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}. Order is min Longitude , min Latitude , max Longitude , max Latitude. Use \code{http://boundingbox.klokantech.com/} this website to quickly grab a bounding box (set format to csv on lower right)}
+
+\item{exclude}{Default is \code{NULL}. Pass a list of fields to exclude.}
 
 \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE} to supress messages.}
 
