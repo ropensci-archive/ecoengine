@@ -1,6 +1,6 @@
 
-![travis shield](https://travis-ci.org/ropensci/ecoengine.png?branch=master)
-
+![travis shield](https://travis-ci.org/ropensci/ecoengine.png?branch=master)  
+[![Build status](https://ci.appveyor.com/api/projects/status/0unlb6h2lc3t5h60)](https://ci.appveyor.com/project/karthik/ecoengine)
 
 # R interface to the Berkeley Ecoinformatics Engine
 
