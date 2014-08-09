@@ -1,6 +1,10 @@
-ecoengine 1.4.1
+
+ecoengine 1.4.2
 ================
 * Fixed bug with `ee_sources()` (issue #66)
+* Added support to exclude fields using the exclude argument in `ee_observations(). Seperate fields by commas.
+* Similarly you can request additional fields using the extra argument
+
 
 ecoengine 1.4
 ==============
