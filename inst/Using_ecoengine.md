@@ -870,6 +870,12 @@ sessionInfo()
 
 Please send any comments, questions, or ideas for new functionality or improvements to <[karthik.ram@berkeley.edu](karthik.ram@berkeley.edu)>. The code lives on GitHub [under the rOpenSci account](https://github.com/ropensci/ecoengine). Pull requests and [bug reports](https://github.com/ropensci/ecoengine/issues?state=open) are most welcome.
 
+
+```r
+library(httr)
+x <- content(GET("http://ipinfo.io/"), as = "parsed")
+```
+
  Karthik Ram  
  Aug, 2014   
  _Berkeley, California_
