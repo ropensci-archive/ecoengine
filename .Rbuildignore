@@ -7,3 +7,4 @@ test_data.R
 inst/doc
 tests/testthat/test-all.R
 Makefile
+appveyor.yml
