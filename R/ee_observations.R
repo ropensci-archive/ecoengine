@@ -121,6 +121,13 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
     names(obs_data_all) <- gsub("properties.", "", names(obs_data_all))
     names(obs_data_all)[which(names(obs_data_all)=="geometry.coordinates.1")] <- "longitude"
     names(obs_data_all)[which(names(obs_data_all)=="geometry.coordinates.2")] <- "latitude"
+    if(!is.null(obs_data_all$kingdom)) {  obs_data_all$kingdom <- basename(obs_data_all$kingdom) }
+    if(!is.null(obs_data_all$phylum)) {  obs_data_all$phylum <- basename(obs_data_all$phylum) }
+    if(!is.null(obs_data_all$class)) {  obs_data_all$class <- basename(obs_data_all$class) }
+    if(!is.null(obs_data_all$order)) {  obs_data_all$order <- basename(obs_data_all$order) }
+    if(!is.null(obs_data_all$family)) {  obs_data_all$family <- basename(obs_data_all$family) }
+    if(!is.null(obs_data_all$genus)) {  obs_data_all$genus <- basename(obs_data_all$genus) }
+
     obs_data_all$latitude <- suppressWarnings(as.numeric(as.character(obs_data_all$latitude)))
     obs_data_all$longitude <- suppressWarnings(as.numeric(as.character(obs_data_all$longitude)))
     obs_data_all$begin_date <- suppressWarnings(ymd(as.character(obs_data_all$begin_date)))
