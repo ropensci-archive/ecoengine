@@ -48,6 +48,8 @@ expect_is(x1, "ecoengine")
 expect_is(x$data, "data.frame")
 difference <- x$results - x_geo$results
 expect_true(difference > 0)
+aves <- ee_observations(clss = "aves", extra = "kingdom,genus")
+expect_match(sort(unique(aves$data$genus))[1], "aechmophorus")
 })
 
 
