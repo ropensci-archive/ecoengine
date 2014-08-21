@@ -197,7 +197,12 @@ aves <- ee_observations(clss = "aves")
 
 __Additional Features__
 
-As of July 2014, the API now allows you exclude or request additional fields from the database, even if they are not directly exposed by the API. 
+As of July 2014, the API now allows you exclude or request additional fields from the database, even if they are not directly exposed by the API. The list of fields are:
+
+
+`id`, `record`, `source`, `remote_resource`, `begin_date`, `end_date`, `collection_code`, `institution_code`, `state_province`, `county`, `last_modified`, `original_id`, `geometry`, `coordinate_uncertainty_in_meters`, `md5`, `scientific_name`, `observation_type`, `date_precision`, `locality`, `earliest_period_or_lowest_system`, `latest_period_or_highest_system`, `kingdom`, `phylum`, `clss`, `order`, `family`, `genus`, `specific_epithet`, 
+`infraspecific_epithet`, `minimum_depth_in_meters`, `maximum_depth_in_meters`, `maximum_elevation_in_meters`, `minimum_elevation_in_meters`, `catalog_number`, `preparations`, `sex`, `life_stage`, `water_body`, `country`, `individual_count`, `associated_resources`
+
 
 _To request additional fields_
 
@@ -225,6 +230,8 @@ names(aves$data)
 #>  [10] "end_date"         "source"           "remote_resource" 
 #>  [13] "kingdom"          "genus"
 ```
+or to exclude some.
+
 
 ```r
 aves <- ee_observations(clss = "aves", exclude = "source,remote_resource")
@@ -871,10 +878,6 @@ sessionInfo()
 Please send any comments, questions, or ideas for new functionality or improvements to <[karthik.ram@berkeley.edu](karthik.ram@berkeley.edu)>. The code lives on GitHub [under the rOpenSci account](https://github.com/ropensci/ecoengine). Pull requests and [bug reports](https://github.com/ropensci/ecoengine/issues?state=open) are most welcome.
 
 
-```r
-library(httr)
-x <- content(GET("http://ipinfo.io/"), as = "parsed")
-```
 
  Karthik Ram  
  Aug, 2014   

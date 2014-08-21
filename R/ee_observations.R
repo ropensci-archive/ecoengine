@@ -35,7 +35,7 @@
 #' # "phylum", "clss", "order", "family", "genus", "specific_epithet", 
 #' # "infraspecific_epithet", "minimum_depth_in_meters", "maximum_depth_in_meters", 
 #' # "maximum_elevation_in_meters", "minimum_elevation_in_meters", "catalog_number"
-#' # preparations", "sex", "life_stage", "water_body", "country", "individual_count", 
+#' # "preparations", "sex", "life_stage", "water_body", "country", "individual_count", 
 #' "associated_resources"
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to supress messages.
 #' @template foptions
