@@ -109,7 +109,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
                             })
         # bug is here
         obs_df <- lapply(obs_df_cleaned, function(x) {
-            data.frame(t(unlist(x)))
+            data.frame(t(unlist(x)), stringsAsFactors = FALSE)
         })
         obs_cleaned_df <- do.call(rbind.fill, obs_df)
 
