@@ -1,3 +1,7 @@
+next version
+=============
+
+* Added support for last modified to be returned with every search
 
 ecoengine 1.4.2
 ================
