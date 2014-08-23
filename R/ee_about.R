@@ -7,7 +7,7 @@
 #' @export
 #' @importFrom httr GET content warn_for_status
 #' @importFrom plyr ldply 
-#' @importFrom RJSONIO fromJSON
+#' @importFrom jsonlite fromJSON
 #' @examples  
 #' ee_about()
 #' # set as.df = FALSE to return a list rather than a data.frame
