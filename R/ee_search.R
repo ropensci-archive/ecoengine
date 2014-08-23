@@ -29,7 +29,7 @@ faceted_search_results <- lapply(fields_compacted, function(y) {
         names(temp_fields) <- c("field", "results", "search_url")
         temp_fields
 })
-rbind_all(faceted_search_results)
+do.call(rbind, faceted_search_results)
 }
 
 

@@ -26,8 +26,17 @@
 #' @param  georeferenced Default is \code{FALSE}. Set to \code{TRUE} to return only georeferenced records.
 #' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}. Order is min Longitude , min Latitude , max Longitude , max Latitude. Use \code{http://boundingbox.klokantech.com/} this website to quickly grab a bounding box (set format to csv on lower right) 
 #' @param exclude Default is \code{NULL}. Pass a list of fields to exclude.
-#' @param fields Default is \code{NULL}. Pass a list of fields to request.
-#' @param extra Default is \code{NULL}. Pass a list of extra fields to be returned
+#' @param extra Default is \code{NULL}. Pass a list of extra fields to be returned. Additional fields include: 
+#' # "id", "record", "source", "remote_resource", "begin_date", "end_date",
+#' # "collection_code", "institution_code", "state_province", "county", 
+#' # "last_modified", "original_id", "geometry", "coordinate_uncertainty_in_meters"
+#' # "md5", "scientific_name", "observation_type", "date_precision", "locality"
+#' # "earliest_period_or_lowest_system", "latest_period_or_highest_system", "kingdom"
+#' # "phylum", "clss", "order", "family", "genus", "specific_epithet", 
+#' # "infraspecific_epithet", "minimum_depth_in_meters", "maximum_depth_in_meters", 
+#' # "maximum_elevation_in_meters", "minimum_elevation_in_meters", "catalog_number"
+#' # "preparations", "sex", "life_stage", "water_body", "country", "individual_count", 
+#' "associated_resources"
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to supress messages.
 #' @template foptions
 #' @template progress
@@ -59,17 +68,18 @@
 #' #  aves <- ee_observations(clss = "aves", exclude = "source,remote_resource")
 #' #  or request additional fields using extra
 #' #  aves <- ee_observations(clss = "aves", extra = "kingdom,genus")
+#" #  aves <- ee_observations(clss = "aves", extra = "catalog_number")
 #' # aves <- ee_observations(clss = "aves", bbox = '-124,32,-114,42')
 #' # aves <- ee_observations(clss = "aves", county = "Alameda county")
 #'}
-ee_observations <- function(page = NULL, page_size = 1000, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom__exact = NULL ,phylum__exact = NULL, order__exact = NULL, clss__exact = NULL, family__exact = NULL, genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, exclude = NULL, fields = NULL, extra = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
+ee_observations <- function(page = NULL, page_size = 1000, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom__exact = NULL ,phylum__exact = NULL, order__exact = NULL, clss__exact = NULL, family__exact = NULL, genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, exclude = NULL, extra = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
  # obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
  obs_url <- paste0(ee_base_url(), "observations/?format=geojson")
 
 if(georeferenced) georeferenced = "True"
 extra <- ifelse(is.null(extra), "last_modified", paste0(extra,",last_modified"))
 
-args <- as.list(ee_compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, county = county, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, bbox = bbox, exclude = exclude, fields = fields, extra = extra, georeferenced = georeferenced, page_size = page_size)))
+args <- as.list(ee_compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, county = county, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, bbox = bbox, exclude = exclude, extra = extra, georeferenced = georeferenced, page_size = page_size)))
 if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
@@ -100,7 +110,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
                             })
         # bug is here
         obs_df <- lapply(obs_df_cleaned, function(x) {
-            data.frame(t(unlist(x)))
+            data.frame(t(unlist(x)), stringsAsFactors = FALSE)
         })
         obs_cleaned_df <- do.call(rbind.fill, obs_df)
 
@@ -112,6 +122,13 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
     names(obs_data_all) <- gsub("properties.", "", names(obs_data_all))
     names(obs_data_all)[which(names(obs_data_all)=="geometry.coordinates.1")] <- "longitude"
     names(obs_data_all)[which(names(obs_data_all)=="geometry.coordinates.2")] <- "latitude"
+    if(!is.null(obs_data_all$kingdom)) {  obs_data_all$kingdom <- basename(obs_data_all$kingdom) }
+    if(!is.null(obs_data_all$phylum)) {  obs_data_all$phylum <- basename(obs_data_all$phylum) }
+    if(!is.null(obs_data_all$class)) {  obs_data_all$class <- basename(obs_data_all$class) }
+    if(!is.null(obs_data_all$order)) {  obs_data_all$order <- basename(obs_data_all$order) }
+    if(!is.null(obs_data_all$family)) {  obs_data_all$family <- basename(obs_data_all$family) }
+    if(!is.null(obs_data_all$genus)) {  obs_data_all$genus <- basename(obs_data_all$genus) }
+
     obs_data_all$latitude <- suppressWarnings(as.numeric(as.character(obs_data_all$latitude)))
     obs_data_all$longitude <- suppressWarnings(as.numeric(as.character(obs_data_all$longitude)))
     obs_data_all$begin_date <- suppressWarnings(ymd(as.character(obs_data_all$begin_date)))

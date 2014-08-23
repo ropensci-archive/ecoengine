@@ -11,8 +11,7 @@ ee_observations(page = NULL, page_size = 1000, country = "United States",
   genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL,
   collection_code = NULL, source = NULL, min_date = NULL,
   max_date = NULL, georeferenced = FALSE, bbox = NULL, exclude = NULL,
-  fields = NULL, extra = NULL, quiet = FALSE, progress = TRUE,
-  foptions = list())
+  extra = NULL, quiet = FALSE, progress = TRUE, foptions = list())
 }
 \arguments{
 \item{page}{Page number}
@@ -69,9 +68,17 @@ ee_observations(page = NULL, page_size = 1000, country = "United States",
 
 \item{exclude}{Default is \code{NULL}. Pass a list of fields to exclude.}
 
-\item{fields}{Default is \code{NULL}. Pass a list of fields to request.}
-
-\item{extra}{Default is \code{NULL}. Pass a list of extra fields to be returned}
+\item{extra}{Default is \code{NULL}. Pass a list of extra fields to be returned. Additional fields include:
+# "id", "record", "source", "remote_resource", "begin_date", "end_date",
+# "collection_code", "institution_code", "state_province", "county",
+# "last_modified", "original_id", "geometry", "coordinate_uncertainty_in_meters"
+# "md5", "scientific_name", "observation_type", "date_precision", "locality"
+# "earliest_period_or_lowest_system", "latest_period_or_highest_system", "kingdom"
+# "phylum", "clss", "order", "family", "genus", "specific_epithet",
+# "infraspecific_epithet", "minimum_depth_in_meters", "maximum_depth_in_meters",
+# "maximum_elevation_in_meters", "minimum_elevation_in_meters", "catalog_number"
+# "preparations", "sex", "life_stage", "water_body", "country", "individual_count",
+"associated_resources"}
 
 \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE} to supress messages.}
 

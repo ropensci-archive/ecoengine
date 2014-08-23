@@ -71,6 +71,9 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
 	# sensor_data_agg <- do.call(rbind, results)
 	# FIX
 	sensor_data_agg <- dplyr::rbind_all(results)
+	sensor_data_agg$mean <- suppressWarnings(as.numeric(sensor_data_agg$mean))
+	sensor_data_agg$max <- suppressWarnings(as.numeric(sensor_data_agg$max))
+	sensor_data_agg$min <- suppressWarnings(as.numeric(sensor_data_agg$min))
 	sensor_results <- list(results = sensor_res$count, call = main_args, type = "sensor", data = sensor_data_agg)
     class(sensor_results) <- "ecoengine"
     if(progress) close(pb)    

@@ -61,7 +61,7 @@ sensor_url <- paste0(ee_base_url(), "sensors/?format=geojson")
 #' @export
 #' @examples \dontrun{
 #' full_sensor_list <- ee_sensors()
-#' station <- full_sensor_list$record
+#' station <- full_sensor_list$properties.record
 #' page_1_data <- ee_sensor_data(sensor_id = station[1], page = 1)
 #' page_2_data <- ee_sensor_data(station[1], page = 1:3)
 #'}
