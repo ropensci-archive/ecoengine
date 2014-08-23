@@ -77,6 +77,7 @@ ee_observations <- function(page = NULL, page_size = 1000, country = "United Sta
  obs_url <- paste0(ee_base_url(), "observations/?format=geojson")
 
 if(georeferenced) georeferenced = "True"
+extra <- ifelse(is.null(extra), "last_modified", paste0(extra,",last_modified"))
 
 args <- as.list(ee_compact(c(country = country, kingdom = kingdom, phylum = phylum,order = order, clss = clss,family = family, genus  = genus, scientific_name = scientific_name, kingdom__exact = kingdom__exact, phylum__exact = phylum__exact, county = county, order__exact = order__exact, clss__exact = clss__exact ,family__exact = family__exact , genus__exact  = genus__exact, scientific_name__exact = scientific_name__exact, remote_id = remote_id, collection_code = collection_code, source = source, min_date = min_date, max_date = max_date, bbox = bbox, exclude = exclude, extra = extra, georeferenced = georeferenced, page_size = page_size)))
 if(is.null(page)) { page <- 1 }
