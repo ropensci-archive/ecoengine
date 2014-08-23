@@ -1,3 +1,9 @@
+ecoengine 1.5.x
+=================
+
+* Various bug fixes ()
+* Switched json parser from RJSONIO → jsonlite
+
 
 ecoengine 1.5
 ================
