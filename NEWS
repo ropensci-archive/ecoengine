@@ -1,8 +1,9 @@
-ecoengine 1.5.x
+ecoengine 1.6
 =================
 
-* Various bug fixes ()
+* Various bug fixes (https://github.com/ropensci/ecoengine/issues/64)
 * Switched json parser from RJSONIO → jsonlite
+* Updated all sensor functions due to API name changes. record (station record changed from "record" to "properties.record")
 
 
 ecoengine 1.5
