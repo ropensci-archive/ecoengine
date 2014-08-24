@@ -122,7 +122,6 @@ ee_sensor_data <- function(sensor_id = NULL, page = NULL, page_size = 1000, quie
 #' ee_list_sensors()
 #'}
 ee_list_sensors <- function() {
-    # There needs to be a global binding here. 
 full_sensor_list[, c("properties.station_name", "properties.units", "properties.variable", "properties.method_name", "record")] 
 }
 
