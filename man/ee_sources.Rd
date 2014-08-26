@@ -15,6 +15,6 @@ ee_sources(foptions = list())
 Returns a full list of data sources supported by the ecoengine
 }
 \examples{
-source_list <- ee_sources()
+# source_list <- ee_sources()
 }
 
