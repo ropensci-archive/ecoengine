@@ -26,7 +26,7 @@ data.frame
 A powerful way to search through the observations.
 }
 \examples{
-general_lynx_query <- ee_search_obs(query  = "Lynx")
+# general_lynx_query <- ee_search_obs(query  = "Lynx")
  \dontrun{
 # lynx_data <- ee_search_obs(query  = "genus:Lynx")
 # all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all")

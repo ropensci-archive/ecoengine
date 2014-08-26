@@ -48,7 +48,7 @@ do.call(rbind, faceted_search_results)
 #' @return data.frame
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @examples
-#' general_lynx_query <- ee_search_obs(query  = "Lynx")
+#' # general_lynx_query <- ee_search_obs(query  = "Lynx")
 #'  \dontrun{
 #' # lynx_data <- ee_search_obs(query  = "genus:Lynx")
 #' # all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all")
