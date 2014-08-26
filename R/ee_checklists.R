@@ -11,9 +11,9 @@
 #' @importFrom httr GET content warn_for_status
 #' @return data.frame
 #' @examples 
-#' all_lists  <- ee_checklists()
-#' mammals_list  <- ee_checklists(subject = "Mammals")
-#' spiders  <- ee_checklists(subject = "Spiders")
+#' # all_lists  <- ee_checklists()
+#' # mammals_list  <- ee_checklists(subject = "Mammals")
+#' # spiders  <- ee_checklists(subject = "Spiders")
 ee_checklists <- function(subject = NULL, foptions = list()) {
 	base_url <- paste0(ee_base_url(), "checklists/?format=json")
 	full_checklist <- GET(base_url, foptions)

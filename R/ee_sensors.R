@@ -12,8 +12,8 @@
 #' @export
 #' @examples  
 #' # Currently there are only 40 sensors, so request only needs to be pages 1 and 2.
-#' ee_sensors()
-#' all_sensors <- ee_sensors()
+#' # ee_sensors()
+#' # all_sensors <- ee_sensors()
 ee_sensors <- function(page = NULL, 
                         page_size = 1000,
 						remote_id = NULL, 

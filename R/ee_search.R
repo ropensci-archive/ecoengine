@@ -50,8 +50,8 @@ do.call(rbind, faceted_search_results)
 #' @examples
 #' general_lynx_query <- ee_search_obs(query  = "Lynx")
 #'  \dontrun{
-#' lynx_data <- ee_search_obs(query  = "genus:Lynx")
-#' all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all")
+#' # lynx_data <- ee_search_obs(query  = "genus:Lynx")
+#' # all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all")
 #'}
 ee_search_obs <- function(query = NULL, page = NULL, page_size = 1000, quiet = FALSE, progress = TRUE, foptions = list()) {
 	# obs_search_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"	
