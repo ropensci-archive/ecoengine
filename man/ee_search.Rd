@@ -15,7 +15,7 @@ Search across the entire ecoengine database.
 }
 \examples{
 \dontrun{
-lynx_results <- ee_search(query = "genus:Lynx")
+# lynx_results <- ee_search(query = "genus:Lynx")
 }
 }
 \keyword{search}

@@ -49,7 +49,7 @@
 #' @examples 
 #' # vulpes <- ee_observations(genus = "vulpes")
 #' \dontrun{
-#' pinus <- ee_observations(scientific_name = "Pinus", page_size = 100)
+#' # pinus <- ee_observations(scientific_name = "Pinus", page_size = 100)
 #' # lynx_data <- ee_observations(genus = "Lynx")
 #' # Georeferenced data only
 #' # lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE)

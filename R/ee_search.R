@@ -9,7 +9,7 @@
 #' @export
 #' @keywords search
 #' @examples \dontrun{
-#' lynx_results <- ee_search(query = "genus:Lynx")
+#' # lynx_results <- ee_search(query = "genus:Lynx")
 #'}
 ee_search <- function(query = NULL, foptions = list()) {
 

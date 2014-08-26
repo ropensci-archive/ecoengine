@@ -23,10 +23,10 @@ Builds an interactive map of locations for any species
 lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all", quiet = TRUE)
 ee_map(lynx_data, title = "Lynx distribution map")
 # Now let's map out foxes
-vulpes <- ee_observations(genus = "vulpes", georeferenced = TRUE, quiet = TRUE)
+# vulpes <- ee_observations(genus = "vulpes", georeferenced = TRUE, quiet = TRUE)
 ee_map(vulpes, title = "Fox distributions")
 # You can also map photos
-ee_map(ee_photos(georeferenced = TRUE))
+# ee_map(ee_photos(georeferenced = TRUE))
 }
 }
 \keyword{map}

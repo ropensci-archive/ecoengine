@@ -7,7 +7,7 @@
 #' @export
 #' @return data.frame
 #' @examples 
-#' footprints <- ee_footprints()
+#' # footprints <- ee_footprints()
 
 ee_footprints <- function(foptions = list()) {
 	# footprints_url <- "http://ecoengine.berkeley.edu/api/footprints/?format=json"
