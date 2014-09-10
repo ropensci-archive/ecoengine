@@ -1,11 +1,12 @@
 language: c
-script: ./travis-tool.sh run_tests
+script: "./travis-tool.sh run_tests"
 before_script:
 - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
 - chmod 755 ./travis-tool.sh
-- ./travis-tool.sh bootstrap
-- ./travis-tool.sh install_deps
-- ./travis-tool.sh install_r rjson lubridate leafletR
-- ./travis-tool.sh install_github hadley/httr
+- "./travis-tool.sh bootstrap"
+- "./travis-tool.sh install_deps"
+- "./travis-tool.sh install_r rjson lubridate leafletR"
+- "./travis-tool.sh install_github hadley/httr"
 notifications:
- slack: ropensci:wh30e1MP9Am3wXb2wJx1ZRFi
+  slack:
+    secure: HuHtGdBIv6a6JyRu8TXOiEX9jOCQWf7VYWyEl7u5FHwR/lm8Q8ABpTxwDCXOSM9xborxw7YvLrd2A1XAj2DI7Wb7NBxmo7HaneDNr6RHHDfP126t/98SFC6Uo5x3Q10SaJE0JLGvNALkLYJX409BTojChBpM3j57/uWEHSgsvOQ=
