@@ -28,3 +28,4 @@ Suggests:
     testthat,
     knitr,
     ggplot2
+VignetteBuilder: knitr
