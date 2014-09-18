@@ -206,6 +206,8 @@ As of July 2014, the API now allows you exclude or request additional fields fro
 
 _To request additional fields_
 
+Just pass then in the `extra` field with multiple ones separated by commas.
+
 
 ```r
 aves <- ee_observations(clss = "aves", extra = "kingdom,genus")
@@ -230,7 +232,7 @@ names(aves$data)
 #>  [10] "end_date"         "source"           "remote_resource" 
 #>  [13] "kingdom"          "genus"
 ```
-or to exclude some.
+Similarly use `exclude` to exclude any fields that might be returned by default.
 
 
 ```r
@@ -880,5 +882,5 @@ Please send any comments, questions, or ideas for new functionality or improveme
 
 
  Karthik Ram  
- Aug, 2014   
+ Sep, 2014   
  _Berkeley, California_
