@@ -68,6 +68,14 @@ Data},
 
 [Bug reports](https://github.com/ropensci/ecoengine/issues/new), feature requests and suggestions (especially as pull requests) are most welcome.
 
+
+---
+  
+This package is part of a richer suite called [SPOCC Species Occurrence Data](https://github.com/ropensci/spocc), along with several other packages, that provide access to occurrence records from multiple databases. We recommend using SPOCC as the primary R interface to ecoengine unless your needs are limited to this single source.    
+
+---
+
+
 ---
 
 [![ropensci footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
