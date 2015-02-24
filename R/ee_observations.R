@@ -87,6 +87,7 @@ data_sources <- GET(obs_url, query = args, foptions)
 assert_that(data_sources$status_code < 400)
 warn_for_status(data_sources)
 obs_data <- content(data_sources, type = "application/json")
+assert_that(obs_data$count > 0)
 required_pages <- ee_paginator(page, obs_data$count, page_size = page_size)
 all_the_pages <- ceiling(obs_data$count/page_size)
 
