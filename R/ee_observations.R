@@ -84,9 +84,9 @@ if(is.null(page)) { page <- 1 }
 main_args <- args
 main_args$page <- as.character(page)
 data_sources <- GET(obs_url, query = args, foptions)
+assert_that(data_sources$status_code < 400)
 warn_for_status(data_sources)
 obs_data <- content(data_sources, type = "application/json")
-
 required_pages <- ee_paginator(page, obs_data$count, page_size = page_size)
 all_the_pages <- ceiling(obs_data$count/page_size)
 
@@ -103,12 +103,9 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
         obs_df_cleaned <- lapply(obs_results, function(x) {
                              x$`properties/begin_date` <- ifelse(is.null(x$`properties/begin_date`), "NA", x$`properties/begin_date`)
                              x$`properties/end_date` <- ifelse(is.null(x$`properties/end_date`), "NA", x$`properties/end_date`)
-                             # if(x$type == "Feature") {
-                             #    x$`geometry/coordinates/1` = x$`geometry/coordinates/2` = NA
-                             # }
                              x
                             })
-        # bug is here
+
         obs_df <- lapply(obs_df_cleaned, function(x) {
             data.frame(t(unlist(x)), stringsAsFactors = FALSE)
         })

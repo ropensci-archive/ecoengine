@@ -50,6 +50,7 @@ difference <- x$results - x_geo$results
 expect_true(difference > 0)
 aves <- ee_observations(clss = "aves", extra = "kingdom,genus")
 expect_match(sort(unique(aves$data$genus))[1], "aechmophorus")
+expect_error(ee_observations(scientific_name = "linepithema humile", page_size = 1))
 })
 
 
