@@ -26,8 +26,9 @@ test_that("Metadata is returned as expected", {
 context("Testing photos function")
 
 test_that("Photos function returns results as expected", {
-	expect_is(ee_photos(), "ecoengine")
-	expect_equal(length(ee_photos()), 4)
+	photos_df <- ee_photos()
+  expect_is(photos_df, "ecoengine")
+	expect_equal(length(photos_df), 4)
 	all_cdfa <- ee_photos(collection_code = "CDFA", page = "all")
 	expect_equal(nrow(all_cdfa$data), 54)
 	some_cdfa <- ee_photos(collection_code = "CDFA", page_size = 10)
@@ -39,17 +40,19 @@ test_that("Photos function returns results as expected", {
 context("Testing observations")
 
 test_that("Observations are correctly retrieved", {
-x <- ee_observations(genus__exact = "Pinus")
-x_geo <- ee_observations(genus__exact = "Pinus", georeferenced = TRUE)
-x1 <- ee_observations(genus__exact = "Pinus", page = 1:2)
-expect_error(ee_observations(genus__exact = "Pinus", page = "lol"))
-expect_is(x, "ecoengine")
-expect_is(x1, "ecoengine")
-expect_is(x$data, "data.frame")
-difference <- x$results - x_geo$results
-expect_true(difference > 0)
-aves <- ee_observations(clss = "aves", extra = "kingdom,genus")
-expect_match(sort(unique(aves$data$genus))[1], "aechmophorus")
+
+  x <- ee_observations(genus__exact = "Pinus")
+  x_geo <- ee_observations(genus__exact = "Pinus", georeferenced = TRUE)
+  x1 <- ee_observations(genus__exact = "Pinus", page = 1:2)
+  expect_error(ee_observations(genus__exact = "Pinus", page = "lol"))
+  expect_is(x, "ecoengine")
+  expect_is(x1, "ecoengine")
+  expect_is(x$data, "data.frame")
+  difference <- x$results - x_geo$results
+  expect_true(difference > 0)
+  aves <- ee_observations(clss = "aves", extra = "kingdom,genus")
+  expect_match(sort(unique(aves$data$genus))[1], "aechmophorus")
+  expect_error(ee_observations(scientific_name = "linepithema humile", page_size = 1))
 })
 
 

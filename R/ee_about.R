@@ -6,7 +6,7 @@
 #' @return \code{list}
 #' @export
 #' @importFrom httr GET content warn_for_status
-#' @importFrom plyr ldply 
+#' @importFrom plyr ldply
 #' @importFrom jsonlite fromJSON
 #' @examples  
 #' ee_about()
