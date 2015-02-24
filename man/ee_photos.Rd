@@ -38,7 +38,7 @@ ee_photos(page = NULL, state_province = NULL, county = NULL,
 
 \item{related}{Need to describe these parameters}
 
-\item{page_size}{The number of observations per page returned by the query. The package default is \code{25} observations. The API default, however, is \code{10}. Setting this number higher will require fewer calls (i.e. pages) but a large size may also fail or timeout.}
+\item{page_size}{The number of observations per page returned by the query. The package default is \code{250} observations. The API default, however, is \code{10}. Setting this number higher will require fewer calls (i.e. pages) but a large size may also fail or timeout.}
 
 \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.}
 
