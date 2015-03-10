@@ -1,6 +1,8 @@
+
+
+
+
 # Guide to using the ecoengine R package
-
-
 
 The Berkeley Ecoengine ([http://ecoengine.berkeley.edu](http://ecoengine.berkeley.edu)) provides an open API to a wealth of museum data contained in the [Berkeley natural history museums](https://bnhm.berkeley.edu/). This R package provides a programmatic interface to this rich repository of data allowing for the data to be easily analyzed and visualized or brought to bear in other contexts. This vignette provides a brief overview of the package's capabilities. 
 
@@ -108,7 +110,7 @@ ee_pages(request)
 
 
 
-The database contains over 2 million records (2861286 total). Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
+The database contains over 2 million records (2863164 total). Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
 
 
 ```r
@@ -122,6 +124,7 @@ pinus_observations
 #>  [Args]: 
 #>  country = United States 
 #>  scientific_name = Pinus 
+#>  extra = last_modified 
 #>  georeferenced = FALSE 
 #>  page_size = 1000 
 #>  page = 1 
@@ -143,6 +146,7 @@ lynx_data
 #>  [Args]: 
 #>  country = United States 
 #>  genus = Lynx 
+#>  extra = last_modified 
 #>  georeferenced = True 
 #>  page_size = 1000 
 #>  page = 1 
@@ -170,6 +174,7 @@ lynx_data
 #>  [Args]: 
 #>  country = United States 
 #>  genus = Lynx 
+#>  extra = last_modified 
 #>  georeferenced = True 
 #>  page_size = 1000 
 #>  page = all 
@@ -230,7 +235,7 @@ names(aves$data)
 #>   [4] "url"              "observation_type" "scientific_name" 
 #>   [7] "country"          "state_province"   "begin_date"      
 #>  [10] "end_date"         "source"           "remote_resource" 
-#>  [13] "kingdom"          "genus"
+#>  [13] "kingdom"          "genus"            "last_modified"
 ```
 Similarly use `exclude` to exclude any fields that might be returned by default.
 
@@ -255,7 +260,7 @@ names(aves$data)
 #>   [1] "longitude"        "latitude"         "type"            
 #>   [4] "url"              "observation_type" "scientific_name" 
 #>   [7] "country"          "state_province"   "begin_date"      
-#>  [10] "end_date"
+#>  [10] "end_date"         "last_modified"
 ```
 
 
@@ -523,22 +528,22 @@ Table: List of stations (continued below)
 ---------------------------------
 properties.method_name   record  
 ------------------------ --------
-Conversion to 30-minute  1602    
+Conversion to 30-minute  1       
 timesteps                        
 
-Conversion to 30-minute  1603    
+Conversion to 30-minute  2       
 timesteps                        
 
-Conversion to 30-minute  1604    
+Conversion to 30-minute  3       
 timesteps                        
 
-Conversion to 30-minute  1606    
+Conversion to 30-minute  4       
 timesteps                        
 
-Conversion to 30-minute  1607    
+Conversion to 30-minute  5       
 timesteps                        
 
-Conversion to 30-minute  1608    
+Conversion to 30-minute  6       
 timesteps                        
 ---------------------------------
 
@@ -546,10 +551,47 @@ Let's download solar radiation for the Angelo reserve HQ (sensor_id = `1625`).
 
 
 ```r
+library(dplyr)
+```
+
+```
+#>  
+#>  Attaching package: 'dplyr'
+#>  
+#>  The following objects are masked from 'package:plyr':
+#>  
+#>      arrange, count, desc, failwith, id, mutate, rename, summarise,
+#>      summarize
+#>  
+#>  The following object is masked from 'package:stats':
+#>  
+#>      filter
+#>  
+#>  The following objects are masked from 'package:base':
+#>  
+#>      intersect, setdiff, setequal, union
+```
+
+```r
 # First we can grab the list of sensor ids
-sensor_ids <- ee_list_sensors()$record
+full_sensor_list %>% select(properties.station_name, properties.record) %>% 
+    head
+```
+
+```
+#>    properties.station_name properties.record
+#>  1        Angelo Meadow WS              1602
+#>  2           Cahto Peak WS              1603
+#>  3            Angelo HQ WS              1604
+#>  4   Angelo HQ SF Eel Gage              1606
+#>  5            Angelo HQ WS              1607
+#>  6        Angelo Meadow WS              1608
+```
+
+
+```r
 # In this case we just need data for sensor with id 1625
-angelo_hq <- sensor_ids[1]
+angelo_hq <- full_sensor_list[1, ]$properties.record
 results <- ee_sensor_data(angelo_hq, page = 2, progress = FALSE)
 ```
 
@@ -557,21 +599,7 @@ results <- ee_sensor_data(angelo_hq, page = 2, progress = FALSE)
 #>  Search contains 98527 records (downloading 1 page(s) of 99)
 ```
 
-```r
-results
-```
-
-```
-#>  [Total results on the server]: 98527 
-#>  [Args]: 
-#>  page_size = 1000 
-#>  sensor_id = 1602 
-#>  page = 2 
-#>  [Type]: sensor 
-#>  [Number of results retrieved]: 1000
-```
-
-Notice that the query returned 98527 observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request `page = "all"` but remember that this will make 3941 requests. Now we can examine the data itself.
+Notice that the query returned 98527 observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request `page = "all"` but remember that this will make 3941.08 requests. Now we can examine the data itself.
 
 
 ```r
@@ -579,23 +607,23 @@ head(results$data)
 ```
 
 ```
-#>             local_date value
-#>  1 2008-05-23 13:30:00 17.58
-#>  2 2008-05-23 14:00:00 17.93
-#>  3 2008-05-23 14:30:00 18.50
-#>  4 2008-05-23 15:00:00 18.50
-#>  5 2008-05-23 15:30:00 17.93
-#>  6 2008-05-23 16:00:00 17.69
+#>             local_date  value
+#>  1 2008-05-23 13:30:00 17.580
+#>  2 2008-05-23 14:00:00 17.925
+#>  3 2008-05-23 14:30:00 18.505
+#>  4 2008-05-23 15:00:00 18.505
+#>  5 2008-05-23 15:30:00 17.925
+#>  6 2008-05-23 16:00:00 17.690
 ```
 
 We can also aggregate sensor data for any of the above mentioned sensors. We do this using the `ee_sensor_agg()` function. The function requires a sensor id and how the data should be binned. You can specify hours, minutes, seconds, days, weeks, month, and years. If for example you need the data binned every `15` days, simply add `days = 15` to the call. Once every `10` days and `2` hours would be `ee_sensor_agg(sensor_id = 1625, days = 10, hours = 2)` 
 
 
 ```r
-stations <- ee_list_sensors()
+stations <- full_sensor_list %>% select(station_name = properties.station_name, 
+    record = properties.record)
 # This gives you a list to choose from
-sensor_df <- ee_sensor_agg(sensor_id = stations[1, c("record")], weeks = 2, 
-    progress = FALSE)
+sensor_df <- ee_sensor_agg(sensor_id = stations[1, ]$record, weeks = 2, progress = FALSE)
 ```
 
 ```
@@ -603,31 +631,19 @@ sensor_df <- ee_sensor_agg(sensor_id = stations[1, c("record")], weeks = 2,
 ```
 
 ```r
-sensor_df
-```
-
-```
-#>  [Total results on the server]: 147 
-#>  [Args]: 
-#>  page_size = 1000 
-#>  interval = 2W 
-#>  page = 1 
-#>  [Type]: sensor 
-#>  [Number of results retrieved]: 147
-```
-
-```r
 head(sensor_df$data)
 ```
 
 ```
-#>    begin_date  mean    min   max   sum count
-#>  1 2008-05-11 10.80 -2.018 28.08  5888   545
-#>  2 2008-05-25 15.45  2.823 36.11 10385   672
-#>  3 2008-06-08 11.73  1.798 24.25  7880   672
-#>  4 2008-06-22 17.45  3.506 33.85 11729   672
-#>  5 2008-07-06 17.07  4.395 31.80 11474   672
-#>  6 2008-07-20 20.73  6.787 40.72 13933   672
+#>  Source: local data frame [6 x 6]
+#>  
+#>    begin_date     mean     min    max       sum count
+#>  1 2008-05-11 10.80444 -2.0180 28.080  5888.423   545
+#>  2 2008-05-25 15.45394  2.8230 36.110 10385.045   672
+#>  3 2008-06-08 11.72593  1.7975 24.250  7879.823   672
+#>  4 2008-06-22 17.45442  3.5065 33.855 11729.369   672
+#>  5 2008-07-06 17.07472  4.3950 31.805 11474.215   672
+#>  6 2008-07-20 20.73330  6.7875 40.720 13932.778   672
 ```
 
 As with other functions, the results are paginated.  Since we only need `85` records in this case:
@@ -664,6 +680,9 @@ ggplot(sensor_df$data, aes(begin_date, mean)) + geom_line(size = 1, color = "ste
 ```
 
 
+```
+#>  Loading required package: methods
+```
 ![Mean solar radiation at Angelo HQ](sensor_plot.png)
 
 ### Searching the engine  
@@ -681,63 +700,63 @@ lynx_results[, -3]
 ```
 
 
-------------------------------------
-field                      results  
--------------------------- ---------
-animalia                   712      
+-------------------------------------------------------------
+&nbsp;                   field                      results  
+------------------------ -------------------------- ---------
+**kingdom**              animalia                   787      
 
-California                 469      
+**state_province.2**     California                 469      
 
-Nevada                     105      
+**state_province.21**    Nevada                     105      
 
-Alaska                     82       
+**state_province.3**     Alaska                     82       
 
-British Columbia           47       
+**state_province.4**     British Columbia           47       
 
-Arizona                    36       
+**state_province.5**     Arizona                    36       
 
-Baja California Sur        25       
+**state_province.6**     Baja California Sur        25       
 
-Baja California            16       
+**state_province.7**     Baja California            16       
 
-New Mexico                 14       
+**state_province.8**     New Mexico                 14       
 
-Oregon                     13       
+**state_province.9**     Oregon                     13       
 
-Zacatecas                  11       
+**state_province.10**    Zacatecas                  11       
 
-mammalia                   898      
+**clss**                 mammalia                   898      
 
-Observations               900      
+**resource**             Observations               900      
 
-felidae                    898      
+**family**               felidae                    898      
 
-Lynx rufus californicus    391      
+**scientific_name.2**    Lynx rufus californicus    391      
 
-Lynx canadensis canadensis 137      
+**scientific_name.21**   Lynx canadensis canadensis 137      
 
-Lynx rufus baileyi         135      
+**scientific_name.3**    Lynx rufus baileyi         135      
 
-Lynx rufus pallescens      119      
+**scientific_name.4**    Lynx rufus pallescens      119      
 
-Lynx rufus fasciatus       30       
+**scientific_name.5**    Lynx rufus fasciatus       30       
 
-Lynx rufus peninsularis    27       
+**scientific_name.6**    Lynx rufus peninsularis    27       
 
-Lynx rufus                 18       
+**scientific_name.7**    Lynx rufus                 18       
 
-Lynx rufus rufus           14       
+**scientific_name.8**    Lynx rufus rufus           14       
 
-Lynx rufus escuinapae      13       
+**scientific_name.9**    Lynx rufus escuinapae      13       
 
-Lynx rufus ssp.            4        
+**scientific_name.10**   Lynx rufus ssp.            4        
 
-chordata                   900      
+**phylum**               chordata                   900      
 
-lynx                       900      
+**genus**                lynx                       900      
 
-carnivora                  898      
-------------------------------------
+**order**                carnivora                  898      
+-------------------------------------------------------------
 
 Similarly it's possible to search through the observations in a detailed manner as well.
 
@@ -822,59 +841,86 @@ unique(source_list$name)
 --------------------------
 name                      
 --------------------------
-UCMP Vertebrate Collection
-
 VTM plot data             
 
-VTM plot coordinates      
+MVZ Herp Observations     
 
 BIGCB Sensors             
 
 Consortium of California  
 Herbaria                  
 
-MVZ Mammals               
+VTM plot coordinates      
 
-MVZ Mammals Observations  
-
-VTM plot data trees       
+UCMP Vertebrate Collection
 
 VTM plot data brushes     
 
+MVZ Hildebrand Collection 
+
 CAS Herpetology           
+
+CalPhotos                 
 --------------------------
 
 
 ```r
-sessionInfo()
+devtools::session_info()
 ```
 
 ```
-#>  R version 3.1.0 (2014-04-10)
-#>  Platform: x86_64-apple-darwin13.1.0 (64-bit)
-#>  
-#>  locale:
-#>  [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-#>  
-#>  attached base packages:
-#>  [1] methods   stats     graphics  grDevices datasets  utils     base     
-#>  
-#>  other attached packages:
-#>  [1] plyr_1.8.1         pander_0.3.8       ggplot2_1.0.0     
-#>  [4] ecoengine_1.4.3.99 codetools_0.2-8    rmarkdown_0.2.49  
-#>  [7] knitr_1.6          devtools_1.5      
-#>  
-#>  loaded via a namespace (and not attached):
-#>   [1] assertthat_0.1    colorspace_1.2-4  coyote_0.1       
-#>   [4] digest_0.6.4      dplyr_0.2         evaluate_0.5.5   
-#>   [7] formatR_0.10      grid_3.1.0        gtable_0.1.2     
-#>  [10] htmltools_0.2.6   httr_0.3.0.99     jsonlite_0.9.9   
-#>  [13] labeling_0.2      leafletR_0.2-1    lubridate_1.3.3  
-#>  [16] MASS_7.3-33       memoise_0.2.1     munsell_0.4.2    
-#>  [19] parallel_3.1.0    proto_0.3-10      Rcpp_0.11.2      
-#>  [22] RCurl_1.95-4.3    reshape2_1.4.0.99 RJSONIO_1.3-0    
-#>  [25] scales_0.2.4      stringr_0.6.2     tools_3.1.0      
-#>  [28] whisker_0.3-2
+#>  Session info --------------------------------------------------------------
+```
+
+```
+#>   setting  value                       
+#>   version  R version 3.1.2 (2014-10-31)
+#>   system   x86_64, darwin13.4.0        
+#>   ui       X11                         
+#>   language (EN)                        
+#>   collate  en_US.UTF-8                 
+#>   tz       America/Los_Angeles
+```
+
+```
+#>  Packages ------------------------------------------------------------------
+```
+
+```
+#>   package    * version date       source                            
+#>   assertthat * 0.1     2013-12-06 CRAN (R 3.1.0)                    
+#>   brew       * 1.0-6   2011-04-13 CRAN (R 3.1.0)                    
+#>   colorspace * 1.2-5   2015-03-03 CRAN (R 3.1.3)                    
+#>   coyote     * 0.1     2014-05-05 Github (karthik/coyote@4ed329d)   
+#>   DBI        * 0.3.1   2014-09-24 CRAN (R 3.1.1)                    
+#>   devtools     1.7.0   2015-01-17 CRAN (R 3.1.2)                    
+#>   digest     * 0.6.8   2014-12-31 CRAN (R 3.1.2)                    
+#>   dplyr        0.4.1   2015-01-14 CRAN (R 3.1.2)                    
+#>   ecoengine    1.9     2015-03-10 local                             
+#>   evaluate   * 0.5.5   2014-04-29 CRAN (R 3.1.0)                    
+#>   formatR    * 1.0     2014-08-25 CRAN (R 3.1.2)                    
+#>   ggplot2      1.0.0   2014-05-21 CRAN (R 3.1.0)                    
+#>   gtable     * 0.1.2   2012-12-05 CRAN (R 3.1.0)                    
+#>   htmltools  * 0.2.6   2014-08-14 Github (rstudio/htmltools@fa3e0ab)
+#>   httr         0.6.1   2015-01-01 CRAN (R 3.1.2)                    
+#>   jsonlite   * 0.9.14  2014-12-01 CRAN (R 3.1.2)                    
+#>   knitr        1.9     2015-01-20 CRAN (R 3.1.2)                    
+#>   leafletR   * 0.3-1   2014-10-23 CRAN (R 3.1.2)                    
+#>   lubridate  * 1.3.3   2013-12-31 CRAN (R 3.1.0)                    
+#>   magrittr   * 1.5     2014-11-22 CRAN (R 3.1.2)                    
+#>   MASS       * 7.3-39  2015-02-20 CRAN (R 3.1.2)                    
+#>   memoise    * 0.2.1   2014-04-22 CRAN (R 3.1.0)                    
+#>   munsell    * 0.4.2   2013-07-11 CRAN (R 3.1.0)                    
+#>   pander       0.5.1   2014-10-29 CRAN (R 3.1.2)                    
+#>   plyr         1.8.1   2014-02-26 CRAN (R 3.1.0)                    
+#>   proto      * 0.3-10  2012-12-22 CRAN (R 3.1.0)                    
+#>   Rcpp       * 0.11.5  2015-03-06 CRAN (R 3.1.3)                    
+#>   reshape2   * 1.4.1   2014-12-06 CRAN (R 3.1.2)                    
+#>   rmarkdown    0.5.1   2015-01-26 CRAN (R 3.1.2)                    
+#>   rstudioapi * 0.2     2014-12-31 CRAN (R 3.1.2)                    
+#>   scales     * 0.2.4   2014-04-22 CRAN (R 3.1.0)                    
+#>   stringr    * 0.6.2   2012-12-06 CRAN (R 3.1.0)                    
+#>   whisker    * 0.3-2   2013-04-28 CRAN (R 3.1.0)
 ```
 
 Please send any comments, questions, or ideas for new functionality or improvements to <[karthik.ram@berkeley.edu](karthik.ram@berkeley.edu)>. The code lives on GitHub [under the rOpenSci account](https://github.com/ropensci/ecoengine). Pull requests and [bug reports](https://github.com/ropensci/ecoengine/issues?state=open) are most welcome.
@@ -882,5 +928,5 @@ Please send any comments, questions, or ideas for new functionality or improveme
 
 
  Karthik Ram  
- Sep, 2014   
+ Mar, 2015   
  _Berkeley, California_

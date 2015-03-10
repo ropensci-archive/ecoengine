@@ -6,3 +6,4 @@ engine_notes.R
 inst/Makefile
 TODO
 /inst/cache/
+inst/doc
