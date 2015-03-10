@@ -53,7 +53,7 @@ A BibTeX entry for LaTeX users is
 Data},
     author = {Karthik Ram},
     year = {2014},
-    note = {R package version 1.5},
+    note = {R package version 1.9},
     url = {https://github.com/ropensci/ecoengine},
   }
 ```
@@ -76,4 +76,4 @@ This package is part of a richer suite called [SPOCC Species Occurrence Data](ht
 
 ---
 
-[![ropensci footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
+[![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
