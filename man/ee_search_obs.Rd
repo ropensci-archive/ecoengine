@@ -16,8 +16,6 @@ ee_search_obs(query = NULL, page = NULL, page_size = 1000,
 
 \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.}
 
-\item{quiet}{Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.}
-
 \item{progress}{Progress bar is set to \code{TRUE} by default. Use \code{FALSE} especially when calling functions inside documents.}
 
 \item{foptions}{A list of additional arguments for \code{httr}. There is no reason to use this argument except for debugging purposes.}
