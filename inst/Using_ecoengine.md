@@ -623,8 +623,25 @@ Similarly it's possible to search through the observations in a detailed manner 
 
 
 ```r
-# all_lynx_data <- ee_search_obs(query = 'Lynx', page = 'all', progress =
-# FALSE) all_lynx_data
+all_lynx_data <- ee_search_obs(query = "Lynx", page = "all", progress = FALSE)
+```
+
+```
+#>  Search contains 644 observations (downloading 1 of 1 pages)
+```
+
+```r
+all_lynx_data
+```
+
+```
+#>  [Total results on the server]: 644 
+#>  [Args]: 
+#>  q = Lynx 
+#>  page_size = 1000 
+#>  page = all 
+#>  [Type]: observations 
+#>  [Number of results retrieved]: 644
 ```
 
 ---
