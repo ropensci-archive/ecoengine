@@ -1,7 +1,7 @@
 
 Linux: ![travis shield](https://travis-ci.org/ropensci/ecoengine.png?branch=master)   
 Windows: [![Build status](https://ci.appveyor.com/api/projects/status/0unlb6h2lc3t5h60)](https://ci.appveyor.com/project/karthik/ecoengine)  
-
+[![Coverage Status](https://coveralls.io/repos/ropensci/ecoengine/badge.svg)](https://coveralls.io/r/ropensci/ecoengine)
 
 # R interface to the Berkeley Ecoinformatics Engine
 
