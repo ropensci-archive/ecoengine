@@ -32,11 +32,11 @@ pandoc.table(ee_about(), justify = "left")
 
 ## The ecoengine class
 
-The data functions in the package include ones that query obervations, checklists, photos, vegetation records, and a variety of measurements from sensors. These data are all formatted as a common `S3` class called `ecoengine`. The class includes 4 slots.
+The data functions in the package include ones that query obervations, checklists, photos, and vegetation records. These data are all formatted as a common `S3` class called `ecoengine`. The class includes 4 slots.
 
 - [`Total results on server`] A total result count (not necessarily the results in this particular object but the total number available for a particlar query)
 - [`Args`] The arguments  (So a reader can replicate the results or rerun the query using other tools.)  
-- [`Type`] The type (`photos`, `observation`, `checklist`, or `sensor`)  
+- [`Type`] The type (`photos`, `observation`, or `checklist`)  
 - [`Number of results retrieved`] The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
 
 The default `print` method for the class will summarize the object.
@@ -202,75 +202,6 @@ unique(spider_details$scientific_name)
 
 Our resulting dataset now contains `r length(unique(spider_details$scientific_name))` unique spider species. 
 
-
-
-### Sensors
-
-Sensor data come from the [Keck HydroWatch Center](http://nrs.ucop.edu/research/special_projects/Keck_HydroWatchl.htm). 
-
-You'll need a sensor's id to query the data for that particular metric and location. The `ee_list_sensors()` function will give you a condensed list with the location, metric, binning method and most importantly the `sensor_id`. You'll need this id for the data retrieval. 
-
-```{r, sensor_list, eval = FALSE}
-head(ee_list_sensors())
-```
-
-```{r, echo = FALSE, results = "asis"}
-pandoc.table(head(ee_list_sensors()), caption = "List of stations", justify = "left")
-```
-
-Let's download solar radiation for the Angelo reserve HQ (sensor_id = `1625`).
-
-```{r, sensor_data}
-library(dplyr)
-# First we can grab the list of sensor ids
-full_sensor_list %>% 
-    select(properties.station_name, properties.record) %>%
-    head
-```  
-
-```{r}
-# In this case we just need data for sensor with id 1625
-angelo_hq <- full_sensor_list[1, ]$properties.record
-results <- ee_sensor_data(angelo_hq, page = 2, progress = FALSE)
-```
-
-Notice that the query returned `r format(results$results, nsmall = 0)` observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request `page = "all"` but remember that this will make `r format(ceiling(results$results)/25, nsmall =0)` requests. Now we can examine the data itself.
-
-```{r, sensor_results2}
-head(results$data)
-```
-
-We can also aggregate sensor data for any of the above mentioned sensors. We do this using the `ee_sensor_agg()` function. The function requires a sensor id and how the data should be binned. You can specify hours, minutes, seconds, days, weeks, month, and years. If for example you need the data binned every `15` days, simply add `days = 15` to the call. Once every `10` days and `2` hours would be `ee_sensor_agg(sensor_id = 1625, days = 10, hours = 2)` 
-
-```{r, sensor_aggregations}
-stations <- full_sensor_list %>% 
-            select(station_name = properties.station_name, record = properties.record)
-# This gives you a list to choose from
-sensor_df <- ee_sensor_agg(sensor_id = stations[1, ]$record, weeks = 2, progress = FALSE)
-head(sensor_df$data)
-```  
-
-As with other functions, the results are paginated.  Since we only need `85` records in this case:
-
-```{r, sensor_agg_more}
-sensor_df <- ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all", progress = FALSE)
-sensor_df
-```
-
-```{r, visualization, echo = TRUE, eval = FALSE}
-library(ggplot2)
-ggplot(sensor_df$data, aes(begin_date, mean)) + 
-geom_line(size = 1, color = "steelblue") + geom_point() + 
-theme_gray() + ylab("Solar radiation total kj/m^2") + 
-xlab("Date") + ggtitle("Data from Angelo HQ") 
-```
-
-```{r, visualization_real, echo = FALSE}
-library(ggplot2)
-sensor_plot <- ggplot(sensor_df$data, aes(begin_date, mean)) + geom_line(size = 1, color = "steelblue") + theme_gray() + ylab("Solar radiation total kj/m^2") + xlab("Date") + ggtitle("Data from Angelo HQ") + geom_point()
-ggsave(sensor_plot, file = "sensor_plot.png", width = 6, height = 4)
-```
-![Mean solar radiation at Angelo HQ](sensor_plot.png)
 
 ### Searching the engine  
 
