@@ -17,8 +17,4 @@ integer
 \description{
 ee_pages - Returns total number of pages for any ecoengine request
 }
-\examples{
-page_1_data <- ee_sensor_data(1625, page = 2)
-ee_pages(page_1_data)
-}
 

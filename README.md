@@ -43,7 +43,7 @@ A quick start guide is available both as [markdown](https://github.com/ropensci/
 To cite package ‘ecoengine’ in publications use:
 
   Karthik Ram (2014). ecoengine: Programmatic interface to the API
-  serving UC Berkeley's Natural History Data. R package version 1.5.
+  serving UC Berkeley's Natural History Data. R package version 1.9.
   https://github.com/ropensci/ecoengine
 
 A BibTeX entry for LaTeX users is

@@ -77,11 +77,6 @@ test_that("Checklists work correctly", {
 	expect_is(checklist_details(spiders$url[1]), "data.frame")
 })
 
-context("Testing sensors")
-
-test_that("Sensor data are returned correctly", {
-	expect_is(ee_sensors(), "data.frame")
-})
 
 
 context("Testing search")
@@ -94,35 +89,5 @@ test_that("Elastic search works correctly", {
 })
 
 
-context("Testing sensor data")
-
-test_that("Sensor data is returned correctly", {
-full_sensor_list <- ee_sensors()
-expect_is(full_sensor_list, "data.frame")
-x <- full_sensor_list[1, ]$properties.record
-sensor_data <- ee_sensor_data(sensor_id = x, page = 1:3)
-expect_is(sensor_data, "ecoengine")
-expect_is(sensor_data$data, "data.frame")
-})
-
-
-
-context("Testing sensor intervals")
-
-test_that("Sensors work correctly", {
-
-test <- ee_sensor_agg(sensor_id = 1625, weeks = 2)
-test1 <- ee_sensor_agg(sensor_id = 1625, month = 1)
-test2 <- ee_sensor_agg(sensor_id = 1629, hours = 2, minutes = 3, seconds = 4)
-expect_is(ee_sensors(), "data.frame")
-expect_is(test$data, "data.frame")
-expect_is(test1$data, "data.frame")
-expect_is(test2$data, "data.frame")
-expect_equal(ncol(test$data), 6)
-expect_equal(ncol(test1$data), 6)
-expect_equal(ncol(test2$data), 6)
-sensor_df <- ee_sensor_agg(page = "all", sensor_id = 1625, weeks = 2)
-expect_is(sensor_df$data, "data.frame")
-})
 
 

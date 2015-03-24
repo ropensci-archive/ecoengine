@@ -41,6 +41,8 @@ actions
 meta-data                         
 
 meta-data                         
+
+meta-data                         
 ----------------------------------
 
 Table: Table continues below
@@ -67,18 +69,20 @@ https://ecoengine.berkeley.edu/api/photos/
 
 https://ecoengine.berkeley.edu/api/search/          
 
-https://ecoengine.berkeley.edu/api/footprints/      
+https://ecoengine.berkeley.edu/api/layers/          
+
+https://ecoengine.berkeley.edu/api/rstore/          
 
 https://ecoengine.berkeley.edu/api/sources/         
 ----------------------------------------------------
 
 ## The ecoengine class
 
-The data functions in the package include ones that query obervations, checklists, photos, vegetation records, and a variety of measurements from sensors. These data are all formatted as a common `S3` class called `ecoengine`. The class includes 4 slots.
+The data functions in the package include ones that query obervations, checklists, photos, and vegetation records. These data are all formatted as a common `S3` class called `ecoengine`. The class includes 4 slots.
 
 - [`Total results on server`] A total result count (not necessarily the results in this particular object but the total number available for a particlar query)
 - [`Args`] The arguments  (So a reader can replicate the results or rerun the query using other tools.)  
-- [`Type`] The type (`photos`, `observation`, `checklist`, or `sensor`)  
+- [`Type`] The type (`photos`, `observation`, or `checklist`)  
 - [`Number of results retrieved`] The data. Data are most often coerced into a `data.frame`. To access the data simply use `result_object$data`.  
 
 The default `print` method for the class will summarize the object.
@@ -110,7 +114,7 @@ ee_pages(request)
 
 
 
-The database contains over 2 million records (2863164 total). Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
+The database contains over 2 million records (3386177 total). Many of these have already been georeferenced. There are two ways to obtain observations. One is to query the database directly based on a partial or exact taxonomic match. For example
 
 
 ```r
@@ -120,7 +124,7 @@ pinus_observations
 ```
 
 ```
-#>  [Total results on the server]: 43363 
+#>  [Total results on the server]: 58875 
 #>  [Args]: 
 #>  country = United States 
 #>  scientific_name = Pinus 
@@ -142,7 +146,7 @@ lynx_data
 ```
 
 ```
-#>  [Total results on the server]: 701 
+#>  [Total results on the server]: 725 
 #>  [Args]: 
 #>  country = United States 
 #>  genus = Lynx 
@@ -151,7 +155,7 @@ lynx_data
 #>  page_size = 1000 
 #>  page = 1 
 #>  [Type]: FeatureCollection 
-#>  [Number of results retrieved]: 701
+#>  [Number of results retrieved]: 725
 ```
 
 ```r
@@ -162,7 +166,7 @@ lynx_data <- ee_observations(genus = "Lynx", georeferenced = TRUE, page = "all",
 ```
 
 ```
-#>  Search contains 701 observations (downloading 1 of 1 pages)
+#>  Search contains 725 observations (downloading 1 of 1 pages)
 ```
 
 ```r
@@ -170,7 +174,7 @@ lynx_data
 ```
 
 ```
-#>  [Total results on the server]: 701 
+#>  [Total results on the server]: 725 
 #>  [Args]: 
 #>  country = United States 
 #>  genus = Lynx 
@@ -179,7 +183,7 @@ lynx_data
 #>  page_size = 1000 
 #>  page = all 
 #>  [Type]: FeatureCollection 
-#>  [Number of results retrieved]: 701
+#>  [Number of results retrieved]: 725
 ```
 
 __Other search examples__
@@ -219,7 +223,7 @@ aves <- ee_observations(clss = "aves", extra = "kingdom,genus")
 ```
 
 ```
-#>  Search contains 170263 observations (downloading 1 of 171 pages)
+#>  Search contains 237619 observations (downloading 1 of 238 pages)
 ```
 
 ```
@@ -231,11 +235,16 @@ names(aves$data)
 ```
 
 ```
-#>   [1] "longitude"        "latitude"         "type"            
-#>   [4] "url"              "observation_type" "scientific_name" 
-#>   [7] "country"          "state_province"   "begin_date"      
-#>  [10] "end_date"         "source"           "remote_resource" 
-#>  [13] "kingdom"          "genus"            "last_modified"
+#>   [1] "longitude"                        "latitude"                        
+#>   [3] "type"                             "state_province"                  
+#>   [5] "coordinate_uncertainty_in_meters" "recorded_by"                     
+#>   [7] "begin_date"                       "end_date"                        
+#>   [9] "source"                           "url"                             
+#>  [11] "country"                          "scientific_name"                 
+#>  [13] "locality"                         "record"                          
+#>  [15] "remote_resource"                  "last_modified"                   
+#>  [17] "kingdom"                          "genus"                           
+#>  [19] "observation_type"
 ```
 Similarly use `exclude` to exclude any fields that might be returned by default.
 
@@ -245,7 +254,7 @@ aves <- ee_observations(clss = "aves", exclude = "source,remote_resource")
 ```
 
 ```
-#>  Search contains 170263 observations (downloading 1 of 171 pages)
+#>  Search contains 237619 observations (downloading 1 of 238 pages)
 ```
 
 ```
@@ -257,10 +266,14 @@ names(aves$data)
 ```
 
 ```
-#>   [1] "longitude"        "latitude"         "type"            
-#>   [4] "url"              "observation_type" "scientific_name" 
-#>   [7] "country"          "state_province"   "begin_date"      
-#>  [10] "end_date"         "last_modified"
+#>   [1] "longitude"                        "latitude"                        
+#>   [3] "type"                             "state_province"                  
+#>   [5] "coordinate_uncertainty_in_meters" "recorded_by"                     
+#>   [7] "begin_date"                       "end_date"                        
+#>   [9] "locality"                         "url"                             
+#>  [11] "country"                          "scientific_name"                 
+#>  [13] "record"                           "last_modified"                   
+#>  [15] "observation_type"
 ```
 
 
@@ -289,7 +302,7 @@ photos
 ```
 
 ```
-#>  [Total results on the server]: 60863 
+#>  [Total results on the server]: 72454 
 #>  [Args]: 
 #>  page_size = 1000 
 #>  georeferenced = 0 
@@ -297,7 +310,7 @@ photos
 #>  [Type]: photos 
 #>  [Number of results retrieved]: 1000
 ```
-The database currently holds 60863 photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos`.
+The database currently holds 72454 photos. Photos can be searched by state province, county, genus, scientific name, authors along with date bounds. For additional options see `?ee_photos`.
 
 
 #### Searching photos by author
@@ -493,198 +506,6 @@ unique(spider_details$scientific_name)
 Our resulting dataset now contains 33 unique spider species. 
 
 
-
-### Sensors
-
-Sensor data come from the [Keck HydroWatch Center](http://nrs.ucop.edu/research/special_projects/Keck_HydroWatchl.htm). 
-
-You'll need a sensor's id to query the data for that particular metric and location. The `ee_list_sensors()` function will give you a condensed list with the location, metric, binning method and most importantly the `sensor_id`. You'll need this id for the data retrieval. 
-
-
-```r
-head(ee_list_sensors())
-```
-
-
--------------------------------------------------------------------
-properties.station_name   properties.units   properties.variable   
-------------------------- ------------------ ----------------------
-Angelo Meadow WS          degree celcius     Air Temp C            
-
-Cahto Peak WS             degree celcius     Air Temp C            
-
-Angelo HQ WS              degree celcius     Air Temp C            
-
-Angelo HQ SF Eel Gage     degree celcius     Air Temp C            
-
-Angelo HQ WS              millibar           Barometric Pressure mb
-
-Angelo Meadow WS          millibar           Barometric Pressure mb
--------------------------------------------------------------------
-
-Table: List of stations (continued below)
-
- 
----------------------------------
-properties.method_name   record  
------------------------- --------
-Conversion to 30-minute  1       
-timesteps                        
-
-Conversion to 30-minute  2       
-timesteps                        
-
-Conversion to 30-minute  3       
-timesteps                        
-
-Conversion to 30-minute  4       
-timesteps                        
-
-Conversion to 30-minute  5       
-timesteps                        
-
-Conversion to 30-minute  6       
-timesteps                        
----------------------------------
-
-Let's download solar radiation for the Angelo reserve HQ (sensor_id = `1625`).
-
-
-```r
-library(dplyr)
-```
-
-```
-#>  
-#>  Attaching package: 'dplyr'
-#>  
-#>  The following objects are masked from 'package:plyr':
-#>  
-#>      arrange, count, desc, failwith, id, mutate, rename, summarise,
-#>      summarize
-#>  
-#>  The following object is masked from 'package:stats':
-#>  
-#>      filter
-#>  
-#>  The following objects are masked from 'package:base':
-#>  
-#>      intersect, setdiff, setequal, union
-```
-
-```r
-# First we can grab the list of sensor ids
-full_sensor_list %>% select(properties.station_name, properties.record) %>% 
-    head
-```
-
-```
-#>    properties.station_name properties.record
-#>  1        Angelo Meadow WS              1602
-#>  2           Cahto Peak WS              1603
-#>  3            Angelo HQ WS              1604
-#>  4   Angelo HQ SF Eel Gage              1606
-#>  5            Angelo HQ WS              1607
-#>  6        Angelo Meadow WS              1608
-```
-
-
-```r
-# In this case we just need data for sensor with id 1625
-angelo_hq <- full_sensor_list[1, ]$properties.record
-results <- ee_sensor_data(angelo_hq, page = 2, progress = FALSE)
-```
-
-```
-#>  Search contains 98527 records (downloading 1 page(s) of 99)
-```
-
-Notice that the query returned 98527 observations but has only retrieved the `25-50` since we requested records for page 2 (and each page by default retrieves `25` records). You can request `page = "all"` but remember that this will make 3941.08 requests. Now we can examine the data itself.
-
-
-```r
-head(results$data)
-```
-
-```
-#>             local_date  value
-#>  1 2008-05-23 13:30:00 17.580
-#>  2 2008-05-23 14:00:00 17.925
-#>  3 2008-05-23 14:30:00 18.505
-#>  4 2008-05-23 15:00:00 18.505
-#>  5 2008-05-23 15:30:00 17.925
-#>  6 2008-05-23 16:00:00 17.690
-```
-
-We can also aggregate sensor data for any of the above mentioned sensors. We do this using the `ee_sensor_agg()` function. The function requires a sensor id and how the data should be binned. You can specify hours, minutes, seconds, days, weeks, month, and years. If for example you need the data binned every `15` days, simply add `days = 15` to the call. Once every `10` days and `2` hours would be `ee_sensor_agg(sensor_id = 1625, days = 10, hours = 2)` 
-
-
-```r
-stations <- full_sensor_list %>% select(station_name = properties.station_name, 
-    record = properties.record)
-# This gives you a list to choose from
-sensor_df <- ee_sensor_agg(sensor_id = stations[1, ]$record, weeks = 2, progress = FALSE)
-```
-
-```
-#>  Search contains 147 records (downloading 1 page(s) of 1)
-```
-
-```r
-head(sensor_df$data)
-```
-
-```
-#>  Source: local data frame [6 x 6]
-#>  
-#>    begin_date     mean     min    max       sum count
-#>  1 2008-05-11 10.80444 -2.0180 28.080  5888.423   545
-#>  2 2008-05-25 15.45394  2.8230 36.110 10385.045   672
-#>  3 2008-06-08 11.72593  1.7975 24.250  7879.823   672
-#>  4 2008-06-22 17.45442  3.5065 33.855 11729.369   672
-#>  5 2008-07-06 17.07472  4.3950 31.805 11474.215   672
-#>  6 2008-07-20 20.73330  6.7875 40.720 13932.778   672
-```
-
-As with other functions, the results are paginated.  Since we only need `85` records in this case:
-
-
-```r
-sensor_df <- ee_sensor_agg(sensor_id = 1625, weeks = 2, page = "all", progress = FALSE)
-```
-
-```
-#>  Search contains 94 records (downloading 1 page(s) of 1)
-```
-
-```r
-sensor_df
-```
-
-```
-#>  [Total results on the server]: 94 
-#>  [Args]: 
-#>  page_size = 1000 
-#>  interval = 2W 
-#>  page = all 
-#>  [Type]: sensor 
-#>  [Number of results retrieved]: 94
-```
-
-
-```r
-library(ggplot2)
-ggplot(sensor_df$data, aes(begin_date, mean)) + geom_line(size = 1, color = "steelblue") + 
-    geom_point() + theme_gray() + ylab("Solar radiation total kj/m^2") + xlab("Date") + 
-    ggtitle("Data from Angelo HQ")
-```
-
-
-```
-#>  Loading required package: methods
-```
-![Mean solar radiation at Angelo HQ](sensor_plot.png)
-
 ### Searching the engine  
 
 The search is elastic by default. One can search for any field in `ee_observations()` across all available resources. For example, 
@@ -700,63 +521,103 @@ lynx_results[, -3]
 ```
 
 
--------------------------------------------------------------
-&nbsp;                   field                      results  
------------------------- -------------------------- ---------
-**kingdom**              animalia                   787      
+--------------------------------------------------------------
+&nbsp;                    field                      results  
+------------------------- -------------------------- ---------
+**state_province.2**      California                 282      
 
-**state_province.2**     California                 469      
+**state_province.21**     Nevada                     70       
 
-**state_province.21**    Nevada                     105      
+**state_province.3**      Alaska                     51       
 
-**state_province.3**     Alaska                     82       
+**state_province.4**      British Columbia           34       
 
-**state_province.4**     British Columbia           47       
+**state_province.5**      Arizona                    24       
 
-**state_province.5**     Arizona                    36       
+**state_province.6**      Montana                    14       
 
-**state_province.6**     Baja California Sur        25       
+**state_province.7**      Baja California Sur        13       
 
-**state_province.7**     Baja California            16       
+**state_province.8**      Baja California            12       
 
-**state_province.8**     New Mexico                 14       
+**state_province.9**      Zacatecas                  10       
 
-**state_province.9**     Oregon                     13       
+**state_province.10**     New Mexico                 8        
 
-**state_province.10**    Zacatecas                  11       
+**kingdom**               animalia                   562      
 
-**clss**                 mammalia                   898      
+**genus**                 lynx                       578      
 
-**resource**             Observations               900      
+**resource**              Observations               578      
 
-**family**               felidae                    898      
+**family**                felidae                    563      
 
-**scientific_name.2**    Lynx rufus californicus    391      
+**scientific_name.2**     Lynx rufus californicus    232      
 
-**scientific_name.21**   Lynx canadensis canadensis 137      
+**scientific_name.21**    Lynx rufus baileyi         93       
 
-**scientific_name.3**    Lynx rufus baileyi         135      
+**scientific_name.3**     Lynx canadensis canadensis 93       
 
-**scientific_name.4**    Lynx rufus pallescens      119      
+**scientific_name.4**     Lynx rufus pallescens      76       
 
-**scientific_name.5**    Lynx rufus fasciatus       30       
+**scientific_name.5**     Lynx rufus                 16       
 
-**scientific_name.6**    Lynx rufus peninsularis    27       
+**scientific_name.6**     Lynx rufus peninsularis    15       
 
-**scientific_name.7**    Lynx rufus                 18       
+**scientific_name.7**     Lynx canadensis            13       
 
-**scientific_name.8**    Lynx rufus rufus           14       
+**scientific_name.8**     Lynx rufus rufus           11       
 
-**scientific_name.9**    Lynx rufus escuinapae      13       
+**scientific_name.9**     Lynx rufus fasciatus       11       
 
-**scientific_name.10**   Lynx rufus ssp.            4        
+**scientific_name.10**    Lynx rufus escuinapae      10       
 
-**phylum**               chordata                   900      
+**country.2**             United States              495      
 
-**genus**                lynx                       900      
+**country.21**            Mexico                     45       
 
-**order**                carnivora                  898      
--------------------------------------------------------------
+**country.3**             Canada                     34       
+
+**country.4**             None                       4        
+
+**clss**                  mammalia                   562      
+
+**order**                 carnivora                  561      
+
+**phylum**                chordata                   559      
+
+**georeferenced.2**       true                       525      
+
+**georeferenced.21**      false                      53       
+
+**observation_type.2**    specimen                   557      
+
+**observation_type.21**   photo                      16       
+
+**observation_type.3**    fossil                     4        
+
+**observation_type.4**    checklist                  1        
+
+**decade.2**              1931-1940                  132      
+
+**decade.21**             1921-1930                  91       
+
+**decade.3**              1911-1920                  74       
+
+**decade.4**              1901-1910                  66       
+
+**decade.5**              1971-1980                  62       
+
+**decade.6**              1941-1950                  46       
+
+**decade.7**              1961-1970                  35       
+
+**decade.8**              1951-1960                  34       
+
+**decade.9**              2001-2010                  9        
+
+**decade.10**             1991-2000                  4        
+--------------------------------------------------------------
 
 Similarly it's possible to search through the observations in a detailed manner as well.
 
@@ -766,7 +627,7 @@ all_lynx_data <- ee_search_obs(query = "Lynx", page = "all", progress = FALSE)
 ```
 
 ```
-#>  Search contains 992 observations (downloading 1 of 1 pages)
+#>  Search contains 644 observations (downloading 1 of 1 pages)
 ```
 
 ```r
@@ -774,13 +635,13 @@ all_lynx_data
 ```
 
 ```
-#>  [Total results on the server]: 992 
+#>  [Total results on the server]: 644 
 #>  [Args]: 
 #>  q = Lynx 
 #>  page_size = 1000 
 #>  page = all 
 #>  [Type]: observations 
-#>  [Number of results retrieved]: 992
+#>  [Number of results retrieved]: 644
 ```
 
 ---
@@ -841,26 +702,26 @@ unique(source_list$name)
 --------------------------
 name                      
 --------------------------
-VTM plot data             
+UCANR Drought images      
 
-MVZ Herp Observations     
+LACM Vertebrate Collection
 
-BIGCB Sensors             
+CAS Botany                
 
-Consortium of California  
-Herbaria                  
+CAS Entomology            
+
+MVZ Herp Collection       
 
 VTM plot coordinates      
 
-UCMP Vertebrate Collection
-
-VTM plot data brushes     
-
-MVZ Hildebrand Collection 
-
 CAS Herpetology           
 
-CalPhotos                 
+VTM plot data             
+
+CAS Ornithology           
+
+Consortium of California  
+Herbaria                  
 --------------------------
 
 
@@ -887,40 +748,43 @@ devtools::session_info()
 ```
 
 ```
-#>   package    * version date       source                            
-#>   assertthat * 0.1     2013-12-06 CRAN (R 3.1.0)                    
-#>   brew       * 1.0-6   2011-04-13 CRAN (R 3.1.0)                    
-#>   colorspace * 1.2-5   2015-03-03 CRAN (R 3.1.3)                    
-#>   coyote     * 0.1     2014-05-05 Github (karthik/coyote@4ed329d)   
-#>   DBI        * 0.3.1   2014-09-24 CRAN (R 3.1.1)                    
-#>   devtools     1.7.0   2015-01-17 CRAN (R 3.1.2)                    
-#>   digest     * 0.6.8   2014-12-31 CRAN (R 3.1.2)                    
-#>   dplyr        0.4.1   2015-01-14 CRAN (R 3.1.2)                    
-#>   ecoengine    1.9     2015-03-10 local                             
-#>   evaluate   * 0.5.5   2014-04-29 CRAN (R 3.1.0)                    
-#>   formatR    * 1.0     2014-08-25 CRAN (R 3.1.2)                    
-#>   ggplot2      1.0.0   2014-05-21 CRAN (R 3.1.0)                    
-#>   gtable     * 0.1.2   2012-12-05 CRAN (R 3.1.0)                    
-#>   htmltools  * 0.2.6   2014-08-14 Github (rstudio/htmltools@fa3e0ab)
-#>   httr         0.6.1   2015-01-01 CRAN (R 3.1.2)                    
-#>   jsonlite   * 0.9.14  2014-12-01 CRAN (R 3.1.2)                    
-#>   knitr        1.9     2015-01-20 CRAN (R 3.1.2)                    
-#>   leafletR   * 0.3-1   2014-10-23 CRAN (R 3.1.2)                    
-#>   lubridate  * 1.3.3   2013-12-31 CRAN (R 3.1.0)                    
-#>   magrittr   * 1.5     2014-11-22 CRAN (R 3.1.2)                    
-#>   MASS       * 7.3-39  2015-02-20 CRAN (R 3.1.2)                    
-#>   memoise    * 0.2.1   2014-04-22 CRAN (R 3.1.0)                    
-#>   munsell    * 0.4.2   2013-07-11 CRAN (R 3.1.0)                    
-#>   pander       0.5.1   2014-10-29 CRAN (R 3.1.2)                    
-#>   plyr         1.8.1   2014-02-26 CRAN (R 3.1.0)                    
-#>   proto      * 0.3-10  2012-12-22 CRAN (R 3.1.0)                    
-#>   Rcpp       * 0.11.5  2015-03-06 CRAN (R 3.1.3)                    
-#>   reshape2   * 1.4.1   2014-12-06 CRAN (R 3.1.2)                    
-#>   rmarkdown    0.5.1   2015-01-26 CRAN (R 3.1.2)                    
-#>   rstudioapi * 0.2     2014-12-31 CRAN (R 3.1.2)                    
-#>   scales     * 0.2.4   2014-04-22 CRAN (R 3.1.0)                    
-#>   stringr    * 0.6.2   2012-12-06 CRAN (R 3.1.0)                    
-#>   whisker    * 0.3-2   2013-04-28 CRAN (R 3.1.0)
+#>   package    * version  date       source                            
+#>   assertthat * 0.1      2013-12-06 CRAN (R 3.1.0)                    
+#>   bitops     * 1.0-6    2013-08-17 CRAN (R 3.1.0)                    
+#>   brew       * 1.0-6    2011-04-13 CRAN (R 3.1.0)                    
+#>   codetools  * 0.2-11   2015-03-10 CRAN (R 3.1.3)                    
+#>   colorspace * 1.2-6    2015-03-11 CRAN (R 3.1.3)                    
+#>   coyote     * 0.1      2014-05-05 Github (karthik/coyote@4ed329d)   
+#>   DBI        * 0.3.1    2014-09-24 CRAN (R 3.1.1)                    
+#>   devtools     1.7.0    2015-01-17 CRAN (R 3.1.2)                    
+#>   digest     * 0.6.8    2014-12-31 CRAN (R 3.1.2)                    
+#>   dplyr        0.4.1    2015-01-14 CRAN (R 3.1.2)                    
+#>   ecoengine    1.9      2015-03-24 local                             
+#>   evaluate   * 0.5.5    2014-04-29 CRAN (R 3.1.0)                    
+#>   formatR    * 1.0      2014-08-25 CRAN (R 3.1.2)                    
+#>   ggplot2      1.0.1    2015-03-17 CRAN (R 3.1.3)                    
+#>   gtable     * 0.1.2    2012-12-05 CRAN (R 3.1.0)                    
+#>   htmltools  * 0.2.6    2014-08-14 Github (rstudio/htmltools@fa3e0ab)
+#>   httr         0.6.1    2015-01-01 CRAN (R 3.1.2)                    
+#>   jsonlite   * 0.9.14   2014-12-01 CRAN (R 3.1.2)                    
+#>   knitr        1.9      2015-01-20 CRAN (R 3.1.2)                    
+#>   leafletR   * 0.3-1    2014-10-23 CRAN (R 3.1.2)                    
+#>   lubridate  * 1.3.3    2013-12-31 CRAN (R 3.1.0)                    
+#>   magrittr   * 1.5      2014-11-22 CRAN (R 3.1.2)                    
+#>   MASS       * 7.3-40   2015-03-21 CRAN (R 3.1.3)                    
+#>   memoise    * 0.2.1    2014-04-22 CRAN (R 3.1.0)                    
+#>   munsell    * 0.4.2    2013-07-11 CRAN (R 3.1.0)                    
+#>   pander       0.5.1    2014-10-29 CRAN (R 3.1.2)                    
+#>   plyr         1.8.1    2014-02-26 CRAN (R 3.1.0)                    
+#>   proto      * 0.3-10   2012-12-22 CRAN (R 3.1.0)                    
+#>   Rcpp       * 0.11.5   2015-03-06 CRAN (R 3.1.3)                    
+#>   RCurl      * 1.95-4.5 2014-12-06 CRAN (R 3.1.2)                    
+#>   reshape2   * 1.4.1    2014-12-06 CRAN (R 3.1.2)                    
+#>   rmarkdown    0.5.1    2015-01-26 CRAN (R 3.1.2)                    
+#>   rstudioapi * 0.2      2014-12-31 CRAN (R 3.1.2)                    
+#>   scales     * 0.2.4    2014-04-22 CRAN (R 3.1.0)                    
+#>   stringr    * 0.6.2    2012-12-06 CRAN (R 3.1.0)                    
+#>   whisker    * 0.3-2    2013-04-28 CRAN (R 3.1.0)
 ```
 
 Please send any comments, questions, or ideas for new functionality or improvements to <[karthik.ram@berkeley.edu](karthik.ram@berkeley.edu)>. The code lives on GitHub [under the rOpenSci account](https://github.com/ropensci/ecoengine). Pull requests and [bug reports](https://github.com/ropensci/ecoengine/issues?state=open) are most welcome.
@@ -929,4 +793,4 @@ Please send any comments, questions, or ideas for new functionality or improveme
 
  Karthik Ram  
  Mar, 2015   
- _Berkeley, California_
+ _Fremont, California_
