@@ -61,9 +61,6 @@ cat(sprintf("[Number of results retrieved]: %s \n", nrow(x$data)))
 #' @param  page_size Default page size. Currently set to \code{1000} package wide.
 #' @export
 #' @return integer
-#' @examples 
-#' page_1_data <- ee_sensor_data(1625, page = 2)
-#' ee_pages(page_1_data)
 ee_pages <- function(ee, page_size = 1000) {
     if(!identical(class(ee), "ecoengine"))
         stop("Object must be of class ecoengine")

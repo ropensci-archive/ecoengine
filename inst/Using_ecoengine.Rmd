@@ -5,7 +5,7 @@ knitr::opts_chunk$set(
   comment = "#> ",
   error = FALSE,
   cache = TRUE,
-  warning = FALSE,
+  warning = FALSE, 
   tidy = TRUE
 )
 ```
@@ -223,8 +223,8 @@ pandoc.table(lynx_results[, -3], justify = "left")
 Similarly it's possible to search through the observations in a detailed manner as well.
 
 ```{r, ee_obs_search}
-all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all", progress = FALSE)
-all_lynx_data
+# all_lynx_data <- ee_search_obs(query  = "Lynx", page = "all", progress = FALSE)
+# all_lynx_data
 ```
 
 ---
