@@ -11,6 +11,7 @@ ecoengine 1.6
 * Switched json parser from RJSONIO → jsonlite
 * Updated all sensor functions due to API name changes. record (station record changed from "record" to "properties.record")
 
+* Added support for last modified to be returned with every search
 
 ecoengine 1.5
 ================
