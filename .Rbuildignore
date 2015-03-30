@@ -9,3 +9,4 @@ tests/testthat/test-all.R
 Makefile
 appveyor.yml
 cran-comments.md
+.coveralls.yml

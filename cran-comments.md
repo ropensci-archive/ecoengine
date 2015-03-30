@@ -1,18 +1,4 @@
-Professor Ripley writes:
 
-Do follow the policies.  You missed
+Prof Ripley wrote: Note that you report the resource is not found, then try to process its content.  And as http://cran.r-project.org/web/checks/check_results_ecoengine.html shows, this is not infrequent.
 
-The Title field should be in title case, current version then in title case:
-‘Programmatic Interface To The Api Serving Uc Berkeley's Natural History Data’
-‘Programmatic Interface to the Api Serving Uc Berkeley's Natural History Data’
-
-[And I believe you mean UC Berkeley ....]
-
-The Date field is over a month old.
-
-* checking DESCRIPTION meta-information ... NOTE
-Malformed Description field: should contain one or more complete sentences.
-
-which the checks you claim you did would have shown ....
-
-Response: I fixed the title and the description. Both were in accordance with the policies during the last update. I apologize for the oversight.
+The offending API calls were removed (as they were changed after submission to CRAN). Package now passes checks without any notes or warnings.

@@ -1,6 +1,7 @@
 context("Testing Ecoengine metadata functions")
 
 test_that("Metadata is returned as expected", {
+   skip_on_cran()
 	 expect_is(ee_about(type = "data"), "data.frame")
 	 expect_true(nrow(ee_about(type = "data")) == 4)
 	 expect_true(ncol(ee_about(type = "data")) == 2)
@@ -26,6 +27,7 @@ test_that("Metadata is returned as expected", {
 context("Testing photos function")
 
 test_that("Photos function returns results as expected", {
+  skip_on_cran()
 	photos_df <- ee_photos()
   expect_is(photos_df, "ecoengine")
 	expect_equal(length(photos_df), 4)
@@ -40,7 +42,7 @@ test_that("Photos function returns results as expected", {
 context("Testing observations")
 
 test_that("Observations are correctly retrieved", {
-
+  skip_on_cran()
   x <- ee_observations(genus__exact = "Pinus")
   x_geo <- ee_observations(genus__exact = "Pinus", georeferenced = TRUE)
   x1 <- ee_observations(genus__exact = "Pinus", page = 1:2)
@@ -59,6 +61,7 @@ test_that("Observations are correctly retrieved", {
 context("eebind works correctly")
 
 test_that("We can combine multiple calls into one", {
+  skip_on_cran()
 	x1 <- ee_observations(genus = "Lynx", page = 1, page_size = 50)
 	x2 <- ee_observations(genus = "Lynx", page = 2, page_size = 50)
 	x12 <- ee_cbind(list(x1, x2))
@@ -72,6 +75,7 @@ test_that("We can combine multiple calls into one", {
 context("Testing checklists")
 
 test_that("Checklists work correctly", {
+  skip_on_cran()
 	expect_is(ee_checklists(), "data.frame")
 	spiders  <- ee_checklists(subject = "Spiders")
 	expect_is(checklist_details(spiders$url[1]), "data.frame")
@@ -81,6 +85,7 @@ test_that("Checklists work correctly", {
 
 context("Testing search")
 test_that("Elastic search works correctly", {
+  skip_on_cran()
 	x <- ee_search(query = "genus:Lynx")
 	expect_is(x, "data.frame")
 	all_lynx_data <- ee_search_obs(query  = "Lynx")

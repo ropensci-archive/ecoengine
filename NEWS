@@ -1,3 +1,9 @@
+
+ecoengine 1.9.1
+=================
+* Fixed critical bug with sensor API. These data are no longer available through the package.
+
+
 ecoengine 1.9
 =================
 * Updated package to new ecoengine API.

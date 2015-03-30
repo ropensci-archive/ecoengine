@@ -14,7 +14,6 @@
 #' # or the California Condor
 #' # view_photos(ee_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
 
-
 view_photos <- function(input = NULL, output = NULL, browse = TRUE)
 {
   if(is.null(input))
