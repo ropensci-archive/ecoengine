@@ -6,7 +6,7 @@ test_that("Metadata is returned as expected", {
 	 expect_true(nrow(ee_about(type = "data")) == 4)
 	 expect_true(ncol(ee_about(type = "data")) == 2)
 	 expect_is(ee_about(type = "meta-data"), "data.frame")
-	 expect_true(nrow(ee_about(type = "meta-data")) == 2)
+	 expect_true(nrow(ee_about(type = "meta-data")) == 3)
 	 expect_true(ncol(ee_about(type = "meta-data")) == 2)
 	 expect_is(ee_about(type = "actions"), "data.frame")
 	 expect_true(nrow(ee_about(type = "actions")) == 1)
@@ -93,6 +93,13 @@ test_that("Elastic search works correctly", {
 	expect_is(all_lynx_data, "ecoengine")
 })
 
+context("Maps are working correctly")
 
+test_that("Maps are ok", {
+    skip_on_cran()
+lynx_data <- ee_observations(genus = "lynx", progress = FALSE, page = 1, georeferenced = TRUE)
+expect_error(ee_map(lynx_data$data))
+
+})
 
 
