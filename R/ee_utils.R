@@ -1,6 +1,6 @@
 #' @noRd
 ee_base_url <- function() {
-    "https://ecoengine.berkeley.edu/api/" 
+    "http://dev-ecoengine.berkeley.edu/api/" 
     # "https://54.215.216.86/" # This is the current URL
 }
 
