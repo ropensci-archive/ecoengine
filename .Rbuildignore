@@ -10,3 +10,5 @@ Makefile
 appveyor.yml
 cran-comments.md
 .coveralls.yml
+^.*\.Rproj$
+^\.Rproj\.user$
