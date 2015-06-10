@@ -12,7 +12,7 @@ df <- eco$data
 unique_species <- df %>%
 count(scientific_name) %>%
 arrange(desc(n))
-# -----------------> Set up colors
+
 cols <- colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))
 colors <- cols(nrow(unique_species))
 unique_species$marker_color <- colors
@@ -31,13 +31,8 @@ filtered_df$`marker-size` <- "small"
 filtered_df <- filtered_df %>% mutate(description = sprintf("Collected on %s", description))
 pos <- c(which(names(filtered_df) == "latitude"), which(names(filtered_df) == "longitude"))
 leafletR::toGeoJSON(filtered_df, lat.lon = pos, name = "points", overwrite = TRUE)
-# How can I easily cat files together without too many \n?
-# system("cat index0.html points.geojson index1.html > index.html")
 
 file.create(htmlfile)
-# file1 <- "index0.html"
-# points <- "points.geojson"
-# file2 <- "index1.html"
 file1 <- system.file("index0.html", package = "ecoengine")
 points <- "points.geojson"
 file2 <- system.file("index1.html", package = "ecoengine")
