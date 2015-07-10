@@ -35,6 +35,7 @@ ee_map <- function(ee_obj, dest = tempdir(), title = "Ecoengine species map", in
 
 	assert_that(nrow(species_data) > 0)
 
+if(requireNamespace("leafletR", quietly = TRUE) {
 
 
 if(ee_obj$type == "FeatureCollection") {
@@ -49,11 +50,12 @@ ee_geo <- toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon = c
 	map <- leaflet(ee_geo, base.map="tls", style = sty, popup = "scientific_name", dest = dest, title = title, incl.data = incl.data)
 	}
 	else {
-	ee_geo <- toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon = c(lat_location, lon_location))
-	map <- leaflet(ee_geo, base.map="tls", popup = "url", dest = dest, title = title, incl.data = incl.data)
+	ee_geo <- leafletR::toGeoJSON(data = species_data, name = "temp", dest = dest, lat.lon = c(lat_location, lon_location))
+	map <- leafletR::leaflet(ee_geo, base.map="tls", popup = "url", dest = dest, title = title, incl.data = incl.data)
 
 	}
 	browseURL(map)
+}
 }
 
 
