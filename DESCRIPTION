@@ -19,9 +19,9 @@ Imports:
     whisker,
     dplyr (>= 0.2),
     jsonlite,
-    lubridate,
-    leafletR (>= 0.1-1)
+    lubridate
 Suggests:
     testthat,
     knitr,
-    ggplot2
+    ggplot2,
+    leafletR (>= 0.1-1)
