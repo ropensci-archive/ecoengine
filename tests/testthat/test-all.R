@@ -41,6 +41,9 @@ test_that("Photos function returns results as expected", {
 
 context("Testing observations")
 
+# Need to add some tests on observation type and make sure it filters correctly.  For example, specimen_type = "observation" or "collection" should return fewer results than one with no such folders.
+# TODO
+
 test_that("Observations are correctly retrieved", {
   skip_on_cran()
   x <- ee_observations(genus__exact = "Pinus")

@@ -1,3 +1,8 @@
+ecoengine 1.10
+=================
+* Fixed issues in `ee_observations` to allow more granular filtering on collections [DESCRIBE THIS ISSUE IN MORE DETAIL]
+* FIXED MAPS. STANDARDIZED TO REGULAR LEAFLET
+* 
 
 ecoengine 1.9.1
 =================

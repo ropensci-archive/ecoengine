@@ -112,7 +112,8 @@ ee_photos <- function(page = NULL,
     	if(progress) setTxtProgressBar(pb, i)
     }
     
-	photos_data <- do.call(rbind, results)
+
+	photos_data <- results
 	names(photos_data) <- gsub("observations.", "", names(photos_data))
 	photos_data$begin_date <- suppressWarnings(ymd(photos_data$begin_date))
 	photos_data$end_date <- suppressWarnings(ymd(photos_data$end_date))
