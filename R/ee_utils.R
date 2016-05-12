@@ -252,7 +252,9 @@ LinearizeNestedList <- function(NList, LinearizeDataFrames=FALSE,
                     names(Element) <- as.character(1:length(Element))
                 Element <- LinearizeNestedList(Element, LinearizeDataFrames,
                                                NameSep, ForceNames)
-                names(Element) <- paste(EName, names(Element), sep=NameSep)
+                if (length(Element)) {
+                  names(Element) <- paste(EName, names(Element), sep=NameSep)
+                }
                 Jump <- length(Element)
                 NList <- c(Before, Element, After)
             }
