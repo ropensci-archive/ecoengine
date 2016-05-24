@@ -1,8 +1,9 @@
 ecoengine 1.10
 =================
-* Fixed issues in `ee_observations` to allow more granular filtering on collections [DESCRIBE THIS ISSUE IN MORE DETAIL]
-* FIXED MAPS. STANDARDIZED TO REGULAR LEAFLET
-* 
+* Fixed issues in `ee_observations` to allow more granular filtering on collections
+* Changed default progress to FALSE
+* Fixed issues with zero length lists in LinearizeNestedList
+* Temporarily removed mapping functionality in this package. Please explore leaflet in the meantime.
 
 ecoengine 1.9.1
 =================
