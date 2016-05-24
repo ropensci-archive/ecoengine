@@ -3,27 +3,30 @@ Type: Package
 Title: Programmatic Interface to the API Serving UC Berkeley's Natural History
     Data
 Version: 1.9.2.99
-Date: 2015-03-25
+Date: 2016-05-24
 Authors@R: c(person("Karthik", "Ram", role = c("aut", "cre"), email =
     "karthik.ram@gmail.com"))
 Description: The ecoengine provides access to more than 5 million georeferenced
     specimen records from the University of California, Berkeley's Natural History
     Museums.
-License: CC0
+License: MIT + file LICENSE
 URL: https://github.com/ropensci/ecoengine
 BugReports: https://github.com/ropensci/ecoengine/issues
 LazyData: yes
 Depends:
     R (>= 3.1.1)
 Imports:
+    magrittr,
+    data.table,
     httr (>= 0.3),
     plyr,
     assertthat,
+    dplyr,
     whisker,
-    dplyr (>= 0.2),
+    RColorBrewer,
     jsonlite,
     lubridate,
-    leafletR (>= 0.1-1)
+    leaflet
 Suggests:
     testthat,
     knitr,
