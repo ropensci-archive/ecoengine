@@ -5,7 +5,6 @@
 #' Search across the entire ecoengine database.
 #' @param query search term
 #' @template foptions
-#' @importFrom dplyr rbind_all
 #' @export
 #' @keywords search
 #' @examples \dontrun{
@@ -15,7 +14,7 @@ ee_search <- function(query = NULL, foptions = list()) {
 
 # search_url <- "http://ecoengine.berkeley.edu/api/search/?format=json"
 search_url <- paste0(ee_base_url(), "search/?format=json")
-args <- as.list(compact(c(q = query)))
+args <- as.list(ee_compact(c(q = query)))
 result <- GET(search_url, query = args, foptions)
 es_results <- content(result, type = "application/json")
 fields <- es_results$fields
@@ -29,9 +28,9 @@ faceted_search_results <- lapply(fields_compacted, function(y) {
         names(temp_fields) <- c("field", "results", "search_url")
         temp_fields
 })
-do.call(rbind, faceted_search_results)
+# Leaving everything as a list so people can decide what they would lile.
+faceted_search_results
 }
-
 
 
 #'Search observations
