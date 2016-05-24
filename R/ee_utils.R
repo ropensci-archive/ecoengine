@@ -1,6 +1,6 @@
 #' @noRd
 ee_base_url <- function() {
-    "https://ecoengine.berkeley.edu/api/" 
+    "https://ecoengine.berkeley.edu/api/"
     # "https://54.215.216.86/" # This is the current URL
 }
 
@@ -42,9 +42,9 @@ ee_cbind <- function(results) {
 
 #' Print a summary for an ecoengine object
 #' @method print ecoengine
-#' @export  
+#' @export
 #' @param x An object of class \code{ecoengine}
-#'   
+#'
 #' @param ... additional arguments
 print.ecoengine <- function(x, ...) {
 cat(sprintf("[Total results on the server]: %s \n", x$results))
@@ -130,7 +130,7 @@ LinearizeNestedList <- function(NList, LinearizeDataFrames=FALSE,
     #         articles/r/linearize_nested_lists_in_r
     #
     # Akhil S Bhel
-    # 
+    #
     # Implements a recursive algorithm to linearize nested lists upto any
     # arbitrary level of nesting (limited by R's allowance for recursion-depth).
     # By linearization, it is meant to bring all list branches emanating from
@@ -281,3 +281,5 @@ pretty_lists <- function(x)
    }
    invisible(x)
 }
+
+
