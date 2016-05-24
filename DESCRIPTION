@@ -23,7 +23,6 @@ Imports:
     assertthat,
     dplyr,
     whisker,
-    RColorBrewer,
     jsonlite,
     lubridate
 Suggests:
