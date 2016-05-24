@@ -24,29 +24,29 @@
 #' @param  source  data source. See \code{\link{ee_sources}}
 #' @template dates
 #' @param  georeferenced Default is \code{FALSE}. Set to \code{TRUE} to return only georeferenced records.
-#' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}. Order is min Longitude , min Latitude , max Longitude , max Latitude. Use \code{http://boundingbox.klokantech.com/} this website to quickly grab a bounding box (set format to csv on lower right) 
+#' @param  bbox Set a bounding box for your search. Use format \code{bbox=-124,32,-114,42}. Order is min Longitude , min Latitude , max Longitude , max Latitude. Use \code{http://boundingbox.klokantech.com/} this website to quickly grab a bounding box (set format to csv on lower right)
 #' @param exclude Default is \code{NULL}. Pass a list of fields to exclude.
-#' @param extra Default is \code{NULL}. Pass a list of extra fields to be returned. Additional fields include: 
+#' @param extra Default is \code{NULL}. Pass a list of extra fields to be returned. Additional fields include:
 #' # "id", "record", "source", "remote_resource", "begin_date", "end_date",
-#' # "collection_code", "institution_code", "state_province", "county", 
+#' # "collection_code", "institution_code", "state_province", "county",
 #' # "last_modified", "original_id", "geometry", "coordinate_uncertainty_in_meters"
 #' # "md5", "scientific_name", "observation_type", "date_precision", "locality"
 #' # "earliest_period_or_lowest_system", "latest_period_or_highest_system", "kingdom"
-#' # "phylum", "clss", "order", "family", "genus", "specific_epithet", 
-#' # "infraspecific_epithet", "minimum_depth_in_meters", "maximum_depth_in_meters", 
+#' # "phylum", "clss", "order", "family", "genus", "specific_epithet",
+#' # "infraspecific_epithet", "minimum_depth_in_meters", "maximum_depth_in_meters",
 #' # "maximum_elevation_in_meters", "minimum_elevation_in_meters", "catalog_number"
-#' # "preparations", "sex", "life_stage", "water_body", "country", "individual_count", 
+#' # "preparations", "sex", "life_stage", "water_body", "country", "individual_count",
 #' "associated_resources"
 #' @param  quiet Default is \code{FALSE}. Set to \code{TRUE} to supress messages.
 #' @template foptions
 #' @template progress
 #' @export
 #' @return \code{data.frame}
-#' @importFrom httr content GET 
+#' @importFrom httr content GET
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#' @importFrom plyr compact
+#' @importFrom plyr compact rbind.fill
 #' @importFrom lubridate ymd
-#' @examples 
+#' @examples
 #' # vulpes <- ee_observations(genus = "vulpes")
 #' \dontrun{
 #' # pinus <- ee_observations(scientific_name = "Pinus", page_size = 100)
@@ -72,7 +72,7 @@
 #' # aves <- ee_observations(clss = "aves", bbox = '-124,32,-114,42')
 #' # aves <- ee_observations(clss = "aves", county = "Alameda county")
 #'}
-ee_observations <- function(page = NULL, page_size = 1000, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom__exact = NULL ,phylum__exact = NULL, order__exact = NULL, clss__exact = NULL, family__exact = NULL, genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, exclude = NULL, extra = NULL, quiet = FALSE, progress = TRUE, foptions = list()) {
+ee_observations <- function(page = NULL, page_size = 1000, country = "United States", state_province = NULL, county = NULL, kingdom  = NULL, phylum = NULL, order  = NULL, clss = NULL, family = NULL, genus = NULL, scientific_name = NULL, kingdom__exact = NULL ,phylum__exact = NULL, order__exact = NULL, clss__exact = NULL, family__exact = NULL, genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL, collection_code = NULL, source  = NULL, min_date = NULL, max_date = NULL, georeferenced = FALSE, bbox = NULL, exclude = NULL, extra = NULL, quiet = FALSE, progress = FALSE, foptions = list()) {
  # obs_url <- "http://ecoengine.berkeley.edu/api/observations/?format=json"
  obs_url <- paste0(ee_base_url(), "observations/?format=geojson")
 
@@ -97,7 +97,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
 
     results <- list()
     for(i in required_pages) {
-        args$page <- i 
+        args$page <- i
         data_sources <- GET(obs_url, query = args, foptions)
         obs_data <- content(data_sources, type = "application/json")
         obs_results <- lapply(obs_data$features, LinearizeNestedList)
@@ -131,6 +131,7 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
     obs_data_all$longitude <- suppressWarnings(as.numeric(as.character(obs_data_all$longitude)))
     obs_data_all$begin_date <- suppressWarnings(ymd(as.character(obs_data_all$begin_date)))
     obs_data_all$end_date <- suppressWarnings(ymd(as.character(obs_data_all$end_date)))
+    obs_data_all <- dplyr::as_data_frame(obs_data_all)
 
 observation_results <- list(results = obs_data$count, call = main_args, type = "FeatureCollection", data = obs_data_all)
 
