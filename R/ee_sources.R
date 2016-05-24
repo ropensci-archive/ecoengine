@@ -14,7 +14,6 @@ ee_sources <- function(foptions = list()) {
     data_sources <- GET(base_url, foptions)
     warn_for_status(data_sources)
     ds <- content(data_sources, type = "application/json")
-    # sources <- rbind_all(ds$results)
     # Fix to remove ldply
     sources <- ldply(ds$results, function(x) data.frame(x))
     sources$retrieved <- ymd_hms(sources$retrieved)
