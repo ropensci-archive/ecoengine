@@ -1,13 +1,14 @@
 #' Browse photo queries in your default browser.
-#' 
+#'
 #' @import whisker
 #' @importFrom assertthat assert_that
+#' @importFrom utils  browseURL
 #' @param input Input, usually output from a call to \code{\link[ecoengine]{ee_photos}}
 #' @param output Path and file name for output file. If NULL, a temp file is used.
 #' @param browse Browse file in your default browse immediately after file creation.
 #'    If \code{FALSE}, the file is written, but not opened.
 #' @export
-#' @examples 
+#' @examples
 #' # view_photos(ee_photos())
 #' # Pictures of racoons
 #' # view_photos(ee_photos(scientific_name = "Procyon lotor", quiet = TRUE))
@@ -83,7 +84,7 @@ assert_that(identical(input$type, "photos"))
 
       </body>
       </html>'
-        
+
   rendered <- whisker.render(template)
   rendered <- gsub("&lt;em&gt;", "<b>", rendered)
   rendered <- gsub("&lt;/em&gt;", "</b>", rendered)
