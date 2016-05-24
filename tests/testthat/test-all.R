@@ -15,11 +15,11 @@ test_that("Metadata is returned as expected", {
 	 expect_is(ee_about(type = "meta-data", as.df = FALSE), "list")
 	 expect_is(ee_about(type = "actions", as.df = FALSE), "list")
 	 expect_is(ee_sources(), "data.frame")
-	 expect_true(ncol(ee_sources()) == 6)
+	 expect_true(ncol(ee_sources()) == 5)
 	# expect_is(ee_footprints(), "data.frame")
 	 aves1 <- ee_observations(clss = "aves", county = "Alameda county", georeferenced = TRUE)
 	 aves2 <- ee_observations(clss = "aves",  georeferenced = TRUE)
-	 expect_more_than(aves2$results, aves1$results)
+	 expect_gt(aves2$results, aves1$results)
 
 })
 
@@ -34,7 +34,7 @@ test_that("Photos function returns results as expected", {
 	all_cdfa <- ee_photos(collection_code = "CDFA", page = "all")
 	expect_equal(nrow(all_cdfa$data), 54)
 	some_cdfa <- ee_photos(collection_code = "CDFA", page_size = 10)
-	expect_more_than(nrow(all_cdfa$data), nrow(some_cdfa$data))
+	expect_gt(nrow(all_cdfa$data), nrow(some_cdfa$data))
 })
 
 
@@ -56,7 +56,7 @@ test_that("Observations are correctly retrieved", {
   difference <- x$results - x_geo$results
   expect_true(difference > 0)
   aves <- ee_observations(clss = "aves", extra = "kingdom,genus")
-  expect_match(sort(unique(aves$data$genus))[1], "aechmophorus")
+  expect_match(sort(unique(aves$data$genus))[1], "accipiter")
   expect_error(ee_observations(scientific_name = "linepithema humile", page_size = 1))
 })
 
@@ -90,19 +90,19 @@ context("Testing search")
 test_that("Elastic search works correctly", {
   skip_on_cran()
 	x <- ee_search(query = "genus:Lynx")
-	expect_is(x, "data.frame")
+	expect_is(x, "list")
 	all_lynx_data <- ee_search_obs(query  = "Lynx")
 	expect_is(all_lynx_data$data, "data.frame")
 	expect_is(all_lynx_data, "ecoengine")
 })
 
-context("Maps are working correctly")
+# context("Maps are working correctly")
+#
+# test_that("Maps are ok", {
+#     skip_on_cran()
+# lynx_data <- ee_observations(genus = "lynx", progress = FALSE, page = 1, georeferenced = TRUE)
+# expect_error(ee_map(lynx_data$data))
 
-test_that("Maps are ok", {
-    skip_on_cran()
-lynx_data <- ee_observations(genus = "lynx", progress = FALSE, page = 1, georeferenced = TRUE)
-expect_error(ee_map(lynx_data$data))
-
-})
+# })
 
 
