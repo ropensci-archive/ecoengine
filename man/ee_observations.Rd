@@ -69,16 +69,16 @@ ee_observations(page = NULL, page_size = 1000, country = "United States",
 
 \item{exclude}{Default is \code{NULL}. Pass a list of fields to exclude.}
 
-\item{extra}{Default is \code{NULL}. Pass a list of extra fields to be returned. Additional fields include: 
+\item{extra}{Default is \code{NULL}. Pass a list of extra fields to be returned. Additional fields include:
 # "id", "record", "source", "remote_resource", "begin_date", "end_date",
-# "collection_code", "institution_code", "state_province", "county", 
+# "collection_code", "institution_code", "state_province", "county",
 # "last_modified", "original_id", "geometry", "coordinate_uncertainty_in_meters"
 # "md5", "scientific_name", "observation_type", "date_precision", "locality"
 # "earliest_period_or_lowest_system", "latest_period_or_highest_system", "kingdom"
-# "phylum", "clss", "order", "family", "genus", "specific_epithet", 
-# "infraspecific_epithet", "minimum_depth_in_meters", "maximum_depth_in_meters", 
+# "phylum", "clss", "order", "family", "genus", "specific_epithet",
+# "infraspecific_epithet", "minimum_depth_in_meters", "maximum_depth_in_meters",
 # "maximum_elevation_in_meters", "minimum_elevation_in_meters", "catalog_number"
-# "preparations", "sex", "life_stage", "water_body", "country", "individual_count", 
+# "preparations", "sex", "life_stage", "water_body", "country", "individual_count",
 "associated_resources"}
 
 \item{quiet}{Default is \code{FALSE}. Set to \code{TRUE} to supress messages.}

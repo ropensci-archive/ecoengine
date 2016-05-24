@@ -21,7 +21,7 @@ Will return details on any checklist
 \dontrun{
 spiders  <- ee_checklists(subject = "Spiders")
 # Now retrieve all the details for each species on both lists
-library(plyr) 
+library(plyr)
 spider_details <- ldply(spiders$url, checklist_details)
 }
 }

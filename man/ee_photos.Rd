@@ -54,7 +54,7 @@ ee_photos(page = NULL, state_province = NULL, county = NULL,
 Search the photos methods in the ecoengine API.
 }
 \examples{
-# Request all photos. This request will paginate. 
+# Request all photos. This request will paginate.
 # merced <- ee_photos(county = "Merced County")
  ee_photos(page_size = 10)
 # Search by collection code. See notes above on options
@@ -76,7 +76,7 @@ data(california_counties)
 # Or by author
 # charles_results <- ee_photos(author = "Charles Webber", page = 1:2)
 # You can also request all pages in a single call by using ee_photos()
-# In this example below, there are 6 pages of results (52 result items). 
+# In this example below, there are 6 pages of results (52 result items).
 # Function will return all at once.
 # racoons <- ee_photos(scientific_name = "Procyon lotor", page = "all")
 }
