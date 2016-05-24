@@ -12,7 +12,7 @@ ee_observations(page = NULL, page_size = 1000, country = "United States",
   genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL,
   collection_code = NULL, source = NULL, min_date = NULL,
   max_date = NULL, georeferenced = FALSE, bbox = NULL, exclude = NULL,
-  extra = NULL, quiet = FALSE, progress = TRUE, foptions = list())
+  extra = NULL, quiet = FALSE, progress = FALSE, foptions = list())
 }
 \arguments{
 \item{page}{Page number}
