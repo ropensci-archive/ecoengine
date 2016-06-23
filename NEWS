@@ -1,3 +1,8 @@
+NEXT RELEASE
+===============
+* Added explicit vignette
+* 
+
 ecoengine 1.10
 =================
 * Fixed issues in `ee_observations` to allow more granular filtering on collections
