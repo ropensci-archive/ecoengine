@@ -1,10 +1,12 @@
 language: r
-
 r_github_packages:
-  - jimhester/covr
-
+- jimhester/covr
+before_script:
+- chmod +x ./vignettes.sh
 after_success:
-  - Rscript -e 'library(covr);coveralls()'
-
+- bash vignettes.sh
 env:
+  matrix:
   - warnings_are_errors: true
+  global:
+    secure: OLIwZC47fPg/OEXG+NyI1EEaUSuFDAQ1SDJ7Hyl0u1AvRvYlkFttcUoUVpR9tepRZ4JYg0rqcwXCsMRpaJEfZCJGa9Viyj7SlRAdSyh71VFJKAHsFPJrMnusunSJ9ajlUG2xHLg1/vHMqqdwN+BSk+7uJsSqLRXQLV4syCF7m2g=

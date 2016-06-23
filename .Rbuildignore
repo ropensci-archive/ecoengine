@@ -10,3 +10,4 @@ Makefile
 appveyor.yml
 cran-comments.md
 .coveralls.yml
+vignettes.sh
