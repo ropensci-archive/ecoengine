@@ -15,7 +15,6 @@ vignette: >
 knitr::opts_chunk$set(
   comment = "#> ",
   error = FALSE,
-  cache = TRUE,
   warning = FALSE, 
   tidy = TRUE
 )
@@ -80,7 +79,7 @@ pinus_observations
 
 For additional fields upon which to query, simply look through the help for `?ee_observations`. In addition to narrowing data by taxonomic group, it's also possible to add a bounding box (add argument `bbox`) or request only data that have been georeferenced (set `georeferenced = TRUE`). 
 
-```{r, lynx_data, cache = TRUE}
+```{r, lynx_data, }
 lynx_data <- ee_observations(genus = "Lynx",georeferenced = TRUE, quiet = TRUE, progress = FALSE)
 lynx_data
 # Notice that we only for the first 1000 rows.
@@ -197,7 +196,7 @@ head(all_lists[, c("footprint", "subject")])
 ```  
 Currently there are `r nrow(all_lists)` lists available. We can drill deeper into any list to get all the available data. We can also narrow our checklist search to groups of interest (see `unique(all_lists$subject)`). For example, to get the list of Spiders:
 
-```{r, checklist_spiders, cache = TRUE}
+```{r, checklist_spiders, }
 spiders  <- ee_checklists(subject = "Spiders")
 spiders
 ```  
