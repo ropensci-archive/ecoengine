@@ -18,4 +18,3 @@ List of ecoengine footprints.
 \examples{
 # footprints <- ee_footprints()
 }
-

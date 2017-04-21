@@ -27,4 +27,3 @@ ee_about(as.df = FALSE)
 # ee_about(type = "meta-data")
 # ee_about(type = "actions")
 }
-

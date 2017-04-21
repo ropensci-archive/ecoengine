@@ -37,4 +37,3 @@ A powerful way to search through the observations.
 \code{\link{ee_search})}
 }
 \keyword{search}
-

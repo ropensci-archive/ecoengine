@@ -24,4 +24,3 @@ Browse photo queries in your default browser.
 # or the California Condor
 # view_photos(ee_photos(scientific_name = "Gymnogyps californianus", quiet = TRUE))
 }
-

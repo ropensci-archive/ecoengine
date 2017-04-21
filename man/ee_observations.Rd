@@ -119,4 +119,3 @@ API endpoint that represents a list of observations.
 # aves <- ee_observations(clss = "aves", county = "Alameda county")
 }
 }
-

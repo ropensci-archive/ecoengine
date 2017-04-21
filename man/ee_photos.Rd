@@ -83,4 +83,3 @@ data(california_counties)
 \seealso{
 related: \code{\link{ee_photos}} \code{\link{california_counties}}
 }
-

@@ -22,4 +22,3 @@ Retrieves exisitng checklists from the ecoengine database
 # mammals_list  <- ee_checklists(subject = "Mammals")
 # spiders  <- ee_checklists(subject = "Spiders")
 }
-

@@ -18,4 +18,3 @@ Returns a full list of data sources supported by the ecoengine
 \examples{
 # source_list <- ee_sources()
 }
-

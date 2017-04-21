@@ -12,4 +12,3 @@ data(full_sensor_list)
 A data.frame containing all the sensors currently available through the engine. This list can be updated anytime by calling the ee_sensors() function.
 }
 \keyword{datasets}
-

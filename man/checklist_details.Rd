@@ -28,4 +28,3 @@ spider_details <- ldply(spiders$url, checklist_details)
 \seealso{
 \code{\link{ee_checklists}}
 }
-

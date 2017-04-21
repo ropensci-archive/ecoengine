@@ -19,4 +19,3 @@ x2 <- ee_observations(genus = "Lynx", page = 2)
 x12 <- ee_cbind(list(x1, x2))
 }
 }
-

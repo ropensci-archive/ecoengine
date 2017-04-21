@@ -20,4 +20,3 @@ Search across the entire ecoengine database.
 }
 }
 \keyword{search}
-

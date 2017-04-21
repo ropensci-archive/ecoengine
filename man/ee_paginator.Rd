@@ -26,4 +26,3 @@ ee_paginator(1:4, 3800)
 ee_paginator(1:5, 10000)
 }
 }
-

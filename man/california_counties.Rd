@@ -12,4 +12,3 @@ data(california_counties)
 A data.frame containing list of California counties. Useful for most functions since the data is primarily state based.
 }
 \keyword{datasets}
-

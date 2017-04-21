@@ -14,4 +14,3 @@
 \description{
 Print a summary for an ecoengine object
 }
-
