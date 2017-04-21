@@ -7,3 +7,4 @@ inst/Makefile
 TODO
 /inst/cache/
 inst/doc
+.Rproj.user
