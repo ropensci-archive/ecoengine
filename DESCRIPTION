@@ -2,7 +2,7 @@ Package: ecoengine
 Type: Package
 Title: Programmatic Interface to the API Serving UC Berkeley's Natural History
     Data
-Version: 1.10.99
+Version: 1.11
 Authors@R: c(person("Karthik", "Ram", role = c("aut", "cre"), email =
     "karthik.ram@gmail.com"))
 Description: The ecoengine provides access to more than 5 million georeferenced

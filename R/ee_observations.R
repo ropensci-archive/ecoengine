@@ -129,8 +129,8 @@ if(progress) pb <- txtProgressBar(min = 0, max = length(required_pages), style =
 
     obs_data_all$latitude <- suppressWarnings(as.numeric(as.character(obs_data_all$latitude)))
     obs_data_all$longitude <- suppressWarnings(as.numeric(as.character(obs_data_all$longitude)))
-    obs_data_all$begin_date <- suppressWarnings(lubridate:::ymd_hms(as.character(obs_data_all$begin_date)))
-    obs_data_all$end_date <- suppressWarnings(lubridate:::ymd_hms(as.character(obs_data_all$end_date)))
+    obs_data_all$begin_date <- suppressWarnings(lubridate::ymd_hms(as.character(obs_data_all$begin_date)))
+    obs_data_all$end_date <- suppressWarnings(lubridate::ymd_hms(as.character(obs_data_all$end_date)))
     obs_data_all <- dplyr::as_data_frame(obs_data_all)
 
 observation_results <- list(results = obs_data$count, call = main_args, type = "FeatureCollection", data = obs_data_all)
