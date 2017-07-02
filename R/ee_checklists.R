@@ -3,7 +3,7 @@
 
 #' Ecoengine checklists
 #'
-#' Retrieves exisitng checklists from the ecoengine database
+#' Retrieves existing checklists from the ecoengine database
 #' @param  subject Enter one of the following subjects: Mammals, Mosses, Beetles, Spiders, Amphibians, Ants, Fungi, Lichen, Plants.
 #' @template foptions
 #' @export

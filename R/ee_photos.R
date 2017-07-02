@@ -5,7 +5,7 @@
 #' @param  state_province Need to describe these parameters
 #' @param  county California counties. Package include a full list of counties. To load dataset \code{data(california_counties)}
 #' @param  genus genus name
-#' @param  scientific_name scientiifc name
+#' @param  scientific_name scientific name
 #' @param  authors author name
 #' @param  remote_id remote id
 #' @param  collection_code Type of collection. Can be \code{CalAcademy}, \code{Private}, \code{VTM}, \code{CDFA}. \code{CalFlora} Others TBA
