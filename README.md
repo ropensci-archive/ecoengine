@@ -1,9 +1,9 @@
+# ecoengine
 
-Linux: ![travis shield](https://travis-ci.org/ropensci/ecoengine.png?branch=master)   
-Windows: [![Build status](https://ci.appveyor.com/api/projects/status/0unlb6h2lc3t5h60)](https://ci.appveyor.com/project/karthik/ecoengine)  
-[![Coverage Status](https://coveralls.io/repos/ropensci/ecoengine/badge.svg)](https://coveralls.io/r/ropensci/ecoengine)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+![CRAN/GitHub 1.10.0_/1.10.99](https://img.shields.io/badge/CRAN/GitHub-1.10.0_/0.1.9999-blue.svg)
 
-# R interface to the Berkeley Ecoinformatics Engine
+## R interface to the Berkeley Ecoinformatics Engine
 
 
 **Providing access to UC Berkeley's Natural History Data**
@@ -14,7 +14,16 @@ This package provides a R wrapper for the newly available [ecoinformatics engine
 * Georeferenced data from the Wieslander project
 * Data on > 2 million georeferenced Berkley museum specimens.
 
-## Installing the package
+## Package Status and Installation
+
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ropensci/ecoengine?branch=master&svg=true)](https://ci.appveyor.com/project/ropensci/ecoengine)
+[![Travis-CI Build Status](https://travis-ci.org/ropensci/ecoengine.svg?branch=master)](https://travis-ci.org/)
+ [![codecov](https://codecov.io/gh/ropensci/ecoengine/branch/master/graph/badge.svg)](https://codecov.io/gh/ropensci/ecoengine)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/ecoengine?color=blue)](https://github.com/metacran/cranlogs.app)
+
+__Installation instructions__
+
+__Stable Version__
 
 A stable version can be installed from the central CRAN repository
 
@@ -22,7 +31,7 @@ A stable version can be installed from the central CRAN repository
 install.packages("ecoengine", dependencies = TRUE)
 ```
 
-
+__Development Version__
 Install the package with `devtools` to obtain the latest development version.
 
 ```coffee
@@ -34,7 +43,8 @@ library(devtools)
 install_github('ropensci/ecoengine')
 ```
 
-## Documentation
+## Usage 
+### Documentation
 
 A quick start guide is available both as [markdown](https://github.com/ropensci/ecoengine/blob/master/inst/Using_ecoengine.md) and a [nicely formatted PDF](https://github.com/ropensci/ecoengine/blob/master/inst/Using_ecoengine.pdf?raw=true) or you can go through a [set of slides](http://karthik.github.io/eeguide) from a recent talk.
 
@@ -77,4 +87,11 @@ This package is part of a richer suite called [SPOCC Species Occurrence Data](ht
 
 ---
 
-[![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md).
+By participating in this project you agree to abide by its terms.
+
+
+
+[![ropensci_footer](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)
