@@ -1,0 +1,13 @@
+base
+devtools
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+ecoengine
+pander
+plyr
+httr
