@@ -1,0 +1,15 @@
+base
+devtools
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+rmarkdown
+ecoengine
+pander
+plyr
+httr
+lubridate
