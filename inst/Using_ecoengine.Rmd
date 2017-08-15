@@ -273,5 +273,5 @@ x <- content(GET("http://ipinfo.io/"), as = "parsed")
 ```
 
  Karthik Ram  
- `r library(lubridate); as.character(month(now(), label = TRUE))`, `r library(lubridate); year(now())`   
+ `r library(lubridate); as.character(lubridate::month(lubridate::now(), label = TRUE))`, `r lubridate::year(lubridate::now())`   
  _`r x$city`, `r x$region`_
