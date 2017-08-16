@@ -1,6 +1,7 @@
 Package: ecoengine
 Type: Package
-Title: Programmatic Interface to the API Serving UC Berkeley's Natural History
+Title: Programmatic Interface to the Web Service methods provided by  UC Berkeley's Natural History ('ecoengine';
+    <https://ecoengine.berkeley.edu/>).
     Data
 Version: 1.11.0
 Authors@R: c(person("Karthik", "Ram", role = c("aut", "cre"), email =
