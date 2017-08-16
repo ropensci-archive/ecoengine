@@ -1,12 +1,12 @@
 Package: ecoengine
 Type: Package
-Title: Programmatic Interface to the Web Service methods provided by  UC Berkeley's Natural History ('ecoengine';
-    <https://ecoengine.berkeley.edu/>).
+Title: Programmatic Interface to the Web Service methods provided by UC Berkeley's Natural History 
     Data
 Version: 1.11.0
 Authors@R: c(person("Karthik", "Ram", role = c("aut", "cre"), email =
     "karthik.ram@gmail.com"))
-Description: The ecoengine provides access to more than 5 million georeferenced
+Description: The ecoengine ('ecoengine';
+    <https://ecoengine.berkeley.edu/>). provides access to more than 5 million georeferenced
     specimen records from the University of California, Berkeley's Natural History
     Museums.
 License: MIT + file LICENSE
