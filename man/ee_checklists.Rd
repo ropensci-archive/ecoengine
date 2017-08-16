@@ -15,7 +15,7 @@ ee_checklists(subject = NULL, foptions = list())
 data.frame
 }
 \description{
-Retrieves exisitng checklists from the ecoengine database
+Retrieves existing checklists from the ecoengine database
 }
 \examples{
 # all_lists  <- ee_checklists()

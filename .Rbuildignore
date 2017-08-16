@@ -13,3 +13,6 @@ cran-comments.md
 vignettes.sh
 ^.*\.Rproj$
 ^\.Rproj\.user$
+CONDUCT.md
+.Rhistory
+inst/Using_ecoengine_cache

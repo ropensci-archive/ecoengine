@@ -81,7 +81,7 @@ ee_observations(page = NULL, page_size = 1000, country = "United States",
 # "preparations", "sex", "life_stage", "water_body", "country", "individual_count",
 "associated_resources"}
 
-\item{quiet}{Default is \code{FALSE}. Set to \code{TRUE} to supress messages.}
+\item{quiet}{Default is \code{FALSE}. Set to \code{TRUE} to suppress messages.}
 
 \item{progress}{Progress bar is set to \code{TRUE} by default. Use \code{FALSE} especially when calling functions inside documents.}
 
