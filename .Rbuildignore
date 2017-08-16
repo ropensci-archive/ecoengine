@@ -16,3 +16,4 @@ vignettes.sh
 CONDUCT.md
 .Rhistory
 inst/Using_ecoengine_cache
+.github/*
