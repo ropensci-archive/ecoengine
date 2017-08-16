@@ -31,4 +31,3 @@ Suggests:
     ggplot2,
     rmarkdown
 RoxygenNote: 6.0.1
-VignetteBuilder: knitr

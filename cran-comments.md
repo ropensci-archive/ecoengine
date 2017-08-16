@@ -1,3 +1,7 @@
-Kurt writes: Package has a VignetteBuilder field but no prebuilt vignette index.
+> Package has a VignetteBuilder field but no prebuilt vignette index.
 
-The prebuilt vignettes were accidentally removed during testing but have now been restored.
+I have removed the VignetteBuilder field.
+
+> Please also add web reference to the API you are using in the Description field in the form <http.......>.
+
+Added.
