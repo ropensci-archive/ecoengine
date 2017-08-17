@@ -1,4 +1,4 @@
-NEXT RELEASE
+ecoengine 1.11
 ===============
 * Added explicit vignette
 * Fixed issues with lubridate and replaced rbind_fill with bind_rows
