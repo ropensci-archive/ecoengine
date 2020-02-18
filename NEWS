@@ -1,3 +1,8 @@
+ecoengine 1.12
+===============
+* Updated warnings. Now complies with "Internet resources should fail gracefully with an informative message if the resource is not available". 
+
+
 ecoengine 1.11
 ===============
 * Added explicit vignette
