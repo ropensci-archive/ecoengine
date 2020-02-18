@@ -19,7 +19,7 @@ ee_checklists <- function(subject = NULL,
                           foptions = list()) {
   base_url <- paste0(ee_base_url(), "checklists/?format=json")
   full_checklist <- GET(base_url, foptions)
-  warn_for_status(full_checklist)
+  warn_for_status(full_checklist, "Web resource is currently unavailable. Please try again later")
   checklist_data <-
     content(full_checklist, type = "application/json")
   args <- as.list(ee_compact(c(page_size = checklist_data$count)))

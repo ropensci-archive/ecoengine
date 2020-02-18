@@ -85,7 +85,7 @@ main_args <- args
 main_args$page <- as.character(page)
 data_sources <- GET(obs_url, query = args, foptions)
 assert_that(data_sources$status_code < 400)
-warn_for_status(data_sources)
+warn_for_status(data_sources, "Web resource is currently unavailable. Please try again later")
 obs_data <- content(data_sources, type = "application/json")
 assert_that(obs_data$count > 0)
 required_pages <- ee_paginator(page, obs_data$count, page_size = page_size)

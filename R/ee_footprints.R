@@ -14,7 +14,7 @@ ee_footprints <- function(foptions = list()) {
 	footprints_url <- paste0(ee_base_url(), "footprints/?format=json")
 
 	footprints <- GET(footprints_url, foptions)
-	 warn_for_status(footprints)
+	 warn_for_status(footprints, "Web resource is currently unavailable. Please try again later")
 	 res <- content(footprints)
 	 results <- do.call(rbind, res$results)
 	 res <- ldply(res$results, function(x) { data.frame(t(unlist(x[-4])))  })

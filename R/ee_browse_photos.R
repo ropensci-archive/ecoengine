@@ -1,6 +1,6 @@
 #' Browse photo queries in your default browser.
 #'
-#' @import whisker
+#' @import glue
 #' @importFrom assertthat assert_that
 #' @importFrom utils  browseURL
 #' @param input Input, usually output from a call to \code{\link[ecoengine]{ee_photos}}
@@ -20,6 +20,7 @@ view_photos <- function(input = NULL, output = NULL, browse = TRUE)
   if(is.null(input))
     stop("Please supply some input")
 
+  browser()
 assert_that(identical(input$type, "photos"))
  photo_list <- apply(input$data, 1, function(x) as.list(x))
  photo_list <- unname(photo_list)
@@ -37,16 +38,6 @@ assert_that(identical(input$type, "photos"))
               <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.css" rel="stylesheet">
               <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-responsive.css" rel="stylesheet">
               <script src="http://use.edgefonts.net/quattrocento-sans.js"></script>
-              <style>
-              body {
-                margin: 0;
-                font-family: quattrocento-sans, Helvetica, Arial, sans-serif;
-                font-size: 16px;
-                line-height: 20px;
-                color: #333333;
-                background-color: #ffffff;
-              }
-              </style>
       </head>
 
       <body>
@@ -68,13 +59,13 @@ assert_that(identical(input$type, "photos"))
               <tbody>
         {{#photo_list}}
           <tr><td>
-          <a href="{{remote_resource}}"><img src="{{media_url}}" height = 250></a></td>
-          <td>{{authors}}</td>
-          <td>{{locality}}, {{county}}</td>
-          <td>{{photog_notes}}</td>
-          <td>{{begin_date}}</td>
+          <a href="{remote_resource}"><img src="{media_url}" height = 250></a></td>
+          <td>{authors}</td>
+          <td>{locality}, {county}</td>
+          <td>{photog_notes}</td>
+          <td>{begin_date}</td>
           </tr>
-        {{/photo_list}}
+        {/photo_list}
         </tbody>
       </table>
       </div>
@@ -85,11 +76,11 @@ assert_that(identical(input$type, "photos"))
       </body>
       </html>'
 
-  rendered <- whisker.render(template)
+  rendered <- glue::glue(template)
   rendered <- gsub("&lt;em&gt;", "<b>", rendered)
   rendered <- gsub("&lt;/em&gt;", "</b>", rendered)
   if(is.null(output))
-    output <- tempfile(fileext=".html")
+    output <- tempfile(fileext = ".html")
   write(rendered, file = output)
   if(browse) browseURL(output)
 }

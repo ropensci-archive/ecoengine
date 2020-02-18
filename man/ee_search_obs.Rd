@@ -4,8 +4,14 @@
 \alias{ee_search_obs}
 \title{Search observations}
 \usage{
-ee_search_obs(query = NULL, page = NULL, page_size = 1000,
-  quiet = FALSE, progress = TRUE, foptions = list())
+ee_search_obs(
+  query = NULL,
+  page = NULL,
+  page_size = 1000,
+  quiet = FALSE,
+  progress = TRUE,
+  foptions = list()
+)
 }
 \arguments{
 \item{query}{= The search term}

@@ -4,12 +4,27 @@
 \alias{ee_photos}
 \title{ee_photos}
 \usage{
-ee_photos(page = NULL, state_province = NULL, county = NULL,
-  genus = NULL, scientific_name = NULL, authors = NULL,
-  remote_id = NULL, collection_code = NULL, source = NULL,
-  min_date = NULL, max_date = NULL, related_type = NULL, related = NULL,
-  page_size = 1000, quiet = FALSE, georeferenced = FALSE,
-  progress = FALSE, other_catalog_numbers = NULL, foptions = list())
+ee_photos(
+  page = NULL,
+  state_province = NULL,
+  county = NULL,
+  genus = NULL,
+  scientific_name = NULL,
+  authors = NULL,
+  remote_id = NULL,
+  collection_code = NULL,
+  source = NULL,
+  min_date = NULL,
+  max_date = NULL,
+  related_type = NULL,
+  related = NULL,
+  page_size = 1000,
+  quiet = FALSE,
+  georeferenced = FALSE,
+  progress = FALSE,
+  other_catalog_numbers = NULL,
+  foptions = list()
+)
 }
 \arguments{
 \item{page}{Page number}

@@ -18,7 +18,8 @@ ee_about(as.df = TRUE, type = NA)
 Function returns the current status of fast-evolving API. Returns endpoints and category. Default return is a \code{list} but one can also request a nicely formatted \code{data.frame} by setting the \code{as.df} argument to \code{TRUE}.
 }
 \examples{
- 
+  
+\dontrun{
 ee_about()
 # set as.df = FALSE to return a list rather than a data.frame
 ee_about(as.df = FALSE)
@@ -26,4 +27,5 @@ ee_about(as.df = FALSE)
 # ee_about(type = "data")
 # ee_about(type = "meta-data")
 # ee_about(type = "actions")
+}
 }

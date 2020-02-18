@@ -1,7 +1,7 @@
 Package: ecoengine
 Type: Package
 Title: Programmatic Interface to the Web Service Methods Provided by UC Berkeley's Natural History Data
-Version: 1.11.0
+Version: 1.12.0
 Authors@R: c(person("Karthik", "Ram", role = c("aut", "cre"), email =
     "karthik.ram@gmail.com"))
 Description: The ecoengine ('ecoengine';
@@ -11,22 +11,24 @@ Description: The ecoengine ('ecoengine';
 License: MIT + file LICENSE
 URL: https://github.com/ropensci/ecoengine
 BugReports: https://github.com/ropensci/ecoengine/issues
+Encoding: UTF-8
 LazyData: yes
 Depends:
     R (>= 3.1.1)
 Imports:
-    magrittr,
-    data.table,
-    httr (>= 0.3),
-    plyr,
     assertthat,
-    dplyr,
-    whisker,
+    data.table,
+    dplyr, 
+    glue,
+    httr (>= 0.3),
     jsonlite,
-    lubridate
+    lubridate,
+    magrittr,
+    plyr,
+    whisker
 Suggests:
     testthat,
     knitr,
     ggplot2,
     rmarkdown
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2

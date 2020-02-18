@@ -8,7 +8,8 @@
 #' @importFrom httr GET content warn_for_status
 #' @importFrom plyr ldply
 #' @importFrom jsonlite fromJSON
-#' @examples  
+#' @examples   
+#' \dontrun{
 #' ee_about()
 #' # set as.df = FALSE to return a list rather than a data.frame
 #' ee_about(as.df = FALSE)
@@ -16,10 +17,11 @@
 #' # ee_about(type = "data")
 #' # ee_about(type = "meta-data")
 #' # ee_about(type = "actions")
+#' }
 ee_about <- function(as.df = TRUE, type = NA) {
 about_url <- paste0(ee_base_url(), "?format=json")
 about_call <- GET(about_url)
-warn_for_status(about_call)
+warn_for_status(about_call, "Web resource is currently unavailable. Please try again later")
 about <- content(about_call)
 if(!as.df) {
     return(about)

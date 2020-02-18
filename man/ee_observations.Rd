@@ -4,15 +4,39 @@
 \alias{ee_observations}
 \title{Observations List}
 \usage{
-ee_observations(page = NULL, page_size = 1000, country = "United States",
-  state_province = NULL, county = NULL, kingdom = NULL, phylum = NULL,
-  order = NULL, clss = NULL, family = NULL, genus = NULL,
-  scientific_name = NULL, kingdom__exact = NULL, phylum__exact = NULL,
-  order__exact = NULL, clss__exact = NULL, family__exact = NULL,
-  genus__exact = NULL, scientific_name__exact = NULL, remote_id = NULL,
-  collection_code = NULL, source = NULL, min_date = NULL,
-  max_date = NULL, georeferenced = FALSE, bbox = NULL, exclude = NULL,
-  extra = NULL, quiet = FALSE, progress = FALSE, foptions = list())
+ee_observations(
+  page = NULL,
+  page_size = 1000,
+  country = "United States",
+  state_province = NULL,
+  county = NULL,
+  kingdom = NULL,
+  phylum = NULL,
+  order = NULL,
+  clss = NULL,
+  family = NULL,
+  genus = NULL,
+  scientific_name = NULL,
+  kingdom__exact = NULL,
+  phylum__exact = NULL,
+  order__exact = NULL,
+  clss__exact = NULL,
+  family__exact = NULL,
+  genus__exact = NULL,
+  scientific_name__exact = NULL,
+  remote_id = NULL,
+  collection_code = NULL,
+  source = NULL,
+  min_date = NULL,
+  max_date = NULL,
+  georeferenced = FALSE,
+  bbox = NULL,
+  exclude = NULL,
+  extra = NULL,
+  quiet = FALSE,
+  progress = FALSE,
+  foptions = list()
+)
 }
 \arguments{
 \item{page}{Page number}

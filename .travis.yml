@@ -1,4 +1,6 @@
 language: r
+r_check_args: '--run-donttest'
+
 r_github_packages:
 - jimhester/covr
 
