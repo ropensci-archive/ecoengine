@@ -1,7 +1,24 @@
-> Thanks, please write the title in title case:
-Programmatic Interface to the Web Service Methods Provided by UC Berkeley's Natural History Data
+Brian Ripley writes:
 
-> Most of your examples are commented out or wrapped in \dontrun{} and hence not tested. Please provide small examples which can be executed in < 5 sec for each Rd file or create additionally small toy examples. 
-> 
+You have
 
-Every function has examples that do run already. Only one function has a single example outside dontrun and the rest inside dontrun. I do not control the API so if there is a lag, even the smallest example will take longer than 5 seconds. The package is tested extensively otherwise.
+     > ### Name: ee_about
+     > ### Title: About the Berkeley Ecoinformatics Engine
+     > ### Aliases: ee_about
+     >
+     > ### ** Examples
+     >
+     >
+     > ee_about()
+     Warning in ee_about() : Internal Server Error (HTTP 500).
+     No encoding supplied: defaulting to UTF-8.
+     Error in format.default(unlist(xx), ...) :
+      Found no format() method for class "externalptr"
+     Calls: <Anonymous> ... format -> format.default -> lapply -> FUN ->
+format.default
+
+which does not comply with the CRAN policy on Internet access.  You need
+to analyse the status of your query, not warn and blindly continue.
+
+
+This has been fixed now. All of these calls return a user friendly message ("Internet resources should fail gracefully with an informative message if the resource is not available ")
