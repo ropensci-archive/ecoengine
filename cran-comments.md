@@ -1,24 +1,13 @@
-Brian Ripley writes:
+Uwe Ligges writes:
 
-You have
+Thanks, we see:
 
-     > ### Name: ee_about
-     > ### Title: About the Berkeley Ecoinformatics Engine
-     > ### Aliases: ee_about
-     >
-     > ### ** Examples
-     >
-     >
-     > ee_about()
-     Warning in ee_about() : Internal Server Error (HTTP 500).
-     No encoding supplied: defaulting to UTF-8.
-     Error in format.default(unlist(xx), ...) :
-      Found no format() method for class "externalptr"
-     Calls: <Anonymous> ... format -> format.default -> lapply -> FUN ->
-format.default
+   Found the following (possibly) invalid file URI:
+     URI: CONDUCT.md
+       From: README.md
 
-which does not comply with the CRAN policy on Internet access.  You need
-to analyse the status of your query, not warn and blindly continue.
+Please include the file in the package, link to it via a fully specified
+URL, or omit the link in case you do not need it.
 
 
-This has been fixed now. All of these calls return a user friendly message ("Internet resources should fail gracefully with an informative message if the resource is not available ")
+I have ignored both files from the build.

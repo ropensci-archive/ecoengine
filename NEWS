@@ -1,7 +1,7 @@
 ecoengine 1.12
 ===============
 * Updated warnings. Now complies with "Internet resources should fail gracefully with an informative message if the resource is not available". 
-
+* Removed README and CONDUCT from built package.
 
 ecoengine 1.11
 ===============
